@@ -11,8 +11,9 @@ class RolMiddleware
 {
     public function handle(Request $request, Closure $next, string $rol): Response
     {
-        // 🔴 SOLO PARA DESARROLLO (sin login)
-        $user = User::first(); // simula usuario
+        // Usuario guardado en sesión
+        $userId = session('user_id');
+        $user = User::find($userId);
 
         if (!$user || $user->rol !== $rol) {
             abort(403, 'Acceso no autorizado.');
@@ -21,4 +22,3 @@ class RolMiddleware
         return $next($request);
     }
 }
-    
