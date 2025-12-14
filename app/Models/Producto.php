@@ -18,6 +18,7 @@ class Producto extends Model
         'pro_um_venta',
         'pro_um_compra', 
         'estado_prod',
+        'img',
         'pro_saldo_inicial'
     ];
 

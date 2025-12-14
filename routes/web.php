@@ -1,12 +1,13 @@
 <?php
-
+use App\Models\Producto;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
+use App\Http\Controllers\ProductoController;
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-
-use App\Models\User;
 
 Route::get('/demo-login/{id}', function ($id) {
     $user = User::findOrFail($id);
@@ -17,17 +18,18 @@ Route::get('/demo-login/{id}', function ($id) {
 
 
 Route::middleware(['rol:gerente_bodega'])
-    ->prefix('backoffice')
+    ->prefix('admin')
     ->group(function () {
 
         Route::get('/', function () {
             return 'Backoffice funcionando 🚀';
         });
-
+        
+        Route::resource('productos',ProductoController::class);
     });
 
 Route::middleware(['rol:gerente_compras'])
-    ->prefix('backoffice/compras')
+    ->prefix('admin/compras')
     ->group(function () {
 
         Route::get('/', function () {
@@ -37,12 +39,11 @@ Route::middleware(['rol:gerente_compras'])
     });
  
 Route::middleware(['rol:gerente_ventas'])
-    ->prefix('backoffice/ventas')
+    ->prefix('admin/ventas')
     ->group(function () {
 
         Route::get('/', function () {
             return 'Backoffice Ventas 💰';
         });
-
     });
  
