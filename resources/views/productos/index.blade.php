@@ -3,6 +3,11 @@
 @section('content')
 <div class="row justify-content-center">
     <h2>Listado de Productos</h2>
+<div class="col-12 text-center">
+    <a href="" class="btn btn-outline-success w-50">
+        Crear
+    </a>
+</div>
 <table border="3" id="tablaProductos">
                 <tr>
                     <th >Actualizar</th>
@@ -17,7 +22,7 @@
                 <tr>
                     <td>
                         <a href="">
-                        <button class="btn btn-primary">Actualizar</button>
+                        <button class="btn btn-outline-primary">Actualizar</button>
                         </a>
                     </td>
 
@@ -26,7 +31,7 @@
                     <form action="">
                     @csrf
                     @method('PUT')
-            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <button type="submit" class="btn btn-outline-danger">Eliminar</button>
                     </form>
 
                     
