@@ -1,4 +1,4 @@
-<footer class=" text-white mt-5 pt-5 pb-4">
+<footer class="text-white mt-5 pt-5 pb-4">
   <div class="container">
     <div class="row g-4">
 
@@ -18,14 +18,26 @@
         <h4 class="mb-3 fw-bold text-primary">J-KADI SOFT</h4>
         <p class="mb-3">Síguenos en redes sociales</p>
         <div class="d-flex justify-content-center gap-3 mb-3">
-          <a href="https://www.facebook.com/" target="_blank" class="text-white">
-            <img src="img/Facebook.png" alt="Facebook" width="40" height="40" class="rounded-circle hover-opacity">
+          <a href="https://www.facebook.com/" target="_blank">
+            <img src="{{ asset('img/Facebook.png') }}"
+                 alt="Facebook"
+                 width="40"
+                 height="40"
+                 class="rounded-circle hover-opacity">
           </a>
-          <a href="https://www.instagram.com/aeipuceuio" target="_blank" class="text-white">
-            <img src="img/Insta.png" alt="Instagram" width="40" height="40" class="rounded-circle hover-opacity">
+          <a href="https://www.instagram.com/aeipuceuio" target="_blank">
+            <img src="{{ asset('img/Insta.png') }}"
+                 alt="Instagram"
+                 width="40"
+                 height="40"
+                 class="rounded-circle hover-opacity">
           </a>
-          <a href="https://x.com/" target="_blank" class="text-white">
-            <img src="img/Twitter.png" alt="Twitter" width="40" height="40" class="rounded-circle hover-opacity">
+          <a href="https://x.com/" target="_blank">
+            <img src="{{ asset('img/Twitter.png') }}"
+                 alt="Twitter"
+                 width="40"
+                 height="40"
+                 class="rounded-circle hover-opacity">
           </a>
         </div>
       </div>
@@ -40,19 +52,25 @@
           </li>
           <li class="mb-2">
             <i class="bi bi-phone-fill me-2"></i>
-            <a href="tel:+593984723243" class="text-white-50 text-decoration-none">+593 98 472 3243</a>
+            <a href="tel:+593984723243" class="text-white-50 text-decoration-none">
+              +593 98 472 3243
+            </a>
           </li>
           <li class="mb-2">
             <i class="bi bi-envelope-fill me-2"></i>
-            <a href="mailto:Grupo3@jkadisoft.com" class="text-white-50 text-decoration-none">Grupo3@jkadisoft.com</a>
+            <a href="mailto:Grupo3@jkadisoft.com" class="text-white-50 text-decoration-none">
+              Grupo3@jkadisoft.com
+            </a>
           </li>
         </ul>
       </div>
 
-      <!-- Newsletter (opcional) -->
+      <!-- Newsletter -->
       <div class="col-lg-3 col-md-6 col-sm-12">
         <h5 class="text-uppercase mb-3 fw-bold">Newsletter</h5>
-        <p class="text-white-50 small">Suscríbete para recibir nuestras últimas novedades</p>
+        <p class="text-white-50 small">
+          Suscríbete para recibir nuestras últimas novedades
+        </p>
         <form class="d-flex gap-2">
           <input type="email" class="form-control form-control-sm" placeholder="Tu email">
           <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
@@ -61,8 +79,8 @@
 
     </div>
 
-    <!-- Copyright -->
     <hr class="bg-secondary mt-4 mb-3">
+
     <div class="row">
       <div class="col-12 text-center">
         <p class="mb-0 text-white-50 small">
@@ -72,6 +90,3 @@
     </div>
   </div>
 </footer>
-
-
-
