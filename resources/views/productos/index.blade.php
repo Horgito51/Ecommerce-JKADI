@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
     <h2>Listado de Productos</h2>
 <div class="col-12 text-center">
-    <a href="" class="btn btn-outline-success w-50">
+    <a href="{{route('productos.create')}}" class="btn btn-outline-success w-50">
         Crear
     </a>
 </div>
