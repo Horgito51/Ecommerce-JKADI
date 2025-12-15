@@ -1,20 +1,49 @@
 <?php
-
-use App\Http\Controllers\productController;
+use App\Models\Producto;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
+use App\Http\Controllers\ProductoController;
 
-
-route::get('/', function () {
+Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('products')->controller(ProductController::class)->group(function () {
 
-        Route::get('/', 'index')->name('products.index');
-        Route::post('/', 'store')->name('products.store');
-        Route::get('/edit', 'edit')->name('products.edit');
-        Route::get('/{id}', 'show')->name('products.show');
-        Route::put('/{id}', 'update')->name('products.update');
-        Route::put('/{id}', 'destroy')->name('products.destroy');
+Route::get('/demo-login/{id}', function ($id) {
+    $user = User::findOrFail($id);
+    session(['user_id' => $user->id]);
 
+    return "Sesión iniciada como {$user->name} ({$user->rol})";
 });
+
+
+Route::middleware(['rol:gerente_bodega'])
+    ->prefix('admin')
+    ->group(function () {
+
+        Route::get('/', function () {
+            return 'Backoffice funcionando 🚀';
+        });
+        
+        Route::resource('productos',ProductoController::class);
+    });
+
+Route::middleware(['rol:gerente_compras'])
+    ->prefix('admin/compras')
+    ->group(function () {
+
+        Route::get('/', function () {
+            return 'Backoffice Compras 🧾';
+        });
+
+    });
+ 
+Route::middleware(['rol:gerente_ventas'])
+    ->prefix('admin/ventas')
+    ->group(function () {
+
+        Route::get('/', function () {
+            return 'Backoffice Ventas 💰';
+        });
+    });
+ 

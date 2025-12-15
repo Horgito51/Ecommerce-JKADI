@@ -116,3 +116,35 @@ footer {
   width: 100%;
 }
 
+
+/* Personalización de formularios */
+.form-group label {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Estilo para los campos de entrada */
+.form-control {
+    border-radius: 0.5rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los botones */
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+}
+
+/* Ajuste del formulario para pantallas pequeñas */
+@media (max-width: 576px) {
+    .container {
+        padding: 10px;
+    }
+    .form-group label {
+        font-size: 1rem;
+    }
+    .btn {
+        width: 100%;
+    }
+}

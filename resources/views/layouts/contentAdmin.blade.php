@@ -14,13 +14,11 @@
 </head>
 <body>
 
-    @include('layouts.header')
+    @include('layouts.headerBackOffice')
 
     <div class="container my-4">
         @yield('content')
     </div>
-
-    @include('layouts.footer')
-
+    
 </body>
 </html>
