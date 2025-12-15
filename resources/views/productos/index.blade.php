@@ -1,6 +1,14 @@
 @extends('layouts.contentAdmin')
 
 @section('content')
+
+    @if(session('Exitoso'))
+        <div class="alert alert-success alert-dismissible fade show">
+            {{ session('Exitoso') }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    @endif
+
 <div class="row justify-content-center">
     <h2>Listado de Productos</h2>
 <div class="col-12 text-center">
@@ -10,7 +18,7 @@
 </div>
 <table border="3" id="tablaProductos">
                 <tr>
-                    <th >Actualizar</th>
+                    <th>Actualizar</th>
                     <th>Eliminar</th>
                     <th>ID</th>
                     <th>Descripcion</th>
@@ -21,21 +29,19 @@
                 @foreach ($productos as $producto)
                 <tr>
                     <td>
-                        <a href="">
+                        <a href="{{route('productos.edit', $producto->id_producto)}}">
                         <button class="btn btn-outline-primary">Actualizar</button>
                         </a>
                     </td>
 
 
-                    <td>
-                    <form action="">
+                <td>
+                    <form action="{{route('productos.destroy',$producto->id_producto)}}" method="POST">
                     @csrf
-                    @method('PUT')
-            <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-outline-danger" onclick="return confirm('¿Eliminar?')">Eliminar</button>
                     </form>
-
-                    
-                    </td>
+                </td>
                     <td>{{ $producto->id_producto }}</td>
                     <td>{{ $producto->pro_descripcion }}</td>
                     <td>{{ $producto->pro_um_compra }}</td>

@@ -88,7 +88,10 @@ class ProductoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $productos = Producto::findOrfail($id);
+        $tiposProducto = tiposProducto::getAllTiposProducto();
+        $unidadesMedidas = unidadesMedidas::getAllUnidades();
+        return view('productos.edit', compact('tiposProducto','unidadesMedidas','productos'));
     }
 
     /**
@@ -96,7 +99,23 @@ class ProductoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'pro_descripcion' => 'required',
+            'tipo_Producto' => 'required',
+            'unidad_medida_venta' => 'required',
+            'unidad_medida_compra' => 'required',
+            'saldo_inicial' => 'required',
+        ]);
+
+        $productos = Producto::findOrFail($id);
+        $productos->pro_descripcion = $request->pro_descripcion;
+        $productos->id_tipo = $request->tipo_Producto;
+        $productos->pro_um_venta = $request->unidad_medida_venta;
+        $productos->pro_um_compra = $request->unidad_medida_compra;
+        $productos->pro_saldo_inicial = $request->saldo_inicial;
+        $productos->save();
+
+        return redirect()->route('productos.index')->with('Exitoso','Producto actualizado correctamente');
     }
 
     /**
@@ -104,6 +123,10 @@ class ProductoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $productos = Producto::findOrFail($id);
+        $productos->estado_prod = 'INA';
+        $productos->save();
+        return redirect()->route('productos.index')->with('Exitoso','Producto eliminado correctamente');
     }
+
 }
