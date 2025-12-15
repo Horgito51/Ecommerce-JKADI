@@ -190,7 +190,6 @@ class ProductoSeeder extends Seeder
             ['id_producto'=>'P076','pro_descripcion'=>'Palomitas de Maíz','id_tipo'=>'GAL','pro_um_compra'=>'PK','pro_um_venta'=>'PK','pro_valor_compra'=>0.90,'pro_precio_venta'=>1.20,'pro_saldo_inicial'=>300,'pro_qty_ingresos'=>0,'pro_qty_egresos'=>0,'pro_qty_ajustes'=>0,'pro_saldo_final'=>300,'estado_prod'=>'ACT','user_id'=>'root@localhost','fecha_alta'=>'2025-07-04 07:59:57','fecha_baja'=>null,'img'=>'PalomitasdeMaíz'],
 
             ['id_producto'=>'P077','pro_descripcion'=>'Helado de Vainilla','id_tipo'=>'HEL','pro_um_compra'=>'LT','pro_um_venta'=>'LT','pro_valor_compra'=>3.00,'pro_precio_venta'=>4.00,'pro_saldo_inicial'=>300,'pro_qty_ingresos'=>0,'pro_qty_egresos'=>0,'pro_qty_ajustes'=>0,'pro_saldo_final'=>300,'estado_prod'=>'ACT','user_id'=>'root@localhost','fecha_alta'=>'2025-07-04 07:59:57','fecha_baja'=>null,'img'=>'HeladodeVainilla'],
-
             ['id_producto'=>'P078','pro_descripcion'=>'Helado de Chocolate','id_tipo'=>'HEL','pro_um_compra'=>'LT','pro_um_venta'=>'LT','pro_valor_compra'=>3.00,'pro_precio_venta'=>4.00,'pro_saldo_inicial'=>300,'pro_qty_ingresos'=>0,'pro_qty_egresos'=>0,'pro_qty_ajustes'=>0,'pro_saldo_final'=>300,'estado_prod'=>'ACT','user_id'=>'root@localhost','fecha_alta'=>'2025-07-04 07:59:57','fecha_baja'=>null,'img'=>'HeladodeChocolate']
 
 
