@@ -3,7 +3,7 @@ use App\Models\Producto;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\ProductoController;
-use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ClientesController;
 use GuzzleHttp\Client;
 
 Route::get('/', function () {
@@ -47,7 +47,7 @@ Route::middleware(['rol:gerente_ventas'])
         Route::get('/', function () {
             return 'Backoffice Ventas 💰';
         });
-        Route::resource('clientes',ClienteController::class);
+        Route::resource('clientes',ClientesController::class);
 
     });
  
