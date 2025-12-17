@@ -2,12 +2,6 @@
 
 @section('content')
 
-    @if(session('Exitoso'))
-        <div class="alert alert-success alert-dismissible fade show">
-            {{ session('Exitoso') }}
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-        </div>
-    @endif
 
 <div class="row justify-content-center">
     <h2>Listado de Productos</h2>

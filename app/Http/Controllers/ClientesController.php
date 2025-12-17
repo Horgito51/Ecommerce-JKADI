@@ -31,8 +31,7 @@ class ClientesController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        
+    {  
         $request->validate([
             'id_cliente'   => 'required|string|max:15|unique:clientes,id_cliente',
             'cli_nombre'   => 'required|string|max:50',

@@ -17,6 +17,17 @@
     @include('layouts.headerBackOffice')
 
     <div class="container my-4">
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session('Exitoso'))
+            <div class="alert alert-success alert-dismissible fade show">
+                {{ session('Exitoso') }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        @endif
         @yield('content')
     </div>
     
