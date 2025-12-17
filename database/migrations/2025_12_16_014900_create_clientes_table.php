@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clientes', function (Blueprint $table) {
-            $table->id();
-            $table->string('cli_nombre', 50);
-            $table->string('cli_ruc_ced',13);
-            $table->string('cli_direccion',100);
-            $table->string('cli_telefono',10);
-            $table->string('cli_email',50);
-            $table->foreignId('ciudad_id')->references('id')->on('ciudades');
+            $table->char('id_cliente', 15)->primary();
+            $table->char('cli_nombre', 50)->unique();
+            $table->char('cli_ruc_ced',13);
+            $table->char('cli_direccion',100);
+            $table->char('cli_telefono',10);
+            $table->char('cli_email',50);
+            $table->foreignId('ciudad_id')->references('id')->on('ciudades')
+            ->onDelete('restrict');
             $table->enum('estado_cli', ['ACT', 'INA', 'SUS'])->default('ACT');
             $table->timestamps();
         });
