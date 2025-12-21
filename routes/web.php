@@ -1,11 +1,14 @@
 <?php
+
+use App\Http\Controllers\Ecommerce\CatalogoController;
 use App\Models\Producto;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\ProductoController;
 
 Route::get('/', function () {
-    return view('welcome');
+
+    return view('Ecommerce.dashboard');
 });
 
 
@@ -17,33 +20,36 @@ Route::get('/demo-login/{id}', function ($id) {
 });
 
 
-Route::middleware(['rol:gerente_bodega'])
-    ->prefix('admin')
-    ->group(function () {
+Route::get('/catalogo',CatalogoController::class)->name('catalogo.index');
 
-        Route::get('/', function () {
-            return 'Backoffice funcionando 🚀';
-        });
-        
-        Route::resource('productos',ProductoController::class);
-    });
+// Route::middleware(['rol:gerente_bodega'])
+//     ->prefix('admin')
+//     ->group(function () {
 
-Route::middleware(['rol:gerente_compras'])
-    ->prefix('admin/compras')
-    ->group(function () {
+//         Route::get('/', function () {
+//             return 'Backoffice funcionando 🚀';
+//         });
 
-        Route::get('/', function () {
-            return 'Backoffice Compras 🧾';
-        });
+//         Route::resource('productos',ProductoController::class);
+//     });
 
-    });
- 
-Route::middleware(['rol:gerente_ventas'])
-    ->prefix('admin/ventas')
-    ->group(function () {
+// Route::middleware(['rol:gerente_compras'])
+//     ->prefix('admin/compras')
+//     ->group(function () {
 
-        Route::get('/', function () {
-            return 'Backoffice Ventas 💰';
-        });
-    });
- 
+//         Route::get('/', function () {
+//             return 'Backoffice Compras 🧾';
+//         });
+
+//     });
+
+// Route::middleware(['rol:gerente_ventas'])
+//     ->prefix('admin/ventas')
+//     ->group(function () {
+
+//         Route::get('/', function () {
+//             return 'Backoffice Ventas 💰';
+//         });
+//     });
+
+

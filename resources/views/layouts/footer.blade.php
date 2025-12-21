@@ -1,9 +1,9 @@
 <footer class="text-white mt-5 pt-5 pb-4">
   <div class="container">
-    <div class="row g-4">
+    <div class="row g-3 diplay:flex align-items: center;">
 
       <!-- Recursos útiles -->
-      <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="col-lg-4 col-md-6 col-sm-12">
         <h5 class="text-uppercase mb-3 fw-bold">Recursos útiles</h5>
         <ul class="list-unstyled">
           <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Acerca de nosotros</a></li>
@@ -14,7 +14,7 @@
       </div>
 
       <!-- J-KADI SOFT -->
-      <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+      <div class="col-lg-4 col-md-6 col-sm-12 text-center">
         <h4 class="mb-3 fw-bold text-primary">J-KADI SOFT</h4>
         <p class="mb-3">Síguenos en redes sociales</p>
         <div class="d-flex justify-content-center gap-3 mb-3">
@@ -43,7 +43,7 @@
       </div>
 
       <!-- Contáctanos -->
-      <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="col-lg-4   col-md-6 col-sm-12">
         <h5 class="text-uppercase mb-3 fw-bold">Contáctanos</h5>
         <ul class="list-unstyled text-white-50">
           <li class="mb-2">
@@ -63,18 +63,6 @@
             </a>
           </li>
         </ul>
-      </div>
-
-      <!-- Newsletter -->
-      <div class="col-lg-3 col-md-6 col-sm-12">
-        <h5 class="text-uppercase mb-3 fw-bold">Newsletter</h5>
-        <p class="text-white-50 small">
-          Suscríbete para recibir nuestras últimas novedades
-        </p>
-        <form class="d-flex gap-2">
-          <input type="email" class="form-control form-control-sm" placeholder="Tu email">
-          <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
-        </form>
       </div>
 
     </div>
