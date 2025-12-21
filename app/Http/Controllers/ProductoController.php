@@ -57,10 +57,7 @@ class ProductoController extends Controller
                 $nombreImagen
             );
         }
-
-
-
-
+        
         Producto::create([
             'id_producto' => $request->id_producto,
             'pro_descripcion' => $request->pro_descripcion,
