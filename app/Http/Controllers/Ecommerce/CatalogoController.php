@@ -11,7 +11,7 @@ use Illuminate\View\View;
 class CatalogoController extends Controller
 {
     public function index(){
-         $productos =Producto::getAllProductos();
+         $productos =Producto::getProductos();
 
         return view('Ecommerce.catalogo',compact('productos'));
     }

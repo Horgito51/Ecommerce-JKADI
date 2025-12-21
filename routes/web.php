@@ -22,7 +22,7 @@ Route::get('/demo-login/{id}', function ($id) {
 });
 
 
-Route::get('/catalogo',CatalogoController::class)->name('catalogo.index');
+Route::get('/catalogo',[CatalogoController::class,'index'])->name('catalogo.index');
 
 // Route::middleware(['rol:gerente_bodega'])
 //     ->prefix('admin')

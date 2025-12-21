@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Pagination\LengthAwarePaginator;
 class Producto extends Model
 {
     public $incrementing = false;
@@ -29,6 +29,6 @@ class Producto extends Model
 
     public static function getProductos(){
 
-        return self::where('estado_prod','=','ACT')->get();
+        return self::where('estado_prod','=','ACT')->paginate(9);
     }
 }
