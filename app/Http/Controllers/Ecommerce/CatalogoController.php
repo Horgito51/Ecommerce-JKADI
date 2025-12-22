@@ -16,4 +16,15 @@ class CatalogoController extends Controller
         $categorias=tiposProducto::getAllTiposProducto();
         return view('Ecommerce.catalogo',compact('productos','categorias'));
     }
+
+    public function show($id){
+        $producto = Producto::with('tipoProducto')
+            ->where('id_producto', $id)
+            ->firstOrFail();
+        
+        return view('Ecommerce.detalle', compact('producto'));
+    }
+
+    
+
 }

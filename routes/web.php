@@ -28,18 +28,21 @@ Route::get('/demo-login/{id}', function ($id) {
 
 
 Route::get('/catalogo',[CatalogoController::class,'index'])->name('catalogo.index');
+Route::get('/detalle/{id}',[CatalogoController::class,'show'])->name('catalogo.detalle');
 
-// Route::middleware(['rol:gerente_bodega'])
-//     ->prefix('admin')
-//     ->group(function () {
 
-//         Route::get('/', function () {
-//             return 'Backoffice funcionando 🚀';
-//         });
 
-//         Route::resource('productos',ProductoController::class);
-//     });
 
+Route::middleware(['rol:gerente_bodega'])
+     ->prefix('admin')
+     ->group(function () {
+
+         Route::get('/', function () {
+             return 'Backoffice funcionando 🚀';
+         });
+
+         Route::resource('productos',ProductoController::class);
+     });
 // Route::middleware(['rol:gerente_compras'])
 //     ->prefix('admin/compras')
 //     ->group(function () {

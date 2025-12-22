@@ -34,7 +34,7 @@
                             <strong>${{ number_format($producto->pro_precio_venta, 2) }}</strong>
                         </p>
 
-                        <a style="background-color:#031832;"href="#" class="btn btn-primary w-100">
+                        <a style="background-color:#031832;"href="{{ route('catalogo.detalle', $producto->id_producto) }}" class="btn btn-primary w-100">
                             Comprar ahora
                         </a>
                     </div>
