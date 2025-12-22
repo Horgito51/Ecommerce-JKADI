@@ -13,6 +13,11 @@ Route::get('/', function () {
     return view('Ecommerce.dashboard');
 });
 
+Route::get('/portada', function () {
+
+    return view('Ecommerce.dashboard');
+})->name('portada.index');
+
 
 Route::get('/demo-login/{id}', function ($id) {
     $user = User::findOrFail($id);

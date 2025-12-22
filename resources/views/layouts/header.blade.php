@@ -3,13 +3,14 @@
     <div class="row align-items-center py-2 py-md-3">
 
       <!-- Logo -->
+      <a href="{{ route('portada.index') }}">
       <div class="col-6 col-md-2 order-1">
         <img src="{{ asset('img/Logo.png') }}"
              alt="J-KADI Sports"
              class="logo img-fluid"
              style="max-width: 150px;">
       </div>
-
+      </a>
       <!-- Menú hamburguesa -->
       <div class="col-3 col-md-1 order-2 d-flex justify-content-center">
         <a> Productos</a>

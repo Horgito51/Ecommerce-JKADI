@@ -13,7 +13,7 @@
             </h1>
 
             <div class="d-flex gap-3 my-3">
-                <a class="btn" style="background-color:#031832; color:white; border-radius:5px; margin:5px">
+                <a class="btn" href="{{ route('catalogo.index') }}" style="background-color:#031832; color:white; border-radius:5px; margin:5px">
                     Comprar Ahora
                 </a>
                 <a class="btn" style="background-color:#031832; color:white; border-radius:5px; margin:5px">

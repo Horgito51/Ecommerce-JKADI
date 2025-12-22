@@ -6,12 +6,9 @@
 
     {{-- Categorías (solo visual por ahora) --}}
     <div class="d-flex justify-content-center gap-2 mb-4">
-        <button class="btn btn-dark">Bebidas</button>
-        <button class="btn btn-secondary">Cárnicos</button>
-        <button class="btn btn-secondary">Condimentos</button>
-        <button class="btn btn-secon    dary">Panadería</button>
-        <button class="btn btn-secondary">Granos</button>
-        <button class="btn btn-secondary">Lácteos</button>
+        @foreach($categorias as $categoria)
+        <button style="background-color:#031832; margin:5px" class="btn btn-dark">{{ $categoria->tipo_descripcion }}</button>
+        @endforeach
     </div>
     {{-- GRID DE PRODUCTOS --}}
     <div class="row g-4">
