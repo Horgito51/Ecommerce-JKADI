@@ -10,7 +10,9 @@
         Crear
     </a>
 </div>
-<table border="3" id="tablaProductos">
+
+    <div class="table-responsive">
+        <table border="3" id="tablaProductos">
                 <tr>
                     <th>Actualizar</th>
                     <th>Eliminar</th>
@@ -44,5 +46,6 @@
                 </tr>
                 @endforeach
         </table>
+    </div>
 </div>
 @endsection
