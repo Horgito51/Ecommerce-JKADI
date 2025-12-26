@@ -24,7 +24,7 @@ class ClientesController extends Controller
     public function create()
     {
         $ciudades=Ciudades::all();
-       return view('clientes.create',compact('ciudades'));
+        return view('clientes.create',compact('ciudades'));
     }
 
     /**
@@ -41,15 +41,15 @@ class ClientesController extends Controller
             'cli_email'    => 'required|email|max:50',
         ]);
 
-        Clientes::create([
-            'id_cliente' => trim($request->id_cliente),
-            'cli_nombre' => $request->cli_nombre,
-            'cli_ruc_ced' => $request->cli_ruc_ced,
+        Clientes::createClientes([
+            'id_cliente'   => $request->id_cliente,
+            'cli_nombre'   => $request->cli_nombre,
+            'cli_ruc_ced'  => $request->cli_ruc_ced,
             'cli_telefono' => $request->cli_telefono,
-            'ciudad_id' => $request->ciudad_id,
-            'cli_direccion' => $request->cli_direccion,
-            'cli_email' => $request->cli_email,
-            'estado_cli' => 'ACT',
+            'ciudad_id'    => $request->ciudad_id,
+            'cli_direccion'=> $request->cli_direccion,
+            'cli_email'    => $request->cli_email,
+            'estado_cli'   => 'ACT',
         ]);
 
         return redirect()->route('clientes.index')
@@ -57,13 +57,6 @@ class ClientesController extends Controller
         
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Clientes $clientes)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

@@ -8,6 +8,10 @@ use Illuminate\Database\Seeder;
 
 class CiudadesSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
+
     public function run(): void
     {
         $ciudades=['Ambato','Quito','Guayaquil','Cuenca','Loja','Machala','Manta','Esmeraldas','Tulcán',
