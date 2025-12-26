@@ -13,7 +13,7 @@
       </a>
       <!-- Menú hamburguesa -->
       <div class="col-3 col-md-1 order-2 d-flex justify-content-center">
-        <a> Productos</a>
+        <a href="{{ route('catalogo.index') }}"> Productos</a>
 
       </div>
 

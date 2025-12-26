@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Http\Request;
+class Proveedor extends Model
+{
+    use HasFactory;
+    protected $table='proveedores';
+
+    protected $primaryKey = 'id_proveedor';
+
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+     protected $fillable = [
+        'id_proveedor',
+        'prv_nombre',
+        'prv_ruc_ced',
+        'prv_telefono',
+        'prv_mail',
+        'id_ciudad',
+        'prv_celular',
+        'prv_direccion',
+        'estado_prv',
+    ];
+
+     public function ciudades():BelongsTo{
+        return $this->belongsTo(Ciudades::class, 'id_ciudad');
+    }
+
+    public static function getProveedores(){
+        return self::select('id_proveedor',
+        'prv_nombre',
+        'prv_ruc_ced',
+        'prv_telefono',
+        'prv_mail',
+        'id_ciudad',
+        'prv_celular',
+        'prv_direccion',
+        'estado_prv')->where('estado_prv','=','ACT')->paginate(10);
+    }
+
+    public static function getProveedorById(string $id)
+{
+    return self::where('id_proveedor', $id)->firstOrFail();
+}
+
+    public static function createProveedor(Request $request){
+    $ultimo = self::orderBy('id_proveedor', 'desc')->first();
+    $numero = $ultimo? intval(substr($ultimo->id_proveedor, 3)) + 1: 1;
+    $id='PRV' . str_pad($numero, 3, '0', STR_PAD_LEFT);
+   Proveedor::create([
+    'id_proveedor' => $id,
+    'estado_prv'   => 'ACT',
+    ] + $request->all());
+    }
+}

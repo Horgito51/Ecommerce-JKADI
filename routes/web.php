@@ -8,7 +8,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClientesController;
 use GuzzleHttp\Client;
 use App\Http\Controllers\LoginController;
-
+use App\Http\Controllers\ProveedorController;
 
 // ECOMMERCE
 Route::get('/', function () {
@@ -24,10 +24,10 @@ Route::get('/portada', function () {
 Route::get('/catalogo',[CatalogoController::class,'index'])->name('catalogo.index');
 Route::get('/detalle/{id}',[CatalogoController::class,'show'])->name('catalogo.detalle');
 
+Route::get('/clientes',[ClientesController::class,'index']);
 
-
-
-// LOGIN 
+Route::get('/productos',[ProductoController::class,'index']);
+// LOGIN
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', function () {
         return view('auth.login');
@@ -53,11 +53,7 @@ Route::middleware(['rol:gerente_bodega'])
 Route::middleware(['rol:gerente_compras'])
      ->prefix('admin/compras')
      ->group(function () {
-
-         Route::get('/', function () {
-            return 'Backoffice Compras 🧾';
-         });
-
+         Route::resource('/proveedores',ProveedorController::class);
      });
 
  Route::middleware(['rol:gerente_ventas'])
@@ -72,3 +68,6 @@ Route::middleware(['rol:gerente_compras'])
      });
 
 
+
+
+// Route::get('/admin/proveedores',[ProveedorController::class,'index'])->name('proveedores.index');
