@@ -14,11 +14,14 @@ class ProductoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $productos = Producto::getAllProductos();
+        $productos = Producto::getProductoBy($request->search)
+                        ->paginate(10);
+
         return view('productos.index', compact('productos'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -36,38 +39,33 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_producto' => 'required',
-            'pro_descripcion' => 'required',
+            'id_producto' => 'required|unique:productos,id_producto',
+            'pro_descripcion' => 'required|unique:productos,pro_descripcion',
             'tipo_Producto' => 'required',
             'unidad_medida_venta' => 'required',
             'unidad_medida_compra' => 'required',
-            'saldo_inicial' => 'required',
+            'saldo_inicial' => 'required|numeric|min:0',
             'img'=> 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
+        ],[
+        'id_producto.required' => 'El código del producto es obligatorio',
+        'id_producto.unique' => 'Este código de producto ya está registrado',
+
+        'pro_descripcion.required' => 'La descripción del producto es obligatorio',
+        'pro_descripcion.unique' => 'Esta descripción de producto ya está registrado', 
+        
+        'tipo_Producto.required' => 'Debes seleccionar un tipo de producto',
+        
+        'saldo_inicial.required' => 'El saldo inicial es obligatorio',
+        'saldo_inicial.numeric' => 'El saldo inicial debe ser un número',
+        'saldo_inicial.min' => 'El saldo inicial no puede ser negativo',
+
         ]);
         
-        $nombreImagen = null;
+        Producto::createProducto(
+        $request->all(),
+        $request->file('img')
+        );
 
-        if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            $imagen = $request->file('img');
-
-            $nombreImagen = $imagen->getClientOriginalName();
-
-            $imagen->move(
-                storage_path('app/public/products'),
-                $nombreImagen
-            );
-        }
-        
-        Producto::create([
-            'id_producto' => $request->id_producto,
-            'pro_descripcion' => $request->pro_descripcion,
-            'id_tipo' => $request->tipo_Producto,
-            'pro_um_compra' => $request->unidad_medida_compra,
-            'pro_um_venta' => $request->unidad_medida_venta,
-            'pro_saldo_inicial' => $request->saldo_inicial,
-            'img' => $nombreImagen,
-            'estado_prod'=> 'ACT',
-        ]);
         return redirect()->route('productos.index')->with('Exitoso','Producto creado correctamente');
     }
     
@@ -97,20 +95,24 @@ class ProductoController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'pro_descripcion' => 'required',
+            'pro_descripcion' => 'required|unique:productos,pro_descripcion,' . $id . ',id_producto',
             'tipo_Producto' => 'required',
             'unidad_medida_venta' => 'required',
             'unidad_medida_compra' => 'required',
-            'saldo_inicial' => 'required',
+            'saldo_inicial' => 'required|numeric|min:0',
+        ],[
+        'pro_descripcion.required' => 'La descripción del producto es obligatorio',
+        'pro_descripcion.unique' => 'Esta descripción de producto ya está registrado', 
+        
+        'tipo_Producto.required' => 'Debes seleccionar un tipo de producto',
+
+        'saldo_inicial.required' => 'El saldo inicial es obligatorio',
+        'saldo_inicial.numeric' => 'El saldo inicial debe ser un número',
+        'saldo_inicial.min' => 'El saldo inicial no puede ser negativo',
+
         ]);
 
-        $productos = Producto::findOrFail($id);
-        $productos->pro_descripcion = $request->pro_descripcion;
-        $productos->id_tipo = $request->tipo_Producto;
-        $productos->pro_um_venta = $request->unidad_medida_venta;
-        $productos->pro_um_compra = $request->unidad_medida_compra;
-        $productos->pro_saldo_inicial = $request->saldo_inicial;
-        $productos->save();
+        Producto::updateProducto($id, $request->all());
 
         return redirect()->route('productos.index')->with('Exitoso','Producto actualizado correctamente');
     }
@@ -121,8 +123,13 @@ class ProductoController extends Controller
     public function destroy(string $id)
     {
         $productos = Producto::findOrFail($id);
-        $productos->estado_prod = 'INA';
-        $productos->save();
+        if($productos->pro_saldo_final > 0){
+            return redirect()->route('productos.index')->with('error','No se puede eliminar un producto con saldo disponible');
+        }
+
+
+        $productos->destroyProducto();
+
         return redirect()->route('productos.index')->with('Exitoso','Producto eliminado correctamente');
     }
 

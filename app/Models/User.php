@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-}
+
+
+    protected function assignRole(string $role){
+
+        $this->assignRole($role);}
+    }
