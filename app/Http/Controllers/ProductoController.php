@@ -16,14 +16,12 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->get('search');
-        
-        $productos = Producto::when($search, function($query) use ($search) {
-            return $query->where('pro_descripcion', 'like', "%{$search}%")
-                        ->orWhere('id_producto', 'like', "%{$search}%");
-        })->paginate(10);
+        $productos = Producto::getProductoBy($request->search)
+                        ->paginate(10);
+
         return view('productos.index', compact('productos'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -63,29 +61,11 @@ class ProductoController extends Controller
 
         ]);
         
-        $nombreImagen = null;
+        Producto::createProducto(
+        $request->all(),
+        $request->file('img')
+        );
 
-        if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            $imagen = $request->file('img');
-
-            $nombreImagen = $imagen->getClientOriginalName();
-
-            $imagen->move(
-                storage_path('app/public/products'),
-                $nombreImagen
-            );
-        }
-        
-        Producto::create([
-            'id_producto' => $request->id_producto,
-            'pro_descripcion' => $request->pro_descripcion,
-            'id_tipo' => $request->tipo_Producto,
-            'pro_um_compra' => $request->unidad_medida_compra,
-            'pro_um_venta' => $request->unidad_medida_venta,
-            'pro_saldo_inicial' => $request->saldo_inicial,
-            'img' => $nombreImagen,
-            'estado_prod'=> 'ACT',
-        ]);
         return redirect()->route('productos.index')->with('Exitoso','Producto creado correctamente');
     }
     
@@ -132,13 +112,7 @@ class ProductoController extends Controller
 
         ]);
 
-        $productos = Producto::findOrFail($id);
-        $productos->pro_descripcion = $request->pro_descripcion;
-        $productos->id_tipo = $request->tipo_Producto;
-        $productos->pro_um_venta = $request->unidad_medida_venta;
-        $productos->pro_um_compra = $request->unidad_medida_compra;
-        $productos->pro_saldo_inicial = $request->saldo_inicial;
-        $productos->save();
+        Producto::updateProducto($id, $request->all());
 
         return redirect()->route('productos.index')->with('Exitoso','Producto actualizado correctamente');
     }
@@ -154,8 +128,8 @@ class ProductoController extends Controller
         }
 
 
-        $productos->estado_prod = 'INA';
-        $productos->save();
+        $productos->destroyProducto();
+
         return redirect()->route('productos.index')->with('Exitoso','Producto eliminado correctamente');
     }
 
