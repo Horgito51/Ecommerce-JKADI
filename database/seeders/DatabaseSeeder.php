@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             TiposProductoSeeder::class,
             UnidadesMedidasProductosSeeder::class,
             ProductoSeeder::class,
+            ProveedorSeeder::class,
         ]);
     }
 }

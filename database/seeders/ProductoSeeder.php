@@ -194,5 +194,6 @@ class ProductoSeeder extends Seeder
 
 
         ]);
+        echo 'Seeder completo';
     }
 }

@@ -34,14 +34,14 @@ class LoginController extends Controller
         }
 
         if ($user->rol === 'gerente_compras') {
-            return redirect('/admin/compras');
+            return redirect('/admin/compras/proveedores');
         }
 
         if ($user->rol === 'gerente_ventas') {
             return redirect('/admin/ventas');
         }
 
-        
+
         abort(403, 'Rol no válido');
     }
 }
