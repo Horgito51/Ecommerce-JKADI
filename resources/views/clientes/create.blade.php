@@ -8,23 +8,23 @@
         @csrf
         <div class="mb-3">
             <label class="form-label">Id * </label>
-            <input type="text" class="form-control" name="id_cliente" required>
+            <input type="text" class="form-control @error('id_cliente') is-invalid @enderror" name="id_cliente" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Nombre * </label>
-            <input type="text" class="form-control" name="cli_nombre" required>
+            <input type="text" class="form-control @error('cli_nombre') is-invalid @enderror" name="cli_nombre" required>
         </div>
         <div class="mb-3">
             <label class="form-label">RUC/Cédula * </label>
-            <input type="text" class="form-control" name="cli_ruc_ced" required>
+            <input type="text" class="form-control @error('cli_ruc_ced') is-invalid @enderror" name="cli_ruc_ced" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Teléfono * </label>
-            <input type="text" class="form-control" name="cli_telefono" required>
+            <input type="text" class="form-control @error('cli_telefono') is-invalid @enderror" name="cli_telefono" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Ciudad * </label>
-            <select name="ciudad_id" class="form-control" required>
+            <select name="ciudad_id" class="form-control @error('ciudad_id') is-invalid @enderror" required>
                 <option value="">Seleccione una ciudad</option>
                 @foreach ($ciudades as $ciudad)
                     <option value="{{ $ciudad->id }}">{{ $ciudad->ciu_descripcion }}</option>
@@ -33,11 +33,11 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Dirección * </label>
-            <input type="text" class="form-control" name="cli_direccion" required>
+            <input type="text" class="form-control @error('cli_direccion') is-invalid @enderror" name="cli_direccion" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Email * </label>
-            <input type="email" class="form-control" name="cli_email" required>
+            <input type="email" class="form-control @error('cli_email') is-invalid @enderror" name="cli_email" required>
         </div>
         <a href="{{route('clientes.index')}}" class="btn btn-danger">Cancelar</a>
         <button type="submit" class="btn btn-success">Guardar</button>
