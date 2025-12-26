@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\UploadedFile;
 class Producto extends Model
 {
     public $incrementing = false;
@@ -16,14 +17,81 @@ class Producto extends Model
         'id_tipo',
         'pro_descripcion',
         'pro_um_venta',
-        'pro_um_compra', 
+        'pro_um_compra',
         'estado_prod',
         'img',
         'pro_saldo_inicial'
     ];
 
+    public function tipoProducto()
+    {
+        return $this->belongsTo(tiposProducto::class, 'id_tipo', 'id_tipo');
+    }
+
+
+
     public static function getAllProductos()
     {
-        return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final')->where('pro_saldo_final','>',0)->where('estado_prod',"=","ACT")->limit(10)->get(); 
+        return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final')->where('pro_saldo_final','>',0)->where('estado_prod',"=","ACT")->limit(10)->get();
     }
+
+    public static function getProductos(){
+
+        return self::where('estado_prod','=','ACT')->paginate(9);
+    }
+
+    public function scopeGetProductoBy($query,$search){
+                if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('pro_descripcion', 'like', "%{$search}%")
+                  ->orWhere('id_producto', 'like', "%{$search}%");
+            });
+        }
+    }
+
+
+    public static function createProducto(array $data, ?UploadedFile $imagen = null){
+        $nombreImagen = null;
+
+        if ($imagen && $imagen->isValid()) {
+            $nombreImagen = $imagen->getClientOriginalName();
+            $imagen->move(
+                storage_path('app/public/products'),
+                $nombreImagen
+            );
+        }
+
+        return self::create([
+            'id_producto'        => $data['id_producto'],
+            'pro_descripcion'    => $data['pro_descripcion'],
+            'id_tipo'            => $data['tipo_Producto'],
+            'pro_um_compra'      => $data['unidad_medida_compra'],
+            'pro_um_venta'       => $data['unidad_medida_venta'],
+            'pro_saldo_inicial'  => $data['saldo_inicial'],
+            'img'                => $nombreImagen,
+            'estado_prod'        => 'ACT',
+        ]);
+    }
+
+
+    public static function updateProducto(string $id, array $data){
+        $producto = self::findOrFail($id);
+
+        $producto->update([
+            'pro_descripcion'   => $data['pro_descripcion'],
+            'id_tipo'           => $data['tipo_Producto'],
+            'pro_um_venta'      => $data['unidad_medida_venta'],
+            'pro_um_compra'     => $data['unidad_medida_compra'],
+            'pro_saldo_inicial' => $data['saldo_inicial'],
+        ]);
+
+        return $producto;
+
+    }
+    public function destroyProducto(){
+        $this->estado_prod = 'INA';
+        $this->save();
+    }
+
+
 }

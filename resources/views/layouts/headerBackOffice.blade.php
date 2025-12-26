@@ -20,21 +20,23 @@
         </small>
       </div>
 
-      <!-- Buscador (solo visual) -->
+      <!-- Buscador dinámico -->
       <div class="col-12 col-md-5 mt-3 mt-md-0">
-        <form class="d-flex">
+        <form class="d-flex" action="{{ $searchRoute ?? '#' }}" method="GET">
           <input
             type="search"
+            name="search"
             class="form-control me-2 rounded-pill"
-            placeholder="Buscar productos, clientes o proveedores"
+            placeholder="{{ $searchPlaceholder ?? 'Buscar...' }}"
+            value="{{ request('search') }}"
           >
           <button
             class="btn btn-light rounded-circle d-flex align-items-center justify-content-center"
-            type="button"
+            type="submit"
             style="width: 42px; height: 42px;">
             <img src="{{ asset('img/lupa.png') }}"
-                 alt="Buscar"
-                 width="18">
+                alt="Buscar"
+                width="18">
           </button>
         </form>
       </div>
