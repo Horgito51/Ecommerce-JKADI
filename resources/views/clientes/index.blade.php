@@ -6,8 +6,8 @@
         <a href="{{ route('clientes.create') }}" class="btn btn-success ml-auto">Agregar Cliente</a>
     </div>
     <div class="table-responsive">
-        <table class="table table-dark table-striped">
-            <thead>
+        <table class="table table-striped table-bordered">
+            <thead style="background-color:#031832; color:white;">
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
