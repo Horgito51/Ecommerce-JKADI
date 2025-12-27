@@ -7,12 +7,11 @@
     $searchPlaceholder = 'Buscar productos...';
 @endphp
 
-<div class="row justify-content-center">
+<div>
     <h2>Listado de Productos</h2>
-<div class="col-12 text-center">
-    <a href="{{route('productos.create')}}" class="btn btn-outline-success w-50">
-        Crear
-    </a>
+<div class="col-12 text-left">
+    <a href="{{route('productos.create')}}" class="btn" style="background-color:#198754;color:white">Agregar Producto</a>
+
 </div>
 
     <div class="table-responsive">
@@ -33,15 +32,16 @@
                     <td>{{ $producto->pro_um_venta }}</td>
                     <td>{{ $producto->pro_saldo_final }}</td>
                     <td>
-                        <a href="{{route('productos.edit', $producto->id_producto)}}">
-                        <button class="btn btn-outline-primary">Actualizar</button>
-                        </a>
-                    <form action="{{route('productos.destroy',$producto->id_producto)}}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-outline-danger" onclick="return confirm('¿Eliminar?')">Eliminar</button>
-                    </form>
+                    <a href="{{route('productos.edit', $producto->id_producto)}}">
+                        <button class="btn btn-outline-primary">Editar</button>
+                    </a>
 
+                    <form action="{{route('productos.destroy',$producto->id_producto)}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este Producto?')">Eliminar</button>
+                    </form>
+                    
                     </td>
                 </tr>
                 @endforeach
