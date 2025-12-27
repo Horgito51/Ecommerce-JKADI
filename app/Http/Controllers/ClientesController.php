@@ -17,16 +17,42 @@ class ClientesController extends Controller
             'cli_direccion' => 'required|string|max:100',
             'ciudad_id'    => 'required|exists:ciudades,id',
             'cli_email'    => 'required|email|max:50',
+            'tipo_documento' => 'required|in:CEDULA,RUC',
         ];
 
-        if ($id_cliente ===null){
-            $rules ['id_cliente']='required|string:max:10|unique:clientes,id_cliente';
-            $rules ['cli_ruc_ced'] = 'required|digits_between:10,13|unique:clientes,cli_ruc_ced';
-        } else{
-            $rules ['cli_ruc_ced'] = 'required|digits_between:10,13|unique:clientes,cli_ruc_ced,'.$id_cliente.',id_cliente';
+        $messages=[
+            'cli_nombre.required' => 'El nombre del cliente es obligatorio',
+
+            'tipo_documento.required' => 'Debe seleccionar un tipo de documento',
+            'cli_ruc_ced.required' => 'El RUC o Cédula es obligatorio',
+            'cli_ruc_ced.digits' => 'El número de documento no tiene la longitud correcta',
+            'cli_ruc_ced.unique' => 'El RUC/Cédula ya está registrado',
+
+            'cli_telefono.required' => 'El teléfono es obligatorio',
+            'cli_telefono.digits' => 'El teléfono debe ser de 10 dígitos numéricos',
+
+            'cli_direccion.required' => 'La dirección es obligatoria',
+
+            'ciudad_id.required' => 'La ciudad es obligatoria',
+
+            'cli_email.required' => 'El email es obligatorio',
+            'cli_email.email' => 'El email debe ser una dirección de correo válida',
+
+        ];
+
+        if($request->tipo_documento === 'RUC'){
+            $rules['cli_ruc_ced'] = 'digits:13';
+            $rules['cli_ruc_ced'] .= '|unique:clientes,cli_ruc_ced';
+        } else {
+            $rules['cli_ruc_ced'] = 'digits:10';
+            $rules['cli_ruc_ced'] .= '|unique:clientes,cli_ruc_ced';
         }
 
-        $request->validate($rules);
+        if ($id_cliente !=null){
+            $rules['cli_ruc_ced'] .= ',' . $id_cliente . ',id_cliente';
+        }
+
+        $request->validate($rules,$messages);
     }
 
 
@@ -57,7 +83,6 @@ class ClientesController extends Controller
         $this->validateCliente($request);
 
         Clientes::createClientes([
-            'id_cliente'   => $request->id_cliente,
             'cli_nombre'   => $request->cli_nombre,
             'cli_ruc_ced'  => $request->cli_ruc_ced,
             'cli_telefono' => $request->cli_telefono,

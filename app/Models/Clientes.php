@@ -48,17 +48,26 @@ class Clientes extends Model
             return 'CLI001';
 
         }
+
         $numero = intval(substr($ultimoCliente->id_cliente, 3));
 
-        // Incrementar
         $nuevoNumero = $numero + 1;
 
-        // Formatear con ceros
         return 'CLI' . str_pad($nuevoNumero, 3, '0', STR_PAD_LEFT);
     }
 
-    public static function createClientes($data){
-        return self::create($data);
+    public static function createClientes(array $data){
+        
+        return self::create([
+            'id_cliente'   => self::crearIdCliente(),
+            'cli_nombre'   => $data['cli_nombre'],
+            'cli_ruc_ced'  => $data['cli_ruc_ced'],
+            'cli_telefono' => $data['cli_telefono'],
+            'ciudad_id'    => $data['ciudad_id'],
+            'cli_direccion'=> $data['cli_direccion'],
+            'cli_email'    => $data['cli_email'],
+            'estado_cli'   => $data['estado_cli'],
+        ]);
     }
 
     public static function getClienteById($id_cliente){
