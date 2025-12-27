@@ -38,28 +38,8 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'id_producto' => 'required|unique:productos,id_producto',
-            'pro_descripcion' => 'required|unique:productos,pro_descripcion',
-            'tipo_Producto' => 'required',
-            'unidad_medida_venta' => 'required',
-            'unidad_medida_compra' => 'required',
-            'saldo_inicial' => 'required|numeric|min:0',
-            'img'=> 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
-        ],[
-        'id_producto.required' => 'El código del producto es obligatorio',
-        'id_producto.unique' => 'Este código de producto ya está registrado',
 
-        'pro_descripcion.required' => 'La descripción del producto es obligatorio',
-        'pro_descripcion.unique' => 'Esta descripción de producto ya está registrado', 
-        
-        'tipo_Producto.required' => 'Debes seleccionar un tipo de producto',
-        
-        'saldo_inicial.required' => 'El saldo inicial es obligatorio',
-        'saldo_inicial.numeric' => 'El saldo inicial debe ser un número',
-        'saldo_inicial.min' => 'El saldo inicial no puede ser negativo',
-
-        ]);
+        $this->validateProducto($request);
         
         Producto::createProducto(
         $request->all(),
@@ -94,23 +74,8 @@ class ProductoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'pro_descripcion' => 'required|unique:productos,pro_descripcion,' . $id . ',id_producto',
-            'tipo_Producto' => 'required',
-            'unidad_medida_venta' => 'required',
-            'unidad_medida_compra' => 'required',
-            'saldo_inicial' => 'required|numeric|min:0',
-        ],[
-        'pro_descripcion.required' => 'La descripción del producto es obligatorio',
-        'pro_descripcion.unique' => 'Esta descripción de producto ya está registrado', 
-        
-        'tipo_Producto.required' => 'Debes seleccionar un tipo de producto',
 
-        'saldo_inicial.required' => 'El saldo inicial es obligatorio',
-        'saldo_inicial.numeric' => 'El saldo inicial debe ser un número',
-        'saldo_inicial.min' => 'El saldo inicial no puede ser negativo',
-
-        ]);
+        $this->validateProducto($request, $id);
 
         Producto::updateProducto($id, $request->all());
 
@@ -131,6 +96,42 @@ class ProductoController extends Controller
         $productos->destroyProducto();
 
         return redirect()->route('productos.index')->with('Exitoso','Producto eliminado correctamente');
+    }
+
+
+
+
+private function validateProducto(Request $request, $id = null)
+    {
+        $rules = [
+            'pro_descripcion' => 'required|unique:productos,pro_descripcion' . ($id ? ',' . $id . ',id_producto' : ''),
+            'tipo_Producto' => 'required',
+            'unidad_medida_venta' => 'required',
+            'unidad_medida_compra' => 'required',
+            'saldo_inicial' => 'required|numeric|min:0',
+        ];
+
+       
+        if (!$id) {
+            $rules['id_producto'] = 'required|unique:productos,id_producto';
+            $rules['img'] = 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048';
+        }
+
+        $messages = [
+            'id_producto.required' => 'El código del producto es obligatorio',
+            'id_producto.unique' => 'Este código de producto ya está registrado',
+            
+            'pro_descripcion.required' => 'La descripción del producto es obligatorio',
+            'pro_descripcion.unique' => 'Esta descripción de producto ya está registrado', 
+            
+            'tipo_Producto.required' => 'Debes seleccionar un tipo de producto',
+            
+            'saldo_inicial.required' => 'El saldo inicial es obligatorio',
+            'saldo_inicial.numeric' => 'El saldo inicial debe ser un número',
+            'saldo_inicial.min' => 'El saldo inicial no puede ser negativo',
+        ];
+
+        return $request->validate($rules, $messages);
     }
 
 }
