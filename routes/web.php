@@ -21,12 +21,20 @@ Route::get('/portada', function () {
     return view('Ecommerce.dashboard');
 })->name('portada.index');
 
-Route::get('/catalogo',[CatalogoController::class,'index'])->name('catalogo.index');
-Route::get('/detalle/{id}',[CatalogoController::class,'show'])->name('catalogo.detalle');
 
+
+Route::group([], function () {
+    Route::get('/catalogo', [CatalogoController::class, 'index'])->name('catalogo.index');
+    Route::get('/detalle/{id}', [CatalogoController::class, 'show'])->name('catalogo.detalle');
+});
+
+
+// CLIENTES PROVEEDORES Y PRODUCTOS
 Route::get('/clientes',[ClientesController::class,'index']);
 
 Route::get('/productos',[ProductoController::class,'index']);
+
+
 // LOGIN
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', function () {
