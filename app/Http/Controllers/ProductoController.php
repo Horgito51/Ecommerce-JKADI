@@ -21,11 +21,6 @@ class ProductoController extends Controller
 
         return view('productos.index', compact('productos'));
     }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $tiposProducto = tiposProducto::getAllTiposProducto();
@@ -40,7 +35,7 @@ class ProductoController extends Controller
     {
 
         $this->validateProducto($request);
-        
+
         Producto::createProducto(
         $request->all(),
         $request->file('img')
@@ -48,7 +43,7 @@ class ProductoController extends Controller
 
         return redirect()->route('productos.index')->with('Exitoso','Producto creado correctamente');
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -111,7 +106,7 @@ private function validateProducto(Request $request, $id = null)
             'saldo_inicial' => 'required|numeric|min:0',
         ];
 
-       
+
         if (!$id) {
             $rules['id_producto'] = 'required|unique:productos,id_producto';
             $rules['img'] = 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048';
@@ -120,12 +115,12 @@ private function validateProducto(Request $request, $id = null)
         $messages = [
             'id_producto.required' => 'El código del producto es obligatorio',
             'id_producto.unique' => 'Este código de producto ya está registrado',
-            
+
             'pro_descripcion.required' => 'La descripción del producto es obligatorio',
-            'pro_descripcion.unique' => 'Esta descripción de producto ya está registrado', 
-            
+            'pro_descripcion.unique' => 'Esta descripción de producto ya está registrado',
+
             'tipo_Producto.required' => 'Debes seleccionar un tipo de producto',
-            
+
             'saldo_inicial.required' => 'El saldo inicial es obligatorio',
             'saldo_inicial.numeric' => 'El saldo inicial debe ser un número',
             'saldo_inicial.min' => 'El saldo inicial no puede ser negativo',

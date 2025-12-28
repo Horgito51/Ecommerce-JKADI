@@ -42,9 +42,9 @@
                     </div>
 
                     {{-- CIUDAD --}}
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-8" style="margin:8px">
                         <label class="form-label">Ciudad</label>
-                        <select name="id_ciudad" class="form-select" required>
+                        <select name="id_ciudad" class="form-control rounded" required>
                             <option value="" disabled selected >Seleccione una ciudad</option>
                             @foreach ($ciudades as $ciudad)
                                 <option value="{{ $ciudad->id }}">
@@ -63,10 +63,10 @@
 
                 {{-- BOTONES --}}
                 <div class="mt-4 d-flex gap-2">
-                    <button type="submit" class="btn btn-success">
+                    <button type="submit" class="btn btn-success" style="background-color:#198754;color:white">
                         Guardar
                     </button>
-                    
+
                     <a href="{{ route('proveedores.index') }}" class="btn btn-secondary">
                         Cancelar
                     </a>

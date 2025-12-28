@@ -58,6 +58,14 @@ Route::middleware(['rol:gerente_bodega'])
          Route::resource('productos',ProductoController::class);
      });
 
+Route::middleware(['admin'])
+->prefix('admin')
+->group(function(){
+    Route::get('/',function(){
+        return view('admin.dashboard');
+    });
+});
+
 Route::middleware(['rol:gerente_compras'])
      ->prefix('admin/compras')
      ->group(function () {
@@ -67,9 +75,6 @@ Route::middleware(['rol:gerente_compras'])
  Route::middleware(['rol:gerente_ventas'])
      ->prefix('admin/ventas')
      ->group(function () {
-         Route::get('/', function () {
-             return 'Backoffice Ventas 💰';
-         });
 
          Route::resource('clientes',ClientesController::class);
 
