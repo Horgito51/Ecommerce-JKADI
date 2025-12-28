@@ -113,7 +113,7 @@
                         Guardar
                     </button>
 
-                    <a href="{{ route('proveedores.index') }}" class="btn btn-secondary" style="background-color:#8C0606;color:white; margin:2px;">
+                    <a href="{{ route('proveedores.index') }}" class="btn btn-secondary">
                         Cancelar
                     </a>
                 </div>

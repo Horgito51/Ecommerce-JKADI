@@ -32,6 +32,7 @@
                         <td>{{ $proveedor->prv_celular }}</td>
                         <td>{{ $proveedor->prv_direccion}}</td>
                         <td>
+                            
                         <div class="d-flex gap-1 justify-content-center">
                             <a href="{{ route('proveedores.edit', $proveedor->id_proveedor) }}"
                             class="btn btn-sm"
