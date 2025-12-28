@@ -66,7 +66,7 @@
                     <button type="submit" class="btn btn-success">
                         Guardar
                     </button>
-
+                    
                     <a href="{{ route('proveedores.index') }}" class="btn btn-secondary">
                         Cancelar
                     </a>
