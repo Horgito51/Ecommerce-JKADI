@@ -38,7 +38,7 @@ class LoginController extends Controller
         }
 
         if ($user->rol === 'gerente_ventas') {
-            return redirect('/admin/ventas');
+            return redirect('/admin/ventas/clientes');
         }
 
 

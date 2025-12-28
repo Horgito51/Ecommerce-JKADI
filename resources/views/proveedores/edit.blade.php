@@ -50,7 +50,7 @@
                     {{-- CIUDAD --}}
                     <div class="col-12 col-md-6">
                         <label class="form-label">Ciudad</label>
-                        <select name="id_ciudad" class="form-select" required>
+                        <select name="id_ciudad" class="form-select rounded " required>
                             @foreach ($ciudades as $ciudad)
                                 <option value="{{ $ciudad->id }}"
                                     {{ $proveedor->id_ciudad == $ciudad->id ? 'selected' : '' }}>
@@ -70,11 +70,11 @@
 
                 {{-- BOTONES --}}
                 <div class="mt-4 d-flex gap-2">
-                    <button type="submit" class="btn btn-success">
+                    <button type="submit" class="btn btn-success" style="background-color:#198754;color:white">
                         Actualizar
                     </button>
 
-                    <a href="{{ route('proveedores.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('proveedores.index') }}" class="btn btn-secondary" style="background-color:#8C0606;color:white; margin:2px;">
                         Cancelar
                     </a>
                 </div>

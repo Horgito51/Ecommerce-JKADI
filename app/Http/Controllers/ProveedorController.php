@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Proveedor;
 use App\Models\Ciudades;
 use Illuminate\Http\Request;
-
 class ProveedorController extends Controller
 {
     public function index()
@@ -20,42 +19,43 @@ class ProveedorController extends Controller
         return view('proveedores.create',compact('ciudades'));
     }
 
-    public function store(Request $request)
+  public function store(Request $request)
     {
-        $this->validateProveedor($request);
-        Proveedor::createProveedor($request);
-        return redirect()->route('proveedores.index')->with('success','El proveedor se ha registrado correctamente');
-    }
 
-    /**
-     * Display the specified resource.
-     */
+    $this->validateProveedor($request);
+
+    Proveedor::createProveedor([
+        'prv_nombre'     => $request->prv_nombre,
+        'prv_ruc_ced'    => $request->prv_ruc_ced,
+        'prv_telefono'   => $request->prv_telefono,
+        'prv_mail'       => $request->prv_mail,
+        'id_ciudad'      => $request->id_ciudad,
+        'prv_celular'    => $request->prv_celular,
+        'prv_direccion'  => $request->prv_direccion,
+    ]);
+
+    return redirect()
+        ->route('proveedores.index')
+        ->with('success', 'Proveedor creado exitosamente.');
+}
+
     public function show(Proveedor $proveedor)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Proveedor $proveedor)
+    public function edit(String $id)
     {
         $ciudades=Ciudades::getCiudades();
-        $proveedor=Proveedor::getProveedorById($proveedor->id_proveedor);
+        $proveedor=Proveedor::getProveedorById($id);
         return view('proveedores.edit',data: compact('proveedor','ciudades'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Proveedor $proveedor)
     {
-        //
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Proveedor $proveedor)
     {
         //

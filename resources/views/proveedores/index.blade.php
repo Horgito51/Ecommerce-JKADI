@@ -33,7 +33,7 @@
                         <td>{{ $proveedor->prv_direccion}}</td>
                         <td>
                         <div class="d-flex gap-1 justify-content-center">
-                            <a href="{{ route('proveedores.edit', $proveedor) }}"
+                            <a href="{{ route('proveedores.edit', $proveedor->id_proveedor) }}"
                             class="btn btn-sm"
                             style="background-color:#031832;color:white; margin:2px;
                                     padding: 4px 10px;
