@@ -12,9 +12,9 @@ class Proveedor extends Model
     protected $table='proveedores';
 
     protected $primaryKey = 'id_proveedor';
-
+        public $incrementing = false;
     protected $keyType = 'string';
-    public $incrementing = false;
+
 
      protected $fillable = [
         'id_proveedor',
@@ -54,7 +54,7 @@ class Proveedor extends Model
      $ultimo = Proveedor::orderBy('id_proveedor', 'desc')->first();
     $numero = $ultimo ? intval(substr($ultimo->id_proveedor, 3)) + 1 : 1;
     $ID= 'PRV' . str_pad($numero, 3, '0', STR_PAD_LEFT);
-     Proveedor::create([
+    return  Proveedor::create([
         'id_proveedor'   => $ID,
         'prv_nombre'     => $data['prv_nombre'],
         'prv_ruc_ced'    => $data['prv_ruc_ced'],
@@ -67,4 +67,16 @@ class Proveedor extends Model
     ]);
 
 }
+    public static function updateProveedor($id,array $data){
+        $proveedor=self::getProveedorById($id);
+        if($proveedor->compras()->exists()){
+            return false;
+        }
+        return  $proveedor->update($data);
+    }
+
+    public static function destroyProveedor(string $id){
+        return Proveedor::where('id_proveedor','=',$id)->update(['estado_prv'=>'INA']);
+
+    }
 }

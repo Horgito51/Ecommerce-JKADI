@@ -70,7 +70,7 @@ class ClientesController extends Controller
      */
     public function create()
     {
-        
+
         $ciudades=Ciudades::all();
         return view('clientes.create',compact('ciudades'));
     }
@@ -79,7 +79,7 @@ class ClientesController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {  
+    {
         $this->validateCliente($request);
 
         Clientes::createClientes([
@@ -94,7 +94,7 @@ class ClientesController extends Controller
 
         return redirect()->route('clientes.index')
         ->with('success', 'Cliente creado exitosamente.');
-        
+
     }
 
     /**
@@ -113,7 +113,7 @@ class ClientesController extends Controller
     public function update(Request $request, string $id_cliente)
     {
         $clientes = Clientes::getClienteById($id_cliente);
-        
+
         $this->validateCliente($request, $clientes->id_cliente);
 
         Clientes::updateClientes($clientes->id_cliente, [
@@ -135,12 +135,12 @@ class ClientesController extends Controller
     public function destroy(string $id_cliente)
     {
         $resultado=Clientes::destroyClientes($id_cliente);
-        
+
         if (!$resultado) {
             return redirect()->route('clientes.index')
                 ->with('error', 'No se puede eliminar el cliente porque tiene facturas asociadas.');
         }
-        
+
         return redirect()->route('clientes.index')
         ->with('success', 'Cliente eliminado exitosamente.');
     }
