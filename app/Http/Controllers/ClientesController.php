@@ -37,7 +37,6 @@ class ClientesController extends Controller
 
             'cli_email.required' => 'El email es obligatorio',
             'cli_email.email' => 'El email debe ser una dirección de correo válida',
-
         ];
 
         if($request->tipo_documento === 'RUC'){
