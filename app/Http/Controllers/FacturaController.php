@@ -140,8 +140,12 @@ class FacturaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Factura $factura)
+    public function destroy(string $id_factura)
     {
-        //
+        Factura::destroyFacturas($id_factura);
+        return redirect()
+            ->route('facturas.index')
+            ->with('success', 'Factura anulada exitosamente');
+        
     }
 }

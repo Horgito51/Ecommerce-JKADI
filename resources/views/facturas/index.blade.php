@@ -49,7 +49,7 @@
                                 Editar
                             </a>
 
-                            <form action=""
+                            <form action="{{ route('facturas.destroy', $factura) }}"
                                   method="POST"
                                   class="m-0">
                                 @csrf

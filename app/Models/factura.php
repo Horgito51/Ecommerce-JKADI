@@ -73,9 +73,18 @@ class Factura extends Model
 
     public static function destroyFacturas(string $id)
     {
-        $factura = self::findOrFail($id);
-        $factura->fac_estado = 'ANU';
-        $factura->save();
+        return DB::transaction(function () use ($id) {
+            //Primero el detalle
+            Proxfac::where('id_factura', $id)
+                ->update(['pxf_estado' => 'ANU']);
+                
+            //Luego la factura
+            Factura::where('id_factura', $id)
+            ->update(['fac_estado' => 'ANU']);
+
+
+        });
+        
     }
 
 
