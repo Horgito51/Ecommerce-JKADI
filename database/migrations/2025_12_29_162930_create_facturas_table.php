@@ -1,3 +1,4 @@
+-- migration 
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -12,7 +13,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('facturas', function (Blueprint $table) {
-            $table->id();
+            $table->char('id_factura', 15)->primary();
+            $table->char('id_cliente', 15);
+            $table->foreign('id_cliente')->references('id_cliente')->on('clientes');
+            $table->text('fac_descripcion');
+            $table->decimal('fac_subtotal',10,2);
+            $table->decimal('fac_iva',10,2);
+            $table->decimal('fac_total',10,2);
+            $table->enum('fac_estado',['ABI','ANU','APR'])->default('ABI');
             $table->timestamps();
         });
     }
