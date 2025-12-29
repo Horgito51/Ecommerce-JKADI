@@ -45,6 +45,21 @@ class Producto extends Model
         ]);
     }
 
+    public function facturas()
+    {
+        return $this->belongsToMany(
+            Factura::class,
+            'proxfac',
+            'id_producto',
+            'id_factura'
+        )->withPivot([
+            'pxf_cantidad',
+            'pxf_precio',
+            'pxf_subtotal',
+            'pxf_estado'
+        ])->withTimestamps();
+    }
+
 
     //MD concepto
 

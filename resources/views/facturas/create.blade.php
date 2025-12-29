@@ -108,12 +108,12 @@
 
                                     <td>
                                         <input type="number"
-                                            name="productos[{{ $i }}][pxo_cantidad]"
-                                            class="form-control @error("productos.$i.pxo_cantidad") is-invalid @enderror"
-                                            value="{{ $prod['pxo_cantidad'] }}"
+                                            name="productos[{{ $i }}][pxf_cantidad]"
+                                            class="form-control @error("productos.$i.pxf_cantidad") is-invalid @enderror"
+                                            value="{{ $prod['pxf_cantidad'] }}"
                                             min="1"
                                             required>
-                                        @error("productos.$i.pxo_cantidad")
+                                        @error("productos.$i.pxf_cantidad")
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </td>
@@ -121,11 +121,11 @@
                                     <td>
                                         <input type="number"
                                             step="0.001"
-                                            name="productos[{{ $i }}][pxo_valor]"
-                                            class="form-control @error("productos.$i.pxo_valor") is-invalid @enderror"
-                                            value="{{ $prod['pxo_valor'] }}"
+                                            name="productos[{{ $i }}][pxf_precio]"
+                                            class="form-control @error("productos.$i.pxf_precio") is-invalid @enderror"
+                                            value="{{ $prod['pxf_precio'] }}"
                                             required>
-                                        @error("productos.$i.pxo_valor")
+                                        @error("productos.$i.pxf_precio")
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </td>
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             <td>
                 <input type="number"
-                       name="productos[${index}][pxo_cantidad]"
+                       name="productos[${index}][pxf_cantidad]"
                        class="form-control cantidad"
                        value="1"
                        min="1"
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <td>
                 <input type="number"
                        step="0.001"
-                       name="productos[${index}][pxo_valor]"
+                       name="productos[${index}][pxf_precio]"
                        class="form-control valor"
                        readonly>
             </td>

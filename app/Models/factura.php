@@ -23,6 +23,22 @@ class Factura extends Model
     ];
     protected $keyType = 'string';
 
+    public function productos()
+    {
+        return $this->belongsToMany(
+            Producto::class,   
+            'proxfac',        
+            'id_factura',      
+            'id_producto'      
+        )->withPivot([
+            'pxf_cantidad',
+            'pxf_precio',
+            'pxf_subtotal',
+            'pxf_estado'
+        ])->withTimestamps();
+    }
+
+
 
     public function clientes():BelongsTo{
         return $this->belongsTo(Clientes::class, 'id_cliente');
@@ -81,6 +97,21 @@ class Factura extends Model
             'fac_total'       => $data['fac_total'],
             'fac_estado'      => 'ABI',
         ]);
+        foreach ($data['productos'] as $producto) {
+
+            $subtotal = $producto['pxf_cantidad'] * $producto['pxf_precio'];
+
+            Proxfac::createProxFac([
+                'id_factura'    => $id_factura,
+                'id_producto'  => $producto['id_producto'],
+                'pxf_cantidad' => $producto['pxf_cantidad'],
+                'pxf_precio'    => $producto['pxf_precio'],
+                'pxf_subtotal' => $subtotal,
+                'pxf_estado'  => 'APR',
+            ]);
+        }
+
+
     }
 
     public function scopegetFacturaBy($query,$search){

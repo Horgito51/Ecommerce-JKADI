@@ -32,5 +32,5 @@ class Proxoc extends Model
     public function producto()
     {
         return $this->belongsTo(Producto::class, 'id_producto', 'id_producto');
-}
+    }
 }

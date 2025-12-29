@@ -24,8 +24,11 @@ class CompraController extends Controller
         $productos=Producto::getAllProductos();
         return view('compras.create',compact('proveedores','productos'));
     }
-   public function store(Request $request)
-{
+   
+   
+   
+    public function store(Request $request)
+    {
     $this->validateCompra($request);
 
     $data = [
@@ -39,7 +42,7 @@ class CompraController extends Controller
     return redirect()
         ->route('ordenes.index')
         ->with('success', 'Orden de compra creada exitosamente');
-}
+    }
 
     public function show(Compra $compra)
     {

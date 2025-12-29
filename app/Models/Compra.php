@@ -28,19 +28,23 @@ class Compra extends Model
 ];
 
     public function productos()
-{
-    return $this->belongsToMany(
-        Producto::class,
-        'proxoc',
-        'id_compra',
-        'id_producto'
-    )->withPivot([
-        'pxo_cantidad',
-        'pxo_valor',
-        'pxo_subtotal',
-        'estado_pxoc'
-    ]);
-}
+    {
+        return $this->belongsToMany(
+            Producto::class,
+            'proxoc',
+            'id_compra',
+            'id_producto'
+        )->withPivot([
+            'pxo_cantidad',
+            'pxo_valor',
+            'pxo_subtotal',
+            'estado_pxoc'
+        ]);
+    }
+
+
+
+    
      public function proveedor()
     {
         return $this->belongsTo(
