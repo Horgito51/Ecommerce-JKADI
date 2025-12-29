@@ -32,6 +32,7 @@ class Proveedor extends Model
      public function ciudades():BelongsTo{
         return $this->belongsTo(Ciudades::class, 'id_ciudad');
     }
+    
     public function compras()
     {
         return $this->hasMany(
