@@ -21,6 +21,8 @@ class Factura extends Model
         'fac_total',
         'fac_estado',
     ];
+    protected $keyType = 'string';
+
 
 
     public function clientes():BelongsTo{
@@ -32,8 +34,8 @@ class Factura extends Model
                 ->paginate(10);
     }
 
-    public static function updateFacturas(string $id, array $data){ // no puede actualizar la fecha de creacion, el id de la , no puede editar el subtotal, iva y total
-        $factura = self::findOrFail($id);
+    public static function updateFacturas(string $id, array $data){
+    $factura = self::findOrFail($id);
 
         $factura->update([
             'id_cliente' => $data['id_cliente'],
@@ -45,10 +47,13 @@ class Factura extends Model
     }
 
 
-    public function destroyFacturas(){ 
-        $this->fac_estado = 'ANU';
-        $this->save();
+    public static function destroyFacturas(string $id)
+    {
+        $factura = self::findOrFail($id);
+        $factura->fac_estado = 'ANU';
+        $factura->save();
     }
+
 
     public static function crearIdFactura()
     {
@@ -77,7 +82,7 @@ class Factura extends Model
         ]);
     }
 
-    public static function getFacturaBy($query,$search){
+    public function scopegetFacturaBy($query,$search){
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('fac_descripcion', 'like', "%{$search}%")
