@@ -30,20 +30,20 @@ class Producto extends Model
     }
 
 
-        public function compras()
-{
-    return $this->belongsToMany(
-        Compra::class,
-        'proxoc',
-        'id_producto',
-        'id_compra'
-    )->withPivot([
-        'pxo_cantidad',
-        'pxo_valor',
-        'pxo_subtotal',
-        'estado_pxoc'
-    ]);
-}
+    public function compras()
+    {
+        return $this->belongsToMany(
+            Compra::class,
+            'proxoc',
+            'id_producto',
+            'id_compra'
+        )->withPivot([
+            'pxo_cantidad',
+            'pxo_valor',
+            'pxo_subtotal',
+            'estado_pxoc'
+        ]);
+    }
 
 
     //MD concepto
