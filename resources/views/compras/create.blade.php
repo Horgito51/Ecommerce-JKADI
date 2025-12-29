@@ -137,6 +137,14 @@
                     <label>IVA (15%)</label>
                     <input type="text" id="iva" class="form-control" readonly>
                 </div>
+                <div class="mb-2">
+                    <label>Total</label>
+                    <input type="text" id="total" class="form-control" readonly>
+                </div>
+                <input type="hidden" name="oc_subtotal" id="oc_subtotal">
+                <input type="hidden" name="oc_iva" id="oc_iva">
+                <input type="hidden" name="oc_total" id="oc_total">
+
             </div>
         </div>
 
@@ -152,5 +160,153 @@
     </form>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    let index = {{ old('productos') ? count(old('productos')) : 0 }};
+    const btnAgregar = document.getElementById('btnAgregar');
+    const tbody = document.querySelector('#tabla-productos tbody');
+
+    // =========================
+    // AGREGAR FILA
+    // =========================
+    btnAgregar.addEventListener('click', function () {
+
+        const fila = `
+        <tr>
+            <td>
+                <select name="productos[${index}][id_producto]"
+                        class="form-control producto"
+                        required>
+                    <option value="">Seleccione</option>
+                    @foreach ($productos as $p)
+                        <option value="{{ $p->id_producto }}"
+                                data-precio="{{ $p->pro_valor_compra }}">
+                            {{ $p->pro_descripcion }}
+                        </option>
+                    @endforeach
+                </select>
+            </td>
+
+            <td>
+                <input type="number"
+                       name="productos[${index}][pxo_cantidad]"
+                       class="form-control cantidad"
+                       value="1"
+                       min="1"
+                       required>
+            </td>
+
+            <td>
+                <input type="number"
+                       step="0.001"
+                       name="productos[${index}][pxo_valor]"
+                       class="form-control valor"
+                       readonly>
+            </td>
+
+            <td>
+                <input type="text"
+                       class="form-control subtotal"
+                       value="0.000"
+                       readonly>
+            </td>
+
+            <td class="text-center">
+                <button type="button"
+                        class="btn btn-sm btn-danger btnEliminar">
+                    X
+                </button>
+            </td>
+        </tr>
+        `;
+
+        tbody.insertAdjacentHTML('beforeend', fila);
+        index++;
+    });
+
+    // =========================
+    // ELIMINAR FILA
+    // =========================
+    tbody.addEventListener('click', function (e) {
+        if (e.target.classList.contains('btnEliminar')) {
+            e.target.closest('tr').remove();
+            recalcularTotales();
+        }
+    });
+
+    // =========================
+    // CUANDO CAMBIA EL PRODUCTO
+    // =========================
+    tbody.addEventListener('change', function (e) {
+
+        if (e.target.classList.contains('producto')) {
+            const fila = e.target.closest('tr');
+
+            const precio = parseFloat(
+                e.target.selectedOptions[0]?.dataset.precio || 0
+            );
+
+            const cantidad = parseFloat(
+                fila.querySelector('.cantidad').value
+            ) || 0;
+
+            fila.querySelector('.valor').value = precio.toFixed(3);
+            fila.querySelector('.subtotal').value =
+                (cantidad * precio).toFixed(3);
+
+            recalcularTotales();
+        }
+    });
+
+    // =========================
+    // CUANDO CAMBIA LA CANTIDAD
+    // =========================
+    tbody.addEventListener('input', function (e) {
+
+        if (e.target.classList.contains('cantidad')) {
+            const fila = e.target.closest('tr');
+
+            const cantidad = parseFloat(e.target.value) || 0;
+            const precio = parseFloat(
+                fila.querySelector('.valor').value
+            ) || 0;
+
+            fila.querySelector('.subtotal').value =
+                (cantidad * precio).toFixed(3);
+
+            recalcularTotales();
+        }
+    });
+
+    // =========================
+    // SUBTOTAL GENERAL + IVA
+    // =========================
+  function recalcularTotales() {
+
+    let subtotalGeneral = 0;
+
+    document.querySelectorAll('.subtotal').forEach(el => {
+        subtotalGeneral += parseFloat(el.value) || 0;
+    });
+
+    const iva = subtotalGeneral * 0.15;
+    const total = subtotalGeneral + iva;
+
+    // visibles
+    document.getElementById('subtotal').value = subtotalGeneral.toFixed(2);
+    document.getElementById('iva').value = iva.toFixed(2);
+    document.getElementById('total').value = total.toFixed(2);
+
+    // hidden (los que viajan al backend)
+    document.getElementById('oc_subtotal').value = subtotalGeneral.toFixed(2);
+    document.getElementById('oc_iva').value = iva.toFixed(2);
+    document.getElementById('oc_total').value = total.toFixed(2);
+}
+
+});
+</script>
+
 
 @endsection

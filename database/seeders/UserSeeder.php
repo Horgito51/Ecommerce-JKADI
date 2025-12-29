@@ -40,5 +40,12 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345'),
             'rol' => 'admin',
         ]);
+
+        User::create([
+            'name' => 'ADMINISTRADOR',
+            'email' => 'administrador@jkadi.com',
+            'password' => Hash::make('12345'),
+            'rol' => 'admin',
+        ]);
     }
 }
