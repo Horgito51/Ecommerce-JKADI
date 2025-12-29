@@ -9,13 +9,12 @@ use App\Models\User;
 
 class RolMiddleware
 {
-    public function handle(Request $request, Closure $next, string $rol): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
         // Usuario guardado en sesión
         $userId = session('user_id');
         $user = User::find($userId);
-
-        if (!$user || $user->rol !== $rol) {
+        if (!$user || !in_array($user->rol, $roles)) {
             abort(403, 'Acceso no autorizado.');
         }
 

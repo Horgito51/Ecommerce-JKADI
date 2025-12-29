@@ -28,8 +28,17 @@ class Proveedor extends Model
         'estado_prv',
     ];
 
+    //relaciones
      public function ciudades():BelongsTo{
         return $this->belongsTo(Ciudades::class, 'id_ciudad');
+    }
+    public function compras()
+    {
+        return $this->hasMany(
+            Compra::class,
+            'id_proveedor',
+            'id_proveedor'
+        );
     }
 
     public static function getProveedores(){

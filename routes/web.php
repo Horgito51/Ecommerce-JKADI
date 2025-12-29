@@ -6,20 +6,23 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\CompraController;
 use GuzzleHttp\Client;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProveedorController;
-
-// ECOMMERCE
-Route::get('/', function () {
-
-    return view('Ecommerce.dashboard');
-});
 
 Route::get('/portada', function () {
 
     return view('Ecommerce.dashboard');
 })->name('portada.index');
+
+
+// ECOMMERCE
+Route::get('/', function () {
+
+    return redirect()->route('portada.index');
+});
+
 
 
 
@@ -30,10 +33,9 @@ Route::group([], function () {
 
 
 // CLIENTES PROVEEDORES Y PRODUCTOS
-Route::get('/clientes',[ClientesController::class,'index']);
+// Route::get('/clientes',[ClientesController::class,'index']);
 
-Route::get('/productos',[ProductoController::class,'index']);
-
+// Route::get('/productos',[ProductoController::class,'index']);
 
 // LOGIN
 Route::controller(LoginController::class)->group(function () {
@@ -44,43 +46,43 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('/login', 'login')->name('login.post');
 });
 
+Route::prefix('admin')->group(function () {
 
-
-// REDIRECCION A LA GESTION DE PRODUCTOS, PROVEEDORES Y CLIENTES
-Route::middleware(['rol:gerente_bodega'])
-     ->prefix('admin/bodega')
-     ->group(function () {
-
-         Route::get('/', function () {
-             return 'Backoffice funcionando 🚀';
-         });
-
-         Route::resource('productos',ProductoController::class);
-     });
-
-Route::middleware(['admin'])
-->prefix('admin')
-->group(function(){
-    Route::get('/',function(){
-        return view('admin.dashboard');
+    // DASHBOARD ADMIN
+    Route::middleware(['rol:admin'])->group(function () {
+        Route::get('/', function () {
+            return view('admin.dashboard');
+        });
     });
+
+    // BODEGA
+    Route::middleware(['rol:admin,gerente_bodega'])
+        ->prefix('bodega')
+        ->group(function () {
+
+            Route::get('/', function () {
+                return 'Backoffice funcionando 🚀';
+            });
+
+            Route::resource('productos', ProductoController::class);
+        });
+
+    // COMPRAS
+    Route::middleware(['rol:admin,gerente_compras'])
+        ->prefix('compras')
+        ->group(function () {
+            Route::resource('proveedores', ProveedorController::class);
+
+            Route::resource('ordenes',CompraController::class);
+        });
+
+    // VENTAS
+    Route::middleware(['rol:admin,gerente_ventas'])
+        ->prefix('ventas')
+        ->group(function () {
+            Route::resource('clientes', ClientesController::class);
+        });
 });
-
-Route::middleware(['rol:gerente_compras'])
-     ->prefix('admin/compras')
-     ->group(function () {
-         Route::resource('/proveedores',ProveedorController::class);
-     });
-
- Route::middleware(['rol:gerente_ventas'])
-     ->prefix('admin/ventas')
-     ->group(function () {
-
-         Route::resource('clientes',ClientesController::class);
-
-     });
-
-
 
 
 // Route::get('/admin/proveedores',[ProveedorController::class,'index'])->name('proveedores.index');

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TiposProductoSeeder::class,
             UnidadesMedidasProductosSeeder::class,
+            CiudadesSeeder::class,
             ProductoSeeder::class,
             ProveedorSeeder::class,
         ]);
