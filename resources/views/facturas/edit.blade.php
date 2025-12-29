@@ -10,7 +10,6 @@
         @csrf
         @method('PUT')
 
-        {{-- ================= DATOS FACTURA ================= --}}
         <div class="card mb-4">
             <div class="card-header">Datos de la factura</div>
             <div class="card-body">
@@ -39,7 +38,7 @@
             </div>
         </div>
 
-        {{-- ================= DESCRIPCIÓN ================= --}}
+        {{--DESCRIPCIÓN--}}
         <div class="card mb-4">
             <div class="card-header">Descripción de la factura</div>
             <div class="card-body">
@@ -53,7 +52,7 @@
             </div>
         </div>
 
-        {{-- ================= PRODUCTOS ================= --}}
+        {{--PRODUCTOS--}}
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 Productos
@@ -76,7 +75,7 @@
 
                     <tbody>
 
-                    {{-- ===== SI HAY ERROR DE VALIDACIÓN ===== --}}
+                    {{-- SI HAY ERROR DE VALIDACIÓN --}}
                     @if(old('productos'))
                         @foreach(old('productos') as $i => $prod)
                             <tr>
@@ -123,8 +122,6 @@
                                 </td>
                             </tr>
                         @endforeach
-
-                    {{-- ===== CASO NORMAL: DESDE BD ===== --}}
                     @else
                         @foreach($factura->productos as $i => $prod)
                             <tr>
@@ -182,7 +179,7 @@
             </div>
         </div>
 
-        {{-- ================= TOTALES ================= --}}
+        {{--TOTALES--}}
         <div class="row justify-content-end">
             <div class="col-12 col-md-4">
                 <div class="mb-2">
@@ -212,7 +209,7 @@
     </form>
 </div>
 
-{{-- ================= SCRIPT ================= --}}
+{{--SCRIPT--}}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
