@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 class Factura extends Model
 {
@@ -41,7 +42,7 @@ class Factura extends Model
 
 
     public function clientes():BelongsTo{
-        return $this->belongsTo(Clientes::class, 'id_cliente');
+        return $this->belongsTo(Clientes::class, 'id_cliente', 'id_cliente');
     }
 
     
@@ -86,23 +87,27 @@ class Factura extends Model
         return 'FAC' . str_pad($nuevoNumero, 3, '0', STR_PAD_LEFT);
     }
 
-    public static function createFactura(array $data)
-    {
-        return self::create([
-            'id_factura'      => self::crearIdFactura(),
-            'id_cliente'      => $data['id_cliente'],
-            'fac_descripcion' => $data['fac_descripcion'] ?? null,
-            'fac_subtotal'    => $data['fac_subtotal'],  
-            'fac_iva'         => $data['fac_iva'],       
-            'fac_total'       => $data['fac_total'],
-            'fac_estado'      => 'ABI',
-        ]);
-        foreach ($data['productos'] as $producto) {
+    public static function createFactura(array $data){
+        
+        return DB::transaction(function () use ($data) {
+            $id_fac=self::crearIdFactura();
+            $factura= self::create([
+                'id_factura'      => $id_fac,
+                'id_cliente'      => $data['id_cliente'],
+                'fac_descripcion' => $data['fac_descripcion'],
+                'fac_subtotal'    => $data['fac_subtotal'],  
+                'fac_iva'         => $data['fac_iva'],       
+                'fac_total'       => $data['fac_total'],
+                'fac_estado'      => 'APR',
+
+            ]);
+
+            foreach ($data['productos'] as $producto) {
 
             $subtotal = $producto['pxf_cantidad'] * $producto['pxf_precio'];
 
             Proxfac::createProxFac([
-                'id_factura'    => $id_factura,
+                'id_factura'    => $id_fac,
                 'id_producto'  => $producto['id_producto'],
                 'pxf_cantidad' => $producto['pxf_cantidad'],
                 'pxf_precio'    => $producto['pxf_precio'],
@@ -110,8 +115,10 @@ class Factura extends Model
                 'pxf_estado'  => 'APR',
             ]);
         }
-
-
+            return $factura;
+            
+        });
+        
     }
 
     public function scopegetFacturaBy($query,$search){
