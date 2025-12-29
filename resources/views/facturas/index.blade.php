@@ -39,7 +39,7 @@
                     <td>
                         <div class="d-flex gap-1 justify-content-center">
 
-                            <a href=""
+                            <a href="{{route('facturas.edit',$factura->id_factura)}}"
                                class="btn btn-sm"
                                style="background-color:#031832;color:white;
                                       margin:2px;

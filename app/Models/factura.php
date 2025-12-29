@@ -46,10 +46,12 @@ class Factura extends Model
     }
 
 
-
     public static function getFacturaById(string $id){
-        return self::where('id_factura', trim($id))->first();
+        return self::with('productos')
+                ->where('id_factura', trim($id))
+                ->firstOrFail();
     }
+
 
     
 
@@ -58,17 +60,40 @@ class Factura extends Model
                 ->paginate(10);
     }
 
-    public static function updateFacturas(string $id, array $data){
-    $factura = self::findOrFail($id);
+public static function updateFacturas(string $idFactura, array $data)
+{
+    return DB::transaction(function () use ($idFactura, $data) {
+
+        $factura = self::findOrFail($idFactura);
 
         $factura->update([
-            'id_cliente' => $data['id_cliente'],
+            'id_cliente'      => $data['id_cliente'],
             'fac_descripcion' => $data['fac_descripcion'],
-            'fac_subtotal' => $data['fac_subtotal'],
-            'fac_iva' => $data['fac_iva'],
-            'fac_total' => $data['fac_total'],
+            'fac_subtotal'    => $data['fac_subtotal'],
+            'fac_iva'         => $data['fac_iva'],
+            'fac_total'       => $data['fac_total'],
+            'fac_estado'      => 'APR',
         ]);
-    }
+
+        Proxfac::where('id_factura', $idFactura)->delete();
+
+        foreach ($data['productos'] as $producto) {
+
+            $subtotal = $producto['pxf_cantidad'] * $producto['pxf_precio'];
+
+            Proxfac::create([
+                'id_factura'   => $idFactura,
+                'id_producto'  => $producto['id_producto'],
+                'pxf_cantidad' => $producto['pxf_cantidad'],
+                'pxf_precio'   => $producto['pxf_precio'],
+                'pxf_subtotal' => $subtotal,
+                'pxf_estado'   => 'APR',
+            ]);
+        }
+
+        return $factura;
+    });
+}
 
 
     public static function destroyFacturas(string $id)

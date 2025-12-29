@@ -82,7 +82,7 @@ Route::prefix('admin')->group(function () {
         ->prefix('ventas')
         ->group(function () {
             Route::resource('clientes', ClientesController::class);
-            Route::resource('facturas',FacturaController::class);
+            //Route::resource('facturas',FacturaController::class);
         });
 });
 
