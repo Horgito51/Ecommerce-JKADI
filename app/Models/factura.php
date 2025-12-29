@@ -45,6 +45,12 @@ class Factura extends Model
         return $this->belongsTo(Clientes::class, 'id_cliente', 'id_cliente');
     }
 
+
+
+    public static function getFacturaById(string $id){
+        return self::where('id_factura', trim($id))->first();
+    }
+
     
 
     public static function getFacturas(){

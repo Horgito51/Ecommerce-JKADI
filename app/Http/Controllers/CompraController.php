@@ -71,6 +71,9 @@ class CompraController extends Controller
             ->route('ordenes.index')
             ->with('success', 'Orden de compra actualizada exitosamente');
     }
+
+
+    
     public function destroy(string $id)
     {
         Compra::destroyCompra($id);

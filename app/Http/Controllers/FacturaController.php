@@ -109,17 +109,32 @@ class FacturaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Factura $factura)
+    public function edit(string $id)
     {
-        //
+        $factura = Factura::getFacturaById($id);
+        $clientes = Clientes::getClientes();
+        $productos = Producto::getAllProductos();
+        return view('facturas.edit', compact('factura', 'clientes', 'productos'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Factura $factura)
+    public function update(Request $request, string $id)
     {
-        //
+        $this->validateFactura($request);
+        $data = [
+            'id_cliente' => $request->id_cliente,
+            'fac_descripcion' => $request->fac_descripcion,
+            'fac_subtotal'  => $request->fac_subtotal,
+            'fac_iva'       => $request->fac_iva,
+            'fac_total'     => $request->fac_total,
+            'productos'    => $request->productos,
+        ];
+        Factura::updateFacturas($id, $data);
+        return redirect()
+            ->route('facturas.index')
+            ->with('success', 'Factura actualizada exitosamente');
     }
 
     /**

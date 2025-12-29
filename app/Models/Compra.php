@@ -59,6 +59,8 @@ class Compra extends Model
         return Compra::findorfail($id);
     }
 
+    
+
     public static function getComprasBy(string $search){
     }
 
