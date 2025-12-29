@@ -41,7 +41,10 @@ class LoginController extends Controller
             return redirect('/admin/ventas/clientes');
         }
 
+        if($user->rol==='admin'){
+            return redirect('admin');
 
+        }
         abort(403, 'Rol no válido');
     }
 }

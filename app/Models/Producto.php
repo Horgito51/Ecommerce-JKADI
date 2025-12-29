@@ -23,12 +23,30 @@ class Producto extends Model
         'pro_saldo_inicial'
     ];
 
+    //relaciones
     public function tipoProducto()
     {
         return $this->belongsTo(tiposProducto::class, 'id_tipo', 'id_tipo');
     }
 
 
+        public function compras()
+{
+    return $this->belongsToMany(
+        Compra::class,
+        'proxoc',
+        'id_producto',
+        'id_compra'
+    )->withPivot([
+        'pxo_cantidad',
+        'pxo_valor',
+        'pxo_subtotal',
+        'estado_pxoc'
+    ]);
+}
+
+
+    //MD concepto
 
     public static function getAllProductos()
     {
@@ -92,6 +110,9 @@ class Producto extends Model
         $this->estado_prod = 'INA';
         $this->save();
     }
+
+
+
 
 
 }
