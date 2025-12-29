@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\proxfac;
+use App\Models\Proxfac;
 use Illuminate\Http\Request;
 
 class ProxfacController extends Controller
@@ -34,7 +34,7 @@ class ProxfacController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(proxfac $proxfac)
+    public function show(Proxfac $proxfac)
     {
         //
     }
@@ -42,7 +42,7 @@ class ProxfacController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(proxfac $proxfac)
+    public function edit(Proxfac $proxfac)
     {
         //
     }
@@ -50,7 +50,7 @@ class ProxfacController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, proxfac $proxfac)
+    public function update(Request $request, Proxfac $proxfac)
     {
         //
     }
@@ -58,7 +58,7 @@ class ProxfacController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(proxfac $proxfac)
+    public function destroy(Proxfac $proxfac)
     {
         //
     }
