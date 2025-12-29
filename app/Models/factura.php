@@ -28,6 +28,8 @@ class Factura extends Model
         return $this->belongsTo(Clientes::class, 'id_cliente');
     }
 
+    
+
     public static function getFacturas(){
         return self::whereIn('fac_estado', ['ABI', 'APR'])
                 ->paginate(10);
