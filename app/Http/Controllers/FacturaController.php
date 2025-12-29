@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\factura;
+use App\Models\Factura;
 use Illuminate\Http\Request;
 
 class FacturaController extends Controller
@@ -34,7 +34,7 @@ class FacturaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(factura $factura)
+    public function show(Factura $factura)
     {
         //
     }
@@ -42,7 +42,7 @@ class FacturaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(factura $factura)
+    public function edit(Factura $factura)
     {
         //
     }
@@ -50,7 +50,7 @@ class FacturaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, factura $factura)
+    public function update(Request $request, Factura $factura)
     {
         //
     }
@@ -58,7 +58,7 @@ class FacturaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(factura $factura)
+    public function destroy(Factura $factura)
     {
         //
     }
