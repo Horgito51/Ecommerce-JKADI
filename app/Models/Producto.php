@@ -30,20 +30,35 @@ class Producto extends Model
     }
 
 
-        public function compras()
-{
-    return $this->belongsToMany(
-        Compra::class,
-        'proxoc',
-        'id_producto',
-        'id_compra'
-    )->withPivot([
-        'pxo_cantidad',
-        'pxo_valor',
-        'pxo_subtotal',
-        'estado_pxoc'
-    ]);
-}
+    public function compras()
+    {
+        return $this->belongsToMany(
+            Compra::class,
+            'proxoc',
+            'id_producto',
+            'id_compra'
+        )->withPivot([
+            'pxo_cantidad',
+            'pxo_valor',
+            'pxo_subtotal',
+            'estado_pxoc'
+        ]);
+    }
+
+    public function facturas()
+    {
+        return $this->belongsToMany(
+            Factura::class,
+            'proxfac',
+            'id_producto',
+            'id_factura'
+        )->withPivot([
+            'pxf_cantidad',
+            'pxf_precio',
+            'pxf_subtotal',
+            'pxf_estado'
+        ])->withTimestamps();
+    }
 
 
     //MD concepto
@@ -102,10 +117,10 @@ class Producto extends Model
             'pro_um_compra'     => $data['unidad_medida_compra'],
             'pro_saldo_inicial' => $data['saldo_inicial'],
         ]);
-
-        return $producto;
-
     }
+
+
+
     public function destroyProducto(){
         $this->estado_prod = 'INA';
         $this->save();

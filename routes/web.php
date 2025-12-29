@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\CompraController;
+use App\Http\Controllers\FacturaController;
 use GuzzleHttp\Client;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProveedorController;
@@ -81,8 +82,10 @@ Route::prefix('admin')->group(function () {
         ->prefix('ventas')
         ->group(function () {
             Route::resource('clientes', ClientesController::class);
+            //Route::resource('facturas',FacturaController::class);
         });
 });
 
+Route::resource('facturas',FacturaController::class);
 
 // Route::get('/admin/proveedores',[ProveedorController::class,'index'])->name('proveedores.index');

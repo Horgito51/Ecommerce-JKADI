@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Clientes extends Model
@@ -18,6 +19,10 @@ class Clientes extends Model
 
     public function ciudades():BelongsTo{
         return $this->belongsTo(Ciudades::class, 'ciudad_id');
+    }
+
+    public function facturas():HasMany{
+        return $this->hasMany(Factura::class, 'id_cliente');
     }
 
 
