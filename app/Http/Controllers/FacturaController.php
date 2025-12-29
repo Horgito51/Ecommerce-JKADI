@@ -72,7 +72,6 @@ class FacturaController extends Controller
     {
         $clientes = Clientes::getClientes();
         $productos = Producto::getAllProductos();
-
         return view('facturas.create', compact('clientes', 'productos'));
     }
 
@@ -123,6 +122,7 @@ class FacturaController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validateFactura($request);
+        
         $data = [
             'id_cliente' => $request->id_cliente,
             'fac_descripcion' => $request->fac_descripcion,
