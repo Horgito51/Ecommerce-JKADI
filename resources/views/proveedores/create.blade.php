@@ -1,3 +1,4 @@
+{{-- VISTA: create.blade.php --}}
 @extends('layouts.contentAdmin')
 
 @section('content')
@@ -6,7 +7,6 @@
         <div class="col-12 col-lg-10">
 
             <h3 class="mb-4">Registrar Proveedor</h3>
-
             <form action="{{ route('proveedores.store') }}" method="POST">
                 @csrf
 
@@ -14,56 +14,102 @@
                     {{-- NOMBRE --}}
                     <div class="col-12 col-md-8">
                         <label class="form-label">Nombre</label>
-                        <input type="text" name="prv_nombre" class="form-control" placeholder="Nombre del proveedor" required>
+                        <input type="text" name="prv_nombre" class="form-control @error('prv_nombre') is-invalid @enderror"
+                               placeholder="Nombre del proveedor" value="{{ old('prv_nombre') }}" required>
+                        @error('prv_nombre')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    {{-- TIPO DE DOCUMENTO --}}
+                    <div class="col-12 col-md-8" style="margin-top:5px">
+                        <label class="form-label">Tipo de documento*</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="tipo_documento" value="RUC"
+                            {{ old('tipo_documento', 'RUC') == 'RUC' ? 'checked' : '' }}>
+                            <label class="form-check-label">RUC</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="tipo_documento" value="CEDULA"
+                            {{ old('tipo_documento') == 'CEDULA' ? 'checked' : '' }}>
+                            <label class="form-check-label">Cédula</label>
+                        </div>
+                        @error('tipo_documento')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     {{-- RUC / CÉDULA --}}
                     <div class="col-12 col-md-6">
                         <label class="form-label">RUC / Cédula</label>
-                        <input type="text" name="prv_ruc_ced" class="form-control" required>
+                        <input type="text" name="prv_ruc_ced" class="form-control @error('prv_ruc_ced') is-invalid @enderror"
+                               value="{{ old('prv_ruc_ced') }}" required>
+                        @error('prv_ruc_ced')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     {{-- EMAIL --}}
                     <div class="col-12 col-md-6">
                         <label class="form-label">Email</label>
-                        <input type="email" name="prv_mail" class="form-control" required>
+                        <input type="email" name="prv_mail" class="form-control @error('prv_mail') is-invalid @enderror"
+                               value="{{ old('prv_mail') }}" required>
+                        @error('prv_mail')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     {{-- TELÉFONO --}}
                     <div class="col-12 col-md-6">
                         <label class="form-label">Teléfono</label>
-                        <input type="text" name="prv_telefono" class="form-control">
+                        <input type="text" name="prv_telefono" class="form-control @error('prv_telefono') is-invalid @enderror"
+                               value="{{ old('prv_telefono') }}">
+                        @error('prv_telefono')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     {{-- CELULAR --}}
                     <div class="col-12 col-md-6">
                         <label class="form-label">Celular</label>
-                        <input type="text" name="prv_celular" class="form-control" required>
+                        <input type="text" name="prv_celular" class="form-control @error('prv_celular') is-invalid @enderror"
+                               value="{{ old('prv_celular') }}" required>
+                        @error('prv_celular')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     {{-- CIUDAD --}}
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-8" style="margin:8px">
                         <label class="form-label">Ciudad</label>
-                        <select name="id_ciudad" class="form-select" required>
-                            <option value="" disabled selected >Seleccione una ciudad</option>
+                        <select name="id_ciudad" class="form-control rounded @error('id_ciudad') is-invalid @enderror" required>
+                            <option value="" disabled {{ old('id_ciudad') ? '' : 'selected' }}>Seleccione una ciudad</option>
                             @foreach ($ciudades as $ciudad)
-                                <option value="{{ $ciudad->id }}">
+                                <option value="{{ $ciudad->id }}" {{ old('id_ciudad') == $ciudad->id ? 'selected' : '' }}>
                                     {{ $ciudad->ciu_descripcion }}
                                 </option>
                             @endforeach
                         </select>
+                        @error('id_ciudad')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+
                     {{-- DIRECCIÓN --}}
                     <div class="col-12">
                         <label class="form-label">Dirección</label>
-                        <textarea name="prv_direccion" class="form-control" rows="3" required></textarea>
+                        <textarea name="prv_direccion" class="form-control @error('prv_direccion') is-invalid @enderror"
+                                  rows="3" required>{{ old('prv_direccion') }}</textarea>
+                        @error('prv_direccion')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                 </div>
 
                 {{-- BOTONES --}}
                 <div class="mt-4 d-flex gap-2">
-                    <button type="submit" class="btn btn-success">
+                    <button type="submit" class="btn btn-success" style="background-color:#198754;color:white">
                         Guardar
                     </button>
 

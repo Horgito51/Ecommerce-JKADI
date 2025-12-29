@@ -15,8 +15,7 @@
 <body>
 
     @include('layouts.header')
-
-    <div class="container-fluid">
+    <div  >
         @yield('content')
     </div>
 

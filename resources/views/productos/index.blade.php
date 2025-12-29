@@ -7,16 +7,16 @@
     $searchPlaceholder = 'Buscar productos...';
 @endphp
 
-<div class="row justify-content-center">
+<div>
     <h2>Listado de Productos</h2>
-<div class="col-12 text-center">
-    <a href="{{route('productos.create')}}" class="btn btn-outline-success w-50">
-        Crear
-    </a>
+<div class="col-12 text-left">
+    <a href="{{route('productos.create')}}" class="btn" style="background-color:#198754;color:white">Agregar Producto</a>
+
 </div>
 
     <div class="table-responsive">
-        <table border="3" id="tablaProductos" class="table table-dark table-striped">
+        <table id="tablaProductos" class="table table-striped table-bordered" >   
+            <thead style="background-color:#031832;color:white"> 
                 <tr>
                     <th>ID</th>
                     <th>Descripcion</th>
@@ -25,6 +25,8 @@
                     <th>Stock</th>
                     <th>Acciones</th>
                 </tr>
+            </thead>
+            <tbody style=" background-color:white;color:#031832 ;border-color:#031832" >
                 @foreach ($productos as $producto)
                 <tr>
                     <td>{{ $producto->id_producto }}</td>
@@ -33,18 +35,38 @@
                     <td>{{ $producto->pro_um_venta }}</td>
                     <td>{{ $producto->pro_saldo_final }}</td>
                     <td>
-                        <a href="{{route('productos.edit', $producto->id_producto)}}">
-                        <button class="btn btn-outline-primary">Actualizar</button>
+                    <div class="d-flex gap-1 justify-content-center">    
+                        <a href="{{route('productos.edit', $producto->id_producto)}}"
+                        class="btn btn-sm"
+                        style="background-color:#031832;color:white; margin:2px;
+                                padding: 4px 10px;
+                                font-size: 0.8rem;
+                                min-width: 65px;">
+                            Editar                            
                         </a>
-                    <form action="{{route('productos.destroy',$producto->id_producto)}}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-outline-danger" onclick="return confirm('¿Eliminar?')">Eliminar</button>
-                    </form>
 
+
+
+                        <form action="{{route('productos.destroy',$producto->id_producto)}}"
+                            method="POST" class="m-0">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                    class="btn btn-sm"
+                                    style="padding: 4px 10px; background-color:#8C0606;color:white; margin:2px;                                            font-size: 0.8rem;
+                                       min-width: 65px;"
+                                    onclick="return confirm('¿Estás seguro de que deseas eliminar este Producto?')">
+                                Eliminar
+                            </button>
+                        </form>
+
+
+
+                    </div>
                     </td>
                 </tr>
                 @endforeach
+            </tbody>
         </table>
     </div>
 

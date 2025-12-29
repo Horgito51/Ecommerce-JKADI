@@ -3,7 +3,7 @@
  <h2 style="color:#031832">Lista de Proveedores</h2>
     <div class="mb-3 gap-2 ">
 
-        <a href="{{ route('proveedores.create') }}" class="btn" style="background-color:#198754;color:white">Agregar Cliente</a>
+        <a href="{{ route('proveedores.create') }}" class="btn" style="background-color:#198754;color:white">Agregar Proveedor</a>
     </div>
     <div >
         <table class="table table-striped table-bordered" >
@@ -32,8 +32,9 @@
                         <td>{{ $proveedor->prv_celular }}</td>
                         <td>{{ $proveedor->prv_direccion}}</td>
                         <td>
+                            
                         <div class="d-flex gap-1 justify-content-center">
-                            <a href="{{ route('proveedores.edit', $proveedor) }}"
+                            <a href="{{ route('proveedores.edit', $proveedor->id_proveedor) }}"
                             class="btn btn-sm"
                             style="background-color:#031832;color:white; margin:2px;
                                     padding: 4px 10px;
@@ -42,7 +43,7 @@
                                 Editar
                             </a>
 
-                            <form action="{{ route('proveedores.destroy', $proveedor) }}"
+                            <form action="{{ route('proveedores.destroy', $proveedor->id_proveedor) }}"
                                 method="POST" class="m-0">
                                 @csrf
                                 @method('DELETE')
