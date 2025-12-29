@@ -15,6 +15,9 @@ class CompraController extends Controller
         $compras=Compra::getCompras();
         return view('compras.index',compact('compras'));
     }
+
+
+    
     public function create()
     {
         $proveedores=Proveedor::getProveedores();

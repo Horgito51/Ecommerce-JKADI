@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clientes;
 use App\Models\Factura;
 use Illuminate\Http\Request;
-
+use App\Models\Producto;
 class FacturaController extends Controller
 {
     /**
@@ -12,7 +13,8 @@ class FacturaController extends Controller
      */
     public function index()
     {
-        //
+        $facturas= Factura::getFacturas();
+        return view('facturas.index',compact('facturas'));
     }
 
     /**
@@ -20,7 +22,10 @@ class FacturaController extends Controller
      */
     public function create()
     {
-        //
+        $clientes = Clientes::getClientes();
+        $productos=Producto::getAllProductos();
+
+        return view('facturas.create',compact('clientes','productos'));
     }
 
     /**

@@ -24,7 +24,6 @@ class Factura extends Model
     protected $keyType = 'string';
 
 
-
     public function clientes():BelongsTo{
         return $this->belongsTo(Clientes::class, 'id_cliente');
     }
@@ -75,9 +74,9 @@ class Factura extends Model
             'id_factura'      => self::crearIdFactura(),
             'id_cliente'      => $data['id_cliente'],
             'fac_descripcion' => $data['fac_descripcion'] ?? null,
-            'fac_subtotal'    => 0,
-            'fac_iva'         => 0,
-            'fac_total'       => 0,
+            'fac_subtotal'    => $data['fac_subtotal'],  
+            'fac_iva'         => $data['fac_iva'],       
+            'fac_total'       => $data['fac_total'],
             'fac_estado'      => 'ABI',
         ]);
     }
