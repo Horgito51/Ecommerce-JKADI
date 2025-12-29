@@ -84,10 +84,10 @@ class Producto extends Model
             'pro_um_compra'     => $data['unidad_medida_compra'],
             'pro_saldo_inicial' => $data['saldo_inicial'],
         ]);
-
-        return $producto;
-
     }
+
+
+
     public function destroyProducto(){
         $this->estado_prod = 'INA';
         $this->save();
