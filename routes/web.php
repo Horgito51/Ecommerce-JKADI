@@ -83,6 +83,8 @@ Route::prefix('admin')->group(function () {
             Route::resource('clientes', ClientesController::class);
          
             Route::resource('facturas',FacturaController::class);
+            Route::post('/facturas/{id}/aprobar', [FacturaController::class, 'aprobar'])
+            ->name('facturas.aprobar');
         });
     //productos
     Route::middleware(['rol:admin,gerente_bodega,gerente_compras,gerente_ventas'])

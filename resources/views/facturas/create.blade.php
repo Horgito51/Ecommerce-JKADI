@@ -178,7 +178,7 @@
 
         <div class="mt-4">
             <button type="submit" class="btn btn-success">
-                Guardar compra
+                Guardar
             </button>
             <a href="{{ route('facturas.index') }}" class="btn btn-secondary">
                 Cancelar
