@@ -147,15 +147,6 @@ class Compra extends Model
 
     public static function approveCompra(string $idCompra): void
     {
-      DB::transaction(function () use ($idCompra) {
-            Proxoc::where('id_compra', $idCompra)
-                ->update([
-                    'estado_pxoc' => 'APR',
-                ]);
-            $compra = self::findOrFail($idCompra);
-            $compra->update([
-                'estado_oc' => 'APR',
-            ]);
-        });
+     DB::statement('CALL aprobar_compra(?)', [$idCompra]);
     }
 }

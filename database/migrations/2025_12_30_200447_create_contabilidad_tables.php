@@ -45,7 +45,6 @@ public function up(): void
             $table->decimal('asi_total_debe', 7, 2)->default(0);
             $table->decimal('asi_total_haber', 7, 2)->default(0);
             $table->dateTime('asi_fechahora');
-            $table->char('user_id', 12);
             $table->char('estado_asi', 3)->default('ACT');
             $table->timestamps();
         });
