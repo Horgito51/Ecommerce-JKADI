@@ -212,7 +212,7 @@
                     {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
                 Actualizar compra
             </button>
-             <a href="{{ route('ordenes.approve', $compra->id_compra) }}"
+             <a href="{{ route('ordenes.aprobar', $compra->id_compra) }}"
                 class="btn btn-success"
                 {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}
                 onclick="return confirm('¿Estás seguro de aprobar esta orden de compra?');">
