@@ -73,13 +73,21 @@ class CompraController extends Controller
     }
 
 
-    
+
     public function destroy(string $id)
     {
         Compra::destroyCompra($id);
         return redirect()
             ->route('ordenes.index')
             ->with('success', 'Orden de compra anulada correctamente');
+    }
+
+    public function approve(string $id)
+    {
+        Compra::approveCompra($id);
+        return redirect()
+            ->route('ordenes.index')
+            ->with('success', 'Orden de compra aprobada exitosamente');
     }
 
     public function validateCompra($request)
