@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container-fluid">
-
+    
     <h4 class="mb-4">Editar Factura</h4>
 
     <form method="POST" action="{{ route('facturas.update', $factura->id_factura) }}">
@@ -75,7 +75,6 @@
 
                     <tbody>
 
-                    {{-- SI HAY ERROR DE VALIDACIÓN --}}
                     @if(old('productos'))
                         @foreach(old('productos') as $i => $prod)
                             <tr>
