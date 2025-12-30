@@ -65,15 +65,14 @@ Route::prefix('admin')->group(function () {
                 return 'Backoffice funcionando 🚀';
             });
 
-            Route::resource('productos', ProductoController::class);
         });
 
     // COMPRAS
     Route::middleware(['rol:admin,gerente_compras'])
-        ->prefix('compras')
+        ->prefix('compras') 
         ->group(function () {
             Route::resource('proveedores', ProveedorController::class);
-
+          
             Route::resource('ordenes',CompraController::class);
         });
 
@@ -82,10 +81,17 @@ Route::prefix('admin')->group(function () {
         ->prefix('ventas')
         ->group(function () {
             Route::resource('clientes', ClientesController::class);
-            //Route::resource('facturas',FacturaController::class);
+         
+            Route::resource('facturas',FacturaController::class);
         });
+    //productos
+    Route::middleware(['rol:admin,gerente_bodega,gerente_compras,gerente_ventas'])
+    ->group(function () {
+           Route::resource('productos', ProductoController::class);
+    });
+
 });
 
-Route::resource('facturas',FacturaController::class);
+// Route::resource('facturas',FacturaController::class);
 
 // Route::get('/admin/proveedores',[ProveedorController::class,'index'])->name('proveedores.index');

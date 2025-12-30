@@ -19,8 +19,7 @@
                     <div class="col-12 col-md-6 mb-3">
                         <label class="form-label">Proveedor *</label>
                         <select name="id_proveedor"
-                            class="form-control @error('id_proveedor') is-invalid @enderror"
-                            required>
+                            class="form-control @error('id_proveedor') is-invalid @enderror" required>
                             <option value="">Seleccione un proveedor</option>
                             @foreach ($proveedores as $prov)
                                 <option value="{{ $prov->id_proveedor }}"
@@ -44,7 +43,7 @@
                     + Agregar producto
                 </button>
             </div>
-
+        
             <div class="card-body table-responsive">
                 <table class="table table-bordered align-middle" id="tabla-productos">
                     <thead class="table-light">
@@ -242,6 +241,24 @@ document.addEventListener('DOMContentLoaded', function () {
     tbody.addEventListener('change', function (e) {
 
         if (e.target.classList.contains('producto')) {
+
+            const seleccionado = e.target.value;
+
+            // 🔒 VALIDAR PRODUCTO REPETIDO
+            let repetido = false;
+
+            document.querySelectorAll('.producto').forEach(select => {
+                if (select !== e.target && select.value === seleccionado && seleccionado !== '') {
+                    repetido = true;
+                }
+            });
+
+            if (repetido) {
+                alert('Este producto ya fue seleccionado.');
+                e.target.value = '';
+                return;
+            }
+
             const fila = e.target.closest('tr');
 
             const precio = parseFloat(
@@ -266,6 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
     tbody.addEventListener('input', function (e) {
 
         if (e.target.classList.contains('cantidad')) {
+
             const fila = e.target.closest('tr');
 
             const cantidad = parseFloat(e.target.value) || 0;
@@ -283,30 +301,31 @@ document.addEventListener('DOMContentLoaded', function () {
     // =========================
     // SUBTOTAL GENERAL + IVA
     // =========================
-  function recalcularTotales() {
+    function recalcularTotales() {
 
-    let subtotalGeneral = 0;
+        let subtotalGeneral = 0;
 
-    document.querySelectorAll('.subtotal').forEach(el => {
-        subtotalGeneral += parseFloat(el.value) || 0;
-    });
+        document.querySelectorAll('.subtotal').forEach(el => {
+            subtotalGeneral += parseFloat(el.value) || 0;
+        });
 
-    const iva = subtotalGeneral * 0.15;
-    const total = subtotalGeneral + iva;
+        const iva = subtotalGeneral * 0.15;
+        const total = subtotalGeneral + iva;
 
-    // visibles
-    document.getElementById('subtotal').value = subtotalGeneral.toFixed(2);
-    document.getElementById('iva').value = iva.toFixed(2);
-    document.getElementById('total').value = total.toFixed(2);
+        // visibles
+        document.getElementById('subtotal').value = subtotalGeneral.toFixed(2);
+        document.getElementById('iva').value = iva.toFixed(2);
+        document.getElementById('total').value = total.toFixed(2);
 
-    // hidden (los que viajan al backend)
-    document.getElementById('oc_subtotal').value = subtotalGeneral.toFixed(2);
-    document.getElementById('oc_iva').value = iva.toFixed(2);
-    document.getElementById('oc_total').value = total.toFixed(2);
-}
+        // hidden (backend)
+        document.getElementById('oc_subtotal').value = subtotalGeneral.toFixed(2);
+        document.getElementById('oc_iva').value = iva.toFixed(2);
+        document.getElementById('oc_total').value = total.toFixed(2);
+    }
 
 });
 </script>
+
 
 
 @endsection

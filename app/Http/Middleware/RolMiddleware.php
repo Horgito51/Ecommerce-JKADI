@@ -5,19 +5,24 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class RolMiddleware
 {
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        // Usuario guardado en sesión
-        $userId = session('user_id');
-        $user = User::find($userId);
-        if (!$user || !in_array($user->rol, $roles)) {
-            abort(403, 'Acceso no autorizado.');
-        }
+     if (!Auth::check()) {
+        abort(403, 'No autenticado');
+    }
+    $user = Auth::user();
+    $rol = strtolower(trim($user->rol));
+    $rolesPermitidos = array_map(fn($r) => strtolower(trim($r)), $roles);
 
-        return $next($request);
+    if (!in_array($rol, $rolesPermitidos)) {
+        abort(403, 'Acceso no autorizado.');
+    }
+
+    return $next($request);
     }
 }

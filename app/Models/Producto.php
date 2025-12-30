@@ -20,7 +20,9 @@ class Producto extends Model
         'pro_um_compra',
         'estado_prod',
         'img',
-        'pro_saldo_inicial'
+        'pro_saldo_inicial',
+        'pro_valor_compra',
+        'pro_precio_compra',
     ];
 
     //relaciones
@@ -65,7 +67,12 @@ class Producto extends Model
 
     public static function getAllProductos()
     {
-        return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final','pro_valor_compra')->where('pro_saldo_final','>',0)->where('estado_prod',"=","ACT")->limit(10)->get();
+        return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final','pro_valor_compra','pro_precio_venta')->where('pro_saldo_final','>',0)->where('estado_prod',"=","ACT")->get();
+    }
+
+     public static function getAllProductosP()
+    {
+        return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final','pro_valor_compra','pro_precio_venta')->where('pro_saldo_final','>',0)->where('estado_prod',"=","ACT")->get();
     }
 
     public static function getProductos(){
@@ -116,6 +123,8 @@ class Producto extends Model
             'pro_um_venta'      => $data['unidad_medida_venta'],
             'pro_um_compra'     => $data['unidad_medida_compra'],
             'pro_saldo_inicial' => $data['saldo_inicial'],
+            'pro_valor_compra'=>$data['pro_valor_compra'],
+            'pro_precio_venta'=>$data['pro_precio_venta'],
         ]);
     }
 

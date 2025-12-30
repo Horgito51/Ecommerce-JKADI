@@ -69,7 +69,6 @@ class ProductoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
         $this->validateProducto($request, $id);
 
         Producto::updateProducto($id, $request->all());

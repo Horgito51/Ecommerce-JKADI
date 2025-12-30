@@ -71,7 +71,7 @@ class FacturaController extends Controller
     public function create()
     {
         $clientes = Clientes::getClientes();
-        $productos = Producto::getAllProductos();
+        $productos = Producto::getAllProductosP();
         return view('facturas.create', compact('clientes', 'productos'));
     }
 
