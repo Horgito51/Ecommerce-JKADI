@@ -74,7 +74,7 @@ Route::prefix('admin')->group(function () {
             Route::resource('proveedores', ProveedorController::class);
 
             Route::resource('ordenes',CompraController::class);
-            Route::get('ordenes/approve/{id}', [CompraController::class, 'approve'])->name('ordenes.approve');
+            Route::get('ordenes/{id}/aprobar', [CompraController::class, 'aprobar'])->name('ordenes.aprobar');
         });
 
     // VENTAS

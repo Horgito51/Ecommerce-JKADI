@@ -210,9 +210,9 @@
             <button type="submit"
                     class="btn btn-success"
                     {{ $compra->estado_oc !== 'ACT' ? 'disabled' : '' }}>
-                Actualizar compra
+                Actualizar
             </button>
-             <a href="{{ route('ordenes.approve', $compra->id_compra) }}" class="btn btn-success">Aprobar</a>
+             <a href="{{ route('ordenes.aprobar', $compra->id_compra) }}" class="btn btn-success">Aprobar</a>
             <a href="{{ route('ordenes.index') }}" class="btn btn-secondary">Cancelar</a>
         </div>
 

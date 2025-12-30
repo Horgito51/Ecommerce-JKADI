@@ -201,9 +201,10 @@
 
         <div class="mt-4">
             <button type="submit" class="btn btn-success">Actualizar</button>
-            <a href="{{ route('facturas.index') }}" class="btn btn-secondary">Cancelar</a>
-            <a href="{{ route('facturas.index') }}" class="btn btn-sm" 
+            <a href="{{ route('facturas.aprobar', $factura->id_factura) }}" class="btn btn-sm" 
             style="background-color:#031832;color:white">Aprobar</a>
+            <a href="{{ route('facturas.index') }}" class="btn btn-secondary">Cancelar</a>
+            
         </div>
 
     </form>
