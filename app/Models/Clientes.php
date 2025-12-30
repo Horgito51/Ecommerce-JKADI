@@ -79,4 +79,14 @@ class Clientes extends Model
         return self::where('id_cliente', trim($id_cliente))->first();
     }
 
+    public function scopeGetClienteBy($query,$search){
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('cli_nombre', 'like', "%{$search}%")
+                  ->orWhere('cli_ruc_ced', 'like', "%{$search}%")
+                  ->orWhere('id_cliente', 'like', "%{$search}%");
+            });
+        }
+    }
+
 }

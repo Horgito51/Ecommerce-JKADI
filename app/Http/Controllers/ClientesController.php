@@ -58,9 +58,10 @@ class ClientesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clientes=Clientes::getClientes();
+        $clientes=Clientes::getClienteBy($request->search)
+                        ->paginate(10);
         return view('clientes.index', compact('clientes'));
     }
 
