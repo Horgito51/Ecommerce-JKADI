@@ -13,6 +13,7 @@
                 @method('PUT')
 
                 {{-- CARD 1: INFORMACIÓN DEL PROVEEDOR --}}
+               
                 <div class="card mb-4">
                     <div class="card-header">
                         Información del proveedor

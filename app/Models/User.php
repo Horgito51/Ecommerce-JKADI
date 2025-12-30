@@ -49,5 +49,16 @@ class User extends Authenticatable
 
     protected function assignRole(string $role){
 
-        $this->assignRole($role);}
+        $this->assignRole($role);
     }
+
+ 
+
+public function hasRole(string $rol): bool
+{
+    return $this->rol === $rol;
+}
+
+}
+
+    

@@ -18,7 +18,7 @@ class CompraController extends Controller
     public function create()
     {
         $proveedores = Proveedor::getProveedores();
-        $productos = Producto::getAllProductos();
+        $productos = Producto::getAllProductosP();
         return view('compras.create', compact('proveedores', 'productos'));
     }
     public function store(Request $request)

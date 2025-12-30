@@ -51,7 +51,7 @@
                         <textarea name="fac_descripcion"
                             class="form-control @error('fac_descripcion') is-invalid @enderror"
                             rows="4"
-                            placeholder="Ingrese una descripción para la factura">{{ old('fac_descripcion') }}</textarea>
+                            placeholder="Ingrese una descripción para la factura" required>{{ old('fac_descripcion') }}</textarea>
                         @error('fac_descripcion')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -97,7 +97,7 @@
                                             @foreach ($productos as $p)
                                                 <option value="{{ $p->id_producto }}"
                                                     {{ $prod['id_producto'] == $p->id_producto ? 'selected' : '' }}>
-                                                    {{ $p->descripcion }}
+                                                    {{ $p->pro_descripcion }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -265,11 +265,29 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // =========================
-    // CUANDO CAMBIA EL PRODUCTO
+    // CAMBIO DE PRODUCTO
     // =========================
     tbody.addEventListener('change', function (e) {
 
         if (e.target.classList.contains('producto')) {
+
+            const seleccionado = e.target.value;
+
+            // 🔒 VALIDAR PRODUCTO REPETIDO
+            let repetido = false;
+
+            document.querySelectorAll('.producto').forEach(select => {
+                if (select !== e.target && select.value === seleccionado && seleccionado !== '') {
+                    repetido = true;
+                }
+            });
+
+            if (repetido) {
+                alert('Este producto ya fue seleccionado.');
+                e.target.value = '';
+                return;
+            }
+
             const fila = e.target.closest('tr');
 
             const precio = parseFloat(
@@ -289,11 +307,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // =========================
-    // CUANDO CAMBIA LA CANTIDAD
+    // CAMBIO DE CANTIDAD
     // =========================
     tbody.addEventListener('input', function (e) {
 
         if (e.target.classList.contains('cantidad')) {
+
             const fila = e.target.closest('tr');
 
             const cantidad = parseFloat(e.target.value) || 0;
@@ -309,31 +328,32 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // =========================
-    // SUBTOTAL GENERAL + IVA
+    // RECALCULAR SUBTOTAL + IVA
     // =========================
-  function recalcularTotales() {
+    function recalcularTotales() {
 
-    let subtotalGeneral = 0;
+        let subtotalGeneral = 0;
 
-    document.querySelectorAll('.subtotal').forEach(el => {
-        subtotalGeneral += parseFloat(el.value) || 0;
-    });
+        document.querySelectorAll('.subtotal').forEach(el => {
+            subtotalGeneral += parseFloat(el.value) || 0;
+        });
 
-    const iva = subtotalGeneral * 0.15;
-    const total = subtotalGeneral + iva;
+        const iva = subtotalGeneral * 0.15;
+        const total = subtotalGeneral + iva;
 
-    // visibles
-    document.getElementById('subtotal').value = subtotalGeneral.toFixed(2);
-    document.getElementById('iva').value = iva.toFixed(2);
-    document.getElementById('total').value = total.toFixed(2);
+        // visibles
+        document.getElementById('subtotal').value = subtotalGeneral.toFixed(2);
+        document.getElementById('iva').value = iva.toFixed(2);
+        document.getElementById('total').value = total.toFixed(2);
 
-    // hidden (los que viajan al backend)
-    document.getElementById('fac_subtotal').value = subtotalGeneral.toFixed(2);
-    document.getElementById('fac_iva').value = iva.toFixed(2);
-    document.getElementById('fac_total').value = total.toFixed(2);
-}
+        // hidden (backend)
+        document.getElementById('fac_subtotal').value = subtotalGeneral.toFixed(2);
+        document.getElementById('fac_iva').value = iva.toFixed(2);
+        document.getElementById('fac_total').value = total.toFixed(2);
+    }
 
 });
 </script>
+
 
 @endsection
