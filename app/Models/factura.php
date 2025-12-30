@@ -52,9 +52,6 @@ class Factura extends Model
                 ->firstOrFail();
     }
 
-
-    
-
     public static function getFacturas(){
         return self::whereIn('fac_estado', ['ABI', 'APR'])
                 ->paginate(10);
@@ -72,7 +69,7 @@ public static function updateFacturas(string $idFactura, array $data)
             'fac_subtotal'    => $data['fac_subtotal'],
             'fac_iva'         => $data['fac_iva'],
             'fac_total'       => $data['fac_total'],
-            'fac_estado'      => 'APR',
+            'fac_estado'      => 'ABI',
         ]);
 
         Proxfac::where('id_factura', $idFactura)->delete();
@@ -87,7 +84,7 @@ public static function updateFacturas(string $idFactura, array $data)
                 'pxf_cantidad' => $producto['pxf_cantidad'],
                 'pxf_precio'   => $producto['pxf_precio'],
                 'pxf_subtotal' => $subtotal,
-                'pxf_estado'   => 'APR',
+                'pxf_estado'   => 'ABI',
             ]);
         }
 
@@ -168,5 +165,9 @@ public static function updateFacturas(string $idFactura, array $data)
                   ->orWhere('id_factura', 'like', "%{$search}%");
             });
         }
+    }
+
+    public function aprobarFactura($id){
+        DB::statement('CALL aprobar_factura(?)', [$id]);
     }
 }

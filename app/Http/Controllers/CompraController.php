@@ -82,7 +82,7 @@ class CompraController extends Controller
             ->with('success', 'Orden de compra anulada correctamente');
     }
 
-    public function approve(string $id)
+    public function aprobar(string $id)
     {
         Compra::approveCompra($id);
         return redirect()

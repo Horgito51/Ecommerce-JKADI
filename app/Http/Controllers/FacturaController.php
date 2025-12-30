@@ -148,4 +148,11 @@ class FacturaController extends Controller
             ->with('success', 'Factura anulada exitosamente');
         
     }
+
+    public function aprobar (string $id_factura){
+        Factura::aprobarFactura($id_factura);
+        return redirect()
+        ->route('facturas.index')
+        ->with('success', 'Factura aprobada correctamente');
+    }
 }
