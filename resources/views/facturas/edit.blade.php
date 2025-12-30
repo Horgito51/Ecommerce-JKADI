@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container-fluid">
-    
+
     <h4 class="mb-4">Editar Factura</h4>
 
     <form method="POST" action="{{ route('facturas.update', $factura->id_factura) }}">
@@ -11,10 +11,9 @@
         @method('PUT')
 
         <div class="card mb-4">
-            <div class="card-header">Datos de la factura</div>
+            <div class="card-header">Datos de la factura: {{ $factura->id_factura }}</div>
             <div class="card-body">
                 <div class="row">
-
                     {{-- Cliente --}}
                     <div class="col-12 col-md-6 mb-3">
                         <label class="form-label">Cliente *</label>

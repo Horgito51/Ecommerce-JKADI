@@ -69,11 +69,12 @@ Route::prefix('admin')->group(function () {
 
     // COMPRAS
     Route::middleware(['rol:admin,gerente_compras'])
-        ->prefix('compras') 
+        ->prefix('compras')
         ->group(function () {
             Route::resource('proveedores', ProveedorController::class);
-          
+
             Route::resource('ordenes',CompraController::class);
+            Route::get('ordenes/approve/{id}', [CompraController::class, 'approve'])->name('ordenes.approve');
         });
 
     // VENTAS
@@ -81,7 +82,7 @@ Route::prefix('admin')->group(function () {
         ->prefix('ventas')
         ->group(function () {
             Route::resource('clientes', ClientesController::class);
-         
+
             Route::resource('facturas',FacturaController::class);
             Route::post('/facturas/{id}/aprobar', [FacturaController::class, 'aprobar'])
             ->name('facturas.aprobar');

@@ -54,7 +54,7 @@ class Compra extends Model
 
     public static function getCompras()
     {
-        return Compra::where('estado_oc', '=', 'ACT')->paginate(10);
+        return Compra::where('estado_oc', '!=', 'ANU')->paginate(10);
     }
 
     public static function getComprasById(string $id)
@@ -141,6 +141,20 @@ class Compra extends Model
             $compra = self::findOrFail($idCompra);
             $compra->update([
                 'estado_oc' => 'ANU',
+            ]);
+        });
+    }
+
+    public static function approveCompra(string $idCompra): void
+    {
+      DB::transaction(function () use ($idCompra) {
+            Proxoc::where('id_compra', $idCompra)
+                ->update([
+                    'estado_pxoc' => 'APR',
+                ]);
+            $compra = self::findOrFail($idCompra);
+            $compra->update([
+                'estado_oc' => 'APR',
             ]);
         });
     }

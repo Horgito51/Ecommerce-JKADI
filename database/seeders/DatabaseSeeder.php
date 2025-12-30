@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             CiudadesSeeder::class,
             ProductoSeeder::class,
             ProveedorSeeder::class,
+            ContabilidadSeeder::class,
         ]);
     }
 }

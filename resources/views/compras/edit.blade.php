@@ -4,7 +4,9 @@
 
 <div class="container-fluid">
 
-    <h4 class="mb-4">Editar Orden de Compra</h4>
+    <h4 class="mb-4">
+        {{ $compra->estado_oc === 'ACT' ? 'Editar Orden de Compra' : 'Detalle de Orden de Compra' }}
+    </h4>
 
     <form method="POST" action="{{ route('ordenes.update', $compra->id_compra) }}">
         @csrf
@@ -16,12 +18,12 @@
             <div class="card-body">
                 <div class="row">
 
-                    {{-- Proveedor --}}
                     <div class="col-12 col-md-6 mb-3">
                         <label class="form-label">Proveedor *</label>
                         <select name="id_proveedor"
                                 class="form-control @error('id_proveedor') is-invalid @enderror"
-                                required>
+                                required
+                                {{ $compra->estado_oc !== 'ACT' ? 'disabled' : '' }}>
                             <option value="">Seleccione un proveedor</option>
                             @foreach ($proveedores as $prov)
                                 <option value="{{ $prov->id_proveedor }}"
@@ -43,7 +45,10 @@
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 Productos
-                <button type="button" class="btn btn-sm btn-primary" id="btnAgregar">
+                <button type="button"
+                        class="btn btn-sm btn-primary"
+                        id="btnAgregar"
+                        {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
                     + Agregar producto
                 </button>
             </div>
@@ -61,13 +66,15 @@
                     </thead>
                     <tbody>
 
-                        {{-- SI HAY ERROR DE VALIDACIÓN --}}
+                        {{-- OLD --}}
                         @if(old('productos'))
                             @foreach(old('productos') as $i => $prod)
                                 <tr>
                                     <td>
                                         <select name="productos[{{ $i }}][id_producto]"
-                                                class="form-control producto" required>
+                                                class="form-control producto"
+                                                required
+                                                {{ $compra->estado_oc !== 'ACT' ? 'disabled' : '' }}>
                                             <option value="">Seleccione</option>
                                             @foreach ($productos as $p)
                                                 <option value="{{ $p->id_producto }}"
@@ -84,7 +91,9 @@
                                                name="productos[{{ $i }}][pxo_cantidad]"
                                                class="form-control cantidad"
                                                value="{{ $prod['pxo_cantidad'] }}"
-                                               min="1" required>
+                                               min="1"
+                                               {{ $compra->estado_oc !== 'ACT' ? 'readonly' : '' }}
+                                               required>
                                     </td>
 
                                     <td>
@@ -104,18 +113,24 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-danger btnEliminar">X</button>
+                                        <button type="button"
+                                                class="btn btn-sm btn-danger btnEliminar"
+                                                {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
+                                            X
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
 
-                        {{-- CASO NORMAL: CARGAR DESDE BD --}}
+                        {{-- BD --}}
                         @else
                             @foreach($compra->productos as $i => $prod)
                                 <tr>
                                     <td>
                                         <select name="productos[{{ $i }}][id_producto]"
-                                                class="form-control producto" required>
+                                                class="form-control producto"
+                                                required
+                                                {{ $compra->estado_oc !== 'ACT' ? 'disabled' : '' }}>
                                             <option value="">Seleccione</option>
                                             @foreach ($productos as $p)
                                                 <option value="{{ $p->id_producto }}"
@@ -132,7 +147,9 @@
                                                name="productos[{{ $i }}][pxo_cantidad]"
                                                class="form-control cantidad"
                                                value="{{ $prod->pivot->pxo_cantidad }}"
-                                               min="1" required>
+                                               min="1"
+                                               {{ $compra->estado_oc !== 'ACT' ? 'readonly' : '' }}
+                                               required>
                                     </td>
 
                                     <td>
@@ -152,7 +169,11 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-danger btnEliminar">X</button>
+                                        <button type="button"
+                                                class="btn btn-sm btn-danger btnEliminar"
+                                                {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
+                                            X
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -160,10 +181,6 @@
 
                     </tbody>
                 </table>
-
-                @error('productos')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
         </div>
 
@@ -190,7 +207,12 @@
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-success">Actualizar compra</button>
+            <button type="submit"
+                    class="btn btn-success"
+                    {{ $compra->estado_oc !== 'ACT' ? 'disabled' : '' }}>
+                Actualizar compra
+            </button>
+             <a href="{{ route('ordenes.approve', $compra->id_compra) }}" class="btn btn-success">Aprobar</a>
             <a href="{{ route('ordenes.index') }}" class="btn btn-secondary">Cancelar</a>
         </div>
 
@@ -199,90 +221,100 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    const editable = {{ $compra->estado_oc === 'ACT' ? 'true' : 'false' }};
 
-    let index = {{ old('productos') ? count(old('productos')) : 0 }};
-    const btnAgregar = document.getElementById('btnAgregar');
-    const tbody = document.querySelector('#tabla-productos tbody');
+    document.addEventListener('DOMContentLoaded', function () {
 
-    // =========================
-    // AGREGAR FILA
-    // =========================
-    btnAgregar.addEventListener('click', function () {
+        let index = {{ old('productos') ? count(old('productos')) : 0 }};
+        const btnAgregar = document.getElementById('btnAgregar');
+        const tbody = document.querySelector('#tabla-productos tbody');
 
-        const fila = `
-        <tr>
-            <td>
-                <select name="productos[${index}][id_producto]"
-                        class="form-control producto"
-                        required>
-                    <option value="">Seleccione</option>
-                    @foreach ($productos as $p)
-                        <option value="{{ $p->id_producto }}"
-                                data-precio="{{ $p->pro_valor_compra }}">
-                            {{ $p->pro_descripcion }}
-                        </option>
-                    @endforeach
-                </select>
-            </td>
+        // =========================
+        // SIEMPRE calcular totales al cargar
+        // =========================
+        recalcularTotales();
 
-            <td>
-                <input type="number"
-                       name="productos[${index}][pxo_cantidad]"
-                       class="form-control cantidad"
-                       value="1"
-                       min="1"
-                       required>
-            </td>
+        // =========================
+        // 🚫 MODO DETALLE: NO INTERACCIONES
+        // =========================
+        if (!editable) return;
 
-            <td>
-                <input type="number"
-                       step="0.001"
-                       name="productos[${index}][pxo_valor]"
-                       class="form-control valor"
-                       readonly>
-            </td>
+        // =========================
+        // AGREGAR FILA
+        // =========================
+        btnAgregar.addEventListener('click', function () {
 
-            <td>
-                <input type="text"
-                       class="form-control subtotal"
-                       value="0.000"
-                       readonly>
-            </td>
+            const fila = `
+            <tr>
+                <td>
+                    <select name="productos[${index}][id_producto]"
+                            class="form-control producto"
+                            required>
+                        <option value="">Seleccione</option>
+                        @foreach ($productos as $p)
+                            <option value="{{ $p->id_producto }}"
+                                    data-precio="{{ $p->pro_valor_compra }}">
+                                {{ $p->pro_descripcion }}
+                            </option>
+                        @endforeach
+                    </select>
+                </td>
 
-            <td class="text-center">
-                <button type="button"
-                        class="btn btn-sm btn-danger btnEliminar">
-                    X
-                </button>
-            </td>
-        </tr>
-        `;
+                <td>
+                    <input type="number"
+                           name="productos[${index}][pxo_cantidad]"
+                           class="form-control cantidad"
+                           value="1"
+                           min="1"
+                           required>
+                </td>
 
-        tbody.insertAdjacentHTML('beforeend', fila);
-        index++;
-    });
+                <td>
+                    <input type="number"
+                           step="0.001"
+                           name="productos[${index}][pxo_valor]"
+                           class="form-control valor"
+                           readonly>
+                </td>
 
-    // =========================
-    // ELIMINAR FILA
-    // =========================
-    tbody.addEventListener('click', function (e) {
-        if (e.target.classList.contains('btnEliminar')) {
-            e.target.closest('tr').remove();
-            recalcularTotales();
-        }
-    });
+                <td>
+                    <input type="text"
+                           class="form-control subtotal"
+                           value="0.000"
+                           readonly>
+                </td>
 
-    // =========================
-    // CUANDO CAMBIA EL PRODUCTO
-    // =========================
-    tbody.addEventListener('change', function (e) {
+                <td class="text-center">
+                    <button type="button"
+                            class="btn btn-sm btn-danger btnEliminar">
+                        X
+                    </button>
+                </td>
+            </tr>
+            `;
 
-        if (e.target.classList.contains('producto')) {
+            tbody.insertAdjacentHTML('beforeend', fila);
+            index++;
+        });
+
+        // =========================
+        // ELIMINAR FILA
+        // =========================
+        tbody.addEventListener('click', function (e) {
+            if (e.target.classList.contains('btnEliminar')) {
+                e.target.closest('tr').remove();
+                recalcularTotales();
+            }
+        });
+
+        // =========================
+        // CAMBIO PRODUCTO
+        // =========================
+        tbody.addEventListener('change', function (e) {
+
+            if (!e.target.classList.contains('producto')) return;
 
             const seleccionado = e.target.value;
-
-            // 🔒 VALIDAR PRODUCTO REPETIDO
             let repetido = false;
 
             document.querySelectorAll('.producto').forEach(select => {
@@ -298,70 +330,54 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const fila = e.target.closest('tr');
-
-            const precio = parseFloat(
-                e.target.selectedOptions[0]?.dataset.precio || 0
-            );
-
-            const cantidad = parseFloat(
-                fila.querySelector('.cantidad').value
-            ) || 0;
+            const precio = parseFloat(e.target.selectedOptions[0]?.dataset.precio || 0);
+            const cantidad = parseFloat(fila.querySelector('.cantidad').value) || 0;
 
             fila.querySelector('.valor').value = precio.toFixed(3);
-            fila.querySelector('.subtotal').value =
-                (cantidad * precio).toFixed(3);
+            fila.querySelector('.subtotal').value = (cantidad * precio).toFixed(3);
 
             recalcularTotales();
-        }
-    });
-
-    // =========================
-    // CUANDO CAMBIA LA CANTIDAD
-    // =========================
-    tbody.addEventListener('input', function (e) {
-
-        if (e.target.classList.contains('cantidad')) {
-
-            const fila = e.target.closest('tr');
-
-            const cantidad = parseFloat(e.target.value) || 0;
-            const precio = parseFloat(
-                fila.querySelector('.valor').value
-            ) || 0;
-
-            fila.querySelector('.subtotal').value =
-                (cantidad * precio).toFixed(3);
-
-            recalcularTotales();
-        }
-    });
-
-    // =========================
-    // SUBTOTAL GENERAL + IVA
-    // =========================
-    function recalcularTotales() {
-
-        let subtotalGeneral = 0;
-
-        document.querySelectorAll('.subtotal').forEach(el => {
-            subtotalGeneral += parseFloat(el.value) || 0;
         });
 
-        const iva = subtotalGeneral * 0.15;
-        const total = subtotalGeneral + iva;
+        // =========================
+        // CAMBIO CANTIDAD
+        // =========================
+        tbody.addEventListener('input', function (e) {
 
-        // visibles
-        document.getElementById('subtotal').value = subtotalGeneral.toFixed(2);
-        document.getElementById('iva').value = iva.toFixed(2);
-        document.getElementById('total').value = total.toFixed(2);
+            if (!e.target.classList.contains('cantidad')) return;
 
-        // hidden (backend)
-        document.getElementById('oc_subtotal').value = subtotalGeneral.toFixed(2);
-        document.getElementById('oc_iva').value = iva.toFixed(2);
-        document.getElementById('oc_total').value = total.toFixed(2);
-    }
+            const fila = e.target.closest('tr');
+            const cantidad = parseFloat(e.target.value) || 0;
+            const precio = parseFloat(fila.querySelector('.valor').value) || 0;
 
-});
+            fila.querySelector('.subtotal').value = (cantidad * precio).toFixed(3);
+            recalcularTotales();
+        });
+
+        // =========================
+        // TOTALES (SIEMPRE DISPONIBLE)
+        // =========================
+        function recalcularTotales() {
+
+            let subtotalGeneral = 0;
+
+            document.querySelectorAll('.subtotal').forEach(el => {
+                subtotalGeneral += parseFloat(el.value) || 0;
+            });
+
+            const iva = subtotalGeneral * 0.15;
+            const total = subtotalGeneral + iva;
+
+            document.getElementById('subtotal').value = subtotalGeneral.toFixed(2);
+            document.getElementById('iva').value = iva.toFixed(2);
+            document.getElementById('total').value = total.toFixed(2);
+
+            document.getElementById('oc_subtotal').value = subtotalGeneral.toFixed(2);
+            document.getElementById('oc_iva').value = iva.toFixed(2);
+            document.getElementById('oc_total').value = total.toFixed(2);
+        }
+
+    });
 </script>
 
 @endsection
