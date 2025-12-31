@@ -56,6 +56,7 @@
                                         padding:4px 10px;
                                         font-size:0.8rem;
                                         min-width:65px;">
+
                                      {{ $orden->estado_oc === 'ACT' ? 'Editar' : 'Detalle' }}
                                 </a>
                             {{-- BOTÓN ELIMINAR --}}

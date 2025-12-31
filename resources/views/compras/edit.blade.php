@@ -209,11 +209,25 @@
         <div class="mt-4">
             <button type="submit"
                     class="btn btn-success"
-                    {{ $compra->estado_oc !== 'ACT' ? 'disabled' : '' }}>
-                Actualizar
+                    {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
+                Actualizar compra
             </button>
-             <a href="{{ route('ordenes.aprobar', $compra->id_compra) }}" class="btn btn-success">Aprobar</a>
-            <a href="{{ route('ordenes.index') }}" class="btn btn-secondary">Cancelar</a>
+             <a href="{{ route('ordenes.aprobar', $compra->id_compra) }}"
+                class="btn btn-success" style="background-color:#031832"
+                {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}
+                onclick="return confirm('¿Estás seguro de aprobar esta orden de compra?');">
+                Aprobar
+                </a>
+
+
+
+            <a href="{{ route('ordenes.index') }}" class="btn btn-secondary"
+            style="{{ $compra->estado_oc === 'ACT' ? 'background-color:#8C0606;' : 'background-color:#031832' }}"
+
+            >
+
+                {{ $compra->estado_oc === 'ACT' ? 'Cancelar' : 'Regresar' }}
+            </a>
         </div>
 
     </form>
