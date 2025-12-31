@@ -167,7 +167,7 @@ public static function updateFacturas(string $idFactura, array $data)
         }
     }
 
-    public function aprobarFactura($id){
+    public static function aprobarFactura($id){
         DB::statement('CALL aprobar_factura(?)', [$id]);
     }
 }

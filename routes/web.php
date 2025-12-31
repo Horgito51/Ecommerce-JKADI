@@ -84,7 +84,7 @@ Route::prefix('admin')->group(function () {
             Route::resource('clientes', ClientesController::class);
 
             Route::resource('facturas',FacturaController::class);
-            Route::post('/facturas/{id}/aprobar', [FacturaController::class, 'aprobar'])
+            Route::get('/facturas/{id}/aprobar', [FacturaController::class, 'aprobar'])
             ->name('facturas.aprobar');
         });
     //productos

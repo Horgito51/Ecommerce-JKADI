@@ -21,6 +21,7 @@
                 <th>Subtotal</th>
                 <th>IVA</th>
                 <th>Total</th>
+                <th>Estado</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -36,7 +37,10 @@
                     <td>${{ number_format($factura->fac_subtotal, 2) }}</td>
                     <td>${{ number_format($factura->fac_iva, 2) }}</td>
                     <td>${{ number_format($factura->fac_total, 2) }}</td>
+                    
+                    <td>{{ $factura->fac_estado }}</td>
                     <td>
+                        
                         <div class="d-flex gap-1 justify-content-center">
 
                             <a href="{{route('facturas.edit',$factura->id_factura)}}"
@@ -46,27 +50,27 @@
                                       padding:4px 10px;
                                       font-size:0.8rem;
                                       min-width:65px;">
-                                Editar
+                                {{$factura->fac_estado ==='APR' ? 'Detalle':'Editar'}}
                             </a>
-
-                            <form action="{{ route('facturas.destroy', $factura) }}"
-                                  method="POST"
-                                  class="m-0">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                        class="btn btn-sm"
-                                        style="padding:4px 10px;
-                                               background-color:#8C0606;
-                                               color:white;
-                                               margin:2px;
-                                               font-size:0.8rem;
-                                               min-width:65px;"
-                                        onclick="return confirm('¿Estás seguro de que deseas eliminar esta Factura?')">
-                                    Eliminar
-                                </button>
-                            </form>
-
+                            @if ($factura->fac_estado=== 'ABI')
+                                <form action="{{ route('facturas.destroy', $factura) }}"
+                                    method="POST"
+                                    class="m-0">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="btn btn-sm"
+                                            style="padding:4px 10px;
+                                                background-color:#8C0606;
+                                                color:white;
+                                                margin:2px;
+                                                font-size:0.8rem;
+                                                min-width:65px;"
+                                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta Factura?')">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                     </td>
                 </tr>

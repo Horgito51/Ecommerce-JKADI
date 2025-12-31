@@ -39,7 +39,6 @@ class Clientes extends Model
         $cliente=self::getClienteById($id_cliente);
 
         if ($cliente->facturas()->exists()) {
-            // El cliente tiene facturas asociadas, no se puede eliminar
             return false;
         }
 
