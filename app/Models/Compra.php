@@ -52,9 +52,27 @@ class Compra extends Model
     }
     //MD concepto
 
-    public static function getCompras()
+    public static function getCompras(array $estados, string $search = '')
     {
-        return Compra::where('estado_oc', '!=', 'ANU')->paginate(10);
+        return self::with('proveedor')
+            ->whereIn('estado_oc', $estados)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+
+                    //Buscar por ID de compra
+                    $q->where('id_compra', 'like', "%{$search}%")
+
+                    //Buscar por nombre del proveedor
+                    ->orWhereHas('proveedor', function ($p) use ($search) {
+                        $p->where('prv_nombre', 'like', "%{$search}%");
+                    })
+
+                    //Buscar por total de la compra
+                    ->orWhere('oc_total', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
     }
 
     public static function getComprasById(string $id)

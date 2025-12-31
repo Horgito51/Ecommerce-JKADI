@@ -7,11 +7,16 @@ use App\Models\Ciudades;
 use Illuminate\Http\Request;
 class ProveedorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $proveedores=Proveedor::getProveedores();
-        return view('proveedores.index',compact('proveedores'));
+        $search = trim((string) $request->input('search', ''));
+
+        $proveedores = Proveedor::getProveedores($search);
+
+        return view('proveedores.index', compact('proveedores'));
     }
+
+
 
     public function create()
     {

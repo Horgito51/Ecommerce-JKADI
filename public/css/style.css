@@ -25,6 +25,7 @@ body {
   padding: 20px 0 !important;
   color: white !important;
   width: 100% !important;
+  
 }
 
 .cabecera .row {
@@ -229,4 +230,87 @@ border-radius: 5px;
     .stats {
         margin-top: 2rem;
     }
+}
+
+/* Mantén cards “visibles” para dropdowns */
+.card{
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+}
+
+/* Por defecto, deja visible (para selects normales) */
+.card-body{
+  overflow: visible;
+}
+
+/* PERO si el card-body es table-responsive, debe poder scrollear en X */
+.card-body.table-responsive,
+.table-responsive{
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Z-index para que los selects no queden detrás */
+select.form-control{
+  position: relative;
+  z-index: 5;
+}
+
+/* Evita que algo se salga del viewport horizontal */
+html, body{
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* (Opcional) compacta la tabla en móvil */
+@media (max-width: 576px){
+  #tabla-productos th,
+  #tabla-productos td{
+    font-size: 0.85rem;
+    padding: 6px;
+    vertical-align: middle;
+  }
+}
+
+/* Botón hamburguesa pal movil */
+.btn-hamburguesa {
+    background-color: #031832;
+    color: white;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    min-width: 65px;
+    border-radius: 5px;
+    border: none;
+}
+
+.btn-hamburguesa:hover {
+    background-color: #052659;
+}
+
+/* Separación real entre botones de acciones (móvil) */
+@media (max-width: 576px) {
+  td .acciones-botones > button,
+  td .acciones-botones > a,
+  td .acciones-botones > form {
+    margin-bottom: 8px !important;
+  }
+
+  td .acciones-botones > form:last-child,
+  td .acciones-botones > a:last-child,
+  td .acciones-botones > button:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+
+/* intercalado de filas colores */
+.fila-zebra {
+  background-color: rgba(0,0,0,.05);
+}
+
+/* Fila detalle */
+.fila-detalle {
+  background-color: #f8f9fa !important;
 }

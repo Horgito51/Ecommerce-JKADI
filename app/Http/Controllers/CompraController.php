@@ -10,11 +10,20 @@ use Illuminate\Http\Request;
 class CompraController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $compras = Compra::getCompras();
+        $estados = $request->input('estado', ['ACT']); // default: Activos
+        if (empty($estados)) {
+            $estados = ['ACT'];
+        }
+
+        $search = trim((string) $request->input('search', ''));
+
+        $compras = Compra::getCompras($estados, $search);
+
         return view('compras.index', compact('compras'));
     }
+
     public function create()
     {
         $proveedores = Proveedor::getProveedores();

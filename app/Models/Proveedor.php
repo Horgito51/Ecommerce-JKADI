@@ -42,16 +42,30 @@ class Proveedor extends Model
         );
     }
 
-    public static function getProveedores(){
-        return self::select('id_proveedor',
-        'prv_nombre',
-        'prv_ruc_ced',
-        'prv_telefono',
-        'prv_mail',
-        'id_ciudad',
-        'prv_celular',
-        'prv_direccion',
-        'estado_prv')->where('estado_prv','=','ACT')->paginate(10);
+    public static function getProveedores(string $search = '')
+    {
+        return self::with('ciudades')
+            ->select(
+                'id_proveedor',
+                'prv_nombre',
+                'prv_ruc_ced',
+                'prv_telefono',
+                'prv_mail',
+                'id_ciudad',
+                'prv_celular',
+                'prv_direccion',
+                'estado_prv'
+            )
+            ->where('estado_prv', '=', 'ACT')
+            ->when($search !== '', function ($q) use ($search) {
+                $q->where(function ($w) use ($search) {
+                    $w->where('id_proveedor', 'like', "%{$search}%")
+                    ->orWhere('prv_nombre', 'like', "%{$search}%")
+                    ->orWhere('prv_ruc_ced', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('id_proveedor', 'desc')
+            ->paginate(10);
     }
 
     public static function getProveedorById(string $id)

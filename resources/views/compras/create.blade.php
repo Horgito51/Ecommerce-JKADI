@@ -8,18 +8,21 @@
 
     <form method="POST" action="{{ route('ordenes.store') }}">
         @csrf
+
+        {{-- ================= DATOS DE LA COMPRA ================= --}}
         <div class="card mb-4">
             <div class="card-header">
                 Datos de la compra
             </div>
+
             <div class="card-body">
                 <div class="row">
-
-                    {{-- Proveedor --}}
+                    {{-- PROVEEDOR --}}
                     <div class="col-12 col-md-6 mb-3">
                         <label class="form-label">Proveedor *</label>
                         <select name="id_proveedor"
-                            class="form-control @error('id_proveedor') is-invalid @enderror" required>
+                            class="form-control @error('id_proveedor') is-invalid @enderror"
+                            required>
                             <option value="">Seleccione un proveedor</option>
                             @foreach ($proveedores as $prov)
                                 <option value="{{ $prov->id_proveedor }}"
@@ -32,27 +35,28 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                 </div>
             </div>
         </div>
+
+        {{-- ================= PRODUCTOS ================= --}}
         <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                Productos
-                <button type="button" class="btn btn-sm btn-primary" id="btnAgregar">
+            <div class="card-header d-flex flex-column flex-md-row justify-content-between gap-2">
+                <span>Productos</span>
+                <button type="button" class="btn btn-primary btn-sm" id="btnAgregar">
                     + Agregar producto
                 </button>
             </div>
-        
+
             <div class="card-body table-responsive">
                 <table class="table table-bordered align-middle" id="tabla-productos">
                     <thead class="table-light">
                         <tr>
                             <th>Producto *</th>
-                            <th width="120">Cantidad *</th>
-                            <th width="120">Valor *</th>
-                            <th width="120">Subtotal</th>
-                            <th width="80"></th>
+                            <th style="width:120px">Cantidad *</th>
+                            <th style="width:120px" class="d-none d-md-table-cell">Valor *</th>
+                            <th style="width:120px">Subtotal</th>
+                            <th style="width:60px"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,13 +66,14 @@
                                 <tr>
                                     <td>
                                         <select name="productos[{{ $i }}][id_producto]"
-                                            class="form-control @error("productos.$i.id_producto") is-invalid @enderror"
+                                            class="form-control producto @error("productos.$i.id_producto") is-invalid @enderror"
                                             required>
                                             <option value="">Seleccione</option>
                                             @foreach ($productos as $p)
                                                 <option value="{{ $p->id_producto }}"
+                                                    data-precio="{{ $p->pro_valor_compra }}"
                                                     {{ $prod['id_producto'] == $p->id_producto ? 'selected' : '' }}>
-                                                    {{ $p->descripcion }}
+                                                    {{ $p->pro_descripcion }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -80,36 +85,30 @@
                                     <td>
                                         <input type="number"
                                             name="productos[{{ $i }}][pxo_cantidad]"
-                                            class="form-control @error("productos.$i.pxo_cantidad") is-invalid @enderror"
+                                            class="form-control cantidad @error("productos.$i.pxo_cantidad") is-invalid @enderror"
                                             value="{{ $prod['pxo_cantidad'] }}"
                                             min="1"
                                             required>
-                                        @error("productos.$i.pxo_cantidad")
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
                                     </td>
 
-                                    <td>
+                                    <td class="d-none d-md-table-cell">
                                         <input type="number"
                                             step="0.001"
                                             name="productos[{{ $i }}][pxo_valor]"
-                                            class="form-control @error("productos.$i.pxo_valor") is-invalid @enderror"
+                                            class="form-control valor"
                                             value="{{ $prod['pxo_valor'] }}"
-                                            required>
-                                        @error("productos.$i.pxo_valor")
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                            readonly>
                                     </td>
 
                                     <td>
                                         <input type="text"
-                                               class="form-control"
-                                               readonly>
+                                            class="form-control subtotal"
+                                            readonly>
                                     </td>
 
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-danger btnEliminar">
-                                            X
+                                        <button type="button" class="btn btn-danger btnEliminar px-3">
+                                            ✕
                                         </button>
                                     </td>
                                 </tr>
@@ -122,12 +121,12 @@
                 @error('productos')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
-
             </div>
         </div>
 
+        {{-- ================= TOTALES ================= --}}
         <div class="row justify-content-end">
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-sm-8 col-md-4">
                 <div class="mb-2">
                     <label>Subtotal</label>
                     <input type="text" id="subtotal" class="form-control" readonly>
@@ -140,14 +139,15 @@
                     <label>Total</label>
                     <input type="text" id="total" class="form-control" readonly>
                 </div>
+
                 <input type="hidden" name="oc_subtotal" id="oc_subtotal">
                 <input type="hidden" name="oc_iva" id="oc_iva">
                 <input type="hidden" name="oc_total" id="oc_total">
-
             </div>
         </div>
 
-        <div class="mt-4">
+        {{-- ================= BOTONES ================= --}}
+        <div class="mt-4 d-flex flex-column flex-md-row gap-2">
             <button type="submit" class="btn btn-success">
                 Guardar compra
             </button>
@@ -157,9 +157,9 @@
         </div>
 
     </form>
-
 </div>
 
+{{-- ================= JS ================= --}}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -167,9 +167,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnAgregar = document.getElementById('btnAgregar');
     const tbody = document.querySelector('#tabla-productos tbody');
 
-    // =========================
-    // AGREGAR FILA
-    // =========================
     btnAgregar.addEventListener('click', function () {
 
         const fila = `
@@ -197,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
                        required>
             </td>
 
-            <td>
+            <td class="d-none d-md-table-cell">
                 <input type="number"
                        step="0.001"
                        name="productos[${index}][pxo_valor]"
@@ -214,8 +211,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             <td class="text-center">
                 <button type="button"
-                        class="btn btn-sm btn-danger btnEliminar">
-                    X
+                        class="btn btn-danger btnEliminar px-3">
+                    ✕
                 </button>
             </td>
         </tr>
@@ -225,9 +222,6 @@ document.addEventListener('DOMContentLoaded', function () {
         index++;
     });
 
-    // =========================
-    // ELIMINAR FILA
-    // =========================
     tbody.addEventListener('click', function (e) {
         if (e.target.classList.contains('btnEliminar')) {
             e.target.closest('tr').remove();
@@ -235,20 +229,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // =========================
-    // CUANDO CAMBIA EL PRODUCTO
-    // =========================
     tbody.addEventListener('change', function (e) {
-
         if (e.target.classList.contains('producto')) {
 
-            const seleccionado = e.target.value;
-
-            // 🔒 VALIDAR PRODUCTO REPETIDO
             let repetido = false;
-
             document.querySelectorAll('.producto').forEach(select => {
-                if (select !== e.target && select.value === seleccionado && seleccionado !== '') {
+                if (select !== e.target && select.value === e.target.value && e.target.value !== '') {
                     repetido = true;
                 }
             });
@@ -260,72 +246,46 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const fila = e.target.closest('tr');
-
-            const precio = parseFloat(
-                e.target.selectedOptions[0]?.dataset.precio || 0
-            );
-
-            const cantidad = parseFloat(
-                fila.querySelector('.cantidad').value
-            ) || 0;
+            const precio = parseFloat(e.target.selectedOptions[0]?.dataset.precio || 0);
+            const cantidad = parseFloat(fila.querySelector('.cantidad').value || 0);
 
             fila.querySelector('.valor').value = precio.toFixed(3);
-            fila.querySelector('.subtotal').value =
-                (cantidad * precio).toFixed(3);
+            fila.querySelector('.subtotal').value = (precio * cantidad).toFixed(3);
 
             recalcularTotales();
         }
     });
 
-    // =========================
-    // CUANDO CAMBIA LA CANTIDAD
-    // =========================
     tbody.addEventListener('input', function (e) {
-
         if (e.target.classList.contains('cantidad')) {
-
             const fila = e.target.closest('tr');
+            const cantidad = parseFloat(e.target.value || 0);
+            const precio = parseFloat(fila.querySelector('.valor').value || 0);
 
-            const cantidad = parseFloat(e.target.value) || 0;
-            const precio = parseFloat(
-                fila.querySelector('.valor').value
-            ) || 0;
-
-            fila.querySelector('.subtotal').value =
-                (cantidad * precio).toFixed(3);
-
+            fila.querySelector('.subtotal').value = (cantidad * precio).toFixed(3);
             recalcularTotales();
         }
     });
 
-    // =========================
-    // SUBTOTAL GENERAL + IVA
-    // =========================
     function recalcularTotales() {
-
-        let subtotalGeneral = 0;
-
+        let subtotal = 0;
         document.querySelectorAll('.subtotal').forEach(el => {
-            subtotalGeneral += parseFloat(el.value) || 0;
+            subtotal += parseFloat(el.value || 0);
         });
 
-        const iva = subtotalGeneral * 0.15;
-        const total = subtotalGeneral + iva;
+        const iva = subtotal * 0.15;
+        const total = subtotal + iva;
 
-        // visibles
-        document.getElementById('subtotal').value = subtotalGeneral.toFixed(2);
+        document.getElementById('subtotal').value = subtotal.toFixed(2);
         document.getElementById('iva').value = iva.toFixed(2);
         document.getElementById('total').value = total.toFixed(2);
 
-        // hidden (backend)
-        document.getElementById('oc_subtotal').value = subtotalGeneral.toFixed(2);
+        document.getElementById('oc_subtotal').value = subtotal.toFixed(2);
         document.getElementById('oc_iva').value = iva.toFixed(2);
         document.getElementById('oc_total').value = total.toFixed(2);
     }
 
 });
 </script>
-
-
 
 @endsection

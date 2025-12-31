@@ -43,7 +43,7 @@
 
         {{-- ================= PRODUCTOS ================= --}}
         <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-header d-flex flex-column flex-md-row justify-content-between gap-2">
                 Productos
                 <button type="button"
                         class="btn btn-sm btn-primary"
@@ -59,7 +59,7 @@
                         <tr>
                             <th>Producto *</th>
                             <th width="120">Cantidad *</th>
-                            <th width="120">Valor *</th>
+                            <th width="120" class="d-none d-md-table-cell">Valor *</th>
                             <th width="120">Subtotal</th>
                             <th width="80"></th>
                         </tr>
@@ -96,7 +96,7 @@
                                                required>
                                     </td>
 
-                                    <td>
+                                    <td class="d-none d-md-table-cell">
                                         <input type="number"
                                                step="0.001"
                                                name="productos[{{ $i }}][pxo_valor]"
@@ -152,7 +152,7 @@
                                                required>
                                     </td>
 
-                                    <td>
+                                    <td class="d-none d-md-table-cell">
                                         <input type="number"
                                                step="0.001"
                                                name="productos[{{ $i }}][pxo_valor]"
@@ -186,7 +186,7 @@
 
         {{-- ================= TOTALES ================= --}}
         <div class="row justify-content-end">
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-sm-8 col-md-4">
                 <div class="mb-2">
                     <label>Subtotal</label>
                     <input type="text" id="subtotal" class="form-control" readonly>
@@ -206,7 +206,7 @@
             </div>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-4 d-flex flex-column flex-md-row gap-2">
             <button type="submit"
                     class="btn btn-success"
                     {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
@@ -283,7 +283,7 @@
                            required>
                 </td>
 
-                <td>
+                <td class="d-none d-md-table-cell">
                     <input type="number"
                            step="0.001"
                            name="productos[${index}][pxo_valor]"

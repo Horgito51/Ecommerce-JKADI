@@ -20,9 +20,25 @@
         </small>
       </div>
 
-      <!-- Buscador dinámico -->
+      <!-- Buscador dinámico (GENÉRICO) -->
       <div class="col-12 col-md-5 mt-3 mt-md-0">
-        <form class="d-flex" action="{{ $searchRoute ?? '#' }}" method="GET">
+        <form class="d-flex"
+              action="{{ $searchRoute ?? '#' }}"
+              method="GET">
+
+          {{-- 🔎 Parámetros extra opcionales (filtros, estados, etc.) --}}
+          @isset($searchExtraParams)
+            @foreach($searchExtraParams as $key => $val)
+              @if(is_array($val))
+                @foreach($val as $v)
+                  <input type="hidden" name="{{ $key }}[]" value="{{ $v }}">
+                @endforeach
+              @else
+                <input type="hidden" name="{{ $key }}" value="{{ $val }}">
+              @endif
+            @endforeach
+          @endisset
+
           <input
             type="search"
             name="search"
@@ -30,18 +46,19 @@
             placeholder="{{ $searchPlaceholder ?? 'Buscar...' }}"
             value="{{ request('search') }}"
           >
+
           <button
             class="btn btn-light rounded-circle d-flex align-items-center justify-content-center"
             type="submit"
             style="width: 42px; height: 42px;">
             <img src="{{ asset('img/lupa.png') }}"
-                alt="Buscar"
-                width="18">
+                 alt="Buscar"
+                 width="18">
           </button>
         </form>
       </div>
 
-      <!-- Usuario (estático) -->
+      <!-- Usuario -->
       <div class="col-12 col-md-2 mt-3 mt-md-0 text-center">
         <div class="d-flex flex-column align-items-center">
           <svg xmlns="http://www.w3.org/2000/svg"
@@ -63,4 +80,3 @@
     </div>
   </div>
 </header>
-
