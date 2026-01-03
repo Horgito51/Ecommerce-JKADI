@@ -27,10 +27,10 @@ class Factura extends Model
     public function productos()
     {
         return $this->belongsToMany(
-            Producto::class,   
-            'proxfac',        
-            'id_factura',      
-            'id_producto'      
+            Producto::class,
+            'proxfac',
+            'id_factura',
+            'id_producto'
         )->withPivot([
             'pxf_cantidad',
             'pxf_precio',
@@ -99,14 +99,14 @@ public static function updateFacturas(string $idFactura, array $data)
             //Primero el detalle
             Proxfac::where('id_factura', $id)
                 ->update(['pxf_estado' => 'ANU']);
-                
+
             //Luego la factura
             Factura::where('id_factura', $id)
             ->update(['fac_estado' => 'ANU']);
 
 
         });
-        
+
     }
 
 
@@ -125,17 +125,17 @@ public static function updateFacturas(string $idFactura, array $data)
     }
 
     public static function createFactura(array $data){
-        
+
         return DB::transaction(function () use ($data) {
             $id_fac=self::crearIdFactura();
             $factura= self::create([
                 'id_factura'      => $id_fac,
                 'id_cliente'      => $data['id_cliente'],
                 'fac_descripcion' => $data['fac_descripcion'],
-                'fac_subtotal'    => $data['fac_subtotal'],  
-                'fac_iva'         => $data['fac_iva'],       
+                'fac_subtotal'    => $data['fac_subtotal'],
+                'fac_iva'         => $data['fac_iva'],
                 'fac_total'       => $data['fac_total'],
-                'fac_estado'      => 'APR',
+                'fac_estado'      => 'ABI',
 
             ]);
 
@@ -149,13 +149,13 @@ public static function updateFacturas(string $idFactura, array $data)
                 'pxf_cantidad' => $producto['pxf_cantidad'],
                 'pxf_precio'    => $producto['pxf_precio'],
                 'pxf_subtotal' => $subtotal,
-                'pxf_estado'  => 'APR',
+                'pxf_estado'  => 'ABI',
             ]);
         }
             return $factura;
-            
+
         });
-        
+
     }
 
     public function scopegetFacturaBy($query,$search){
