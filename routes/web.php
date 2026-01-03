@@ -32,13 +32,6 @@ Route::group([], function () {
     Route::get('/detalle/{id}', [CatalogoController::class, 'show'])->name('catalogo.detalle');
 });
 
-
-// CLIENTES PROVEEDORES Y PRODUCTOS
-// Route::get('/clientes',[ClientesController::class,'index']);
-
-// Route::get('/productos',[ProductoController::class,'index']);
-
-// LOGIN
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', function () {
         return view('auth.login');
@@ -51,9 +44,9 @@ Route::prefix('admin')->group(function () {
 
     // DASHBOARD ADMIN
     Route::middleware(['rol:admin'])->group(function () {
-        Route::get('/', function () {
+        Route::get('/', function (){
             return view('admin.dashboard');
-        });
+        })->name('admin.index');
     });
 
     // BODEGA
@@ -62,8 +55,8 @@ Route::prefix('admin')->group(function () {
         ->group(function () {
 
             Route::get('/', function () {
-                return 'Backoffice funcionando 🚀';
-            });
+                return view('admin.dashboard');
+            })->name('admin.index');;
 
         });
 
@@ -71,6 +64,9 @@ Route::prefix('admin')->group(function () {
     Route::middleware(['rol:admin,gerente_compras'])
         ->prefix('compras')
         ->group(function () {
+            Route::get('/', function () {
+                return view('admin.dashboard');
+            })->name('admin.index');;
             Route::resource('proveedores', ProveedorController::class);
 
             Route::resource('ordenes',CompraController::class);
@@ -81,6 +77,10 @@ Route::prefix('admin')->group(function () {
     Route::middleware(['rol:admin,gerente_ventas'])
         ->prefix('ventas')
         ->group(function () {
+            Route::get('/', function () {
+                return view('admin.dashboard');
+            })->name('admin.index');;
+
             Route::resource('clientes', ClientesController::class);
 
             Route::resource('facturas',FacturaController::class);
@@ -90,6 +90,9 @@ Route::prefix('admin')->group(function () {
     //productos
     Route::middleware(['rol:admin,gerente_bodega,gerente_compras,gerente_ventas'])
     ->group(function () {
+        Route::get('/', function () {
+                return view('admin.dashboard');
+            })->name('admin.index');;
            Route::resource('productos', ProductoController::class);
     });
 

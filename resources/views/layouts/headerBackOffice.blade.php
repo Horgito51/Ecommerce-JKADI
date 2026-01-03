@@ -4,10 +4,12 @@
 
       <!-- Logo -->
       <div class="col-6 col-md-2">
-        <img src="{{ asset('img/Logo.png') }}"
+       <a href="{{ route('admin.index') }}">
+         <img src="{{ asset('img/Logo.png') }}"
              alt="J-KADI Sports"
              class="img-fluid"
              style="max-width: 140px;">
+       </a>
       </div>
 
       <!-- Título Backoffice -->
@@ -72,7 +74,7 @@
                   d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8"/>
           </svg>
           <small class="text-white mt-1">
-            Administrador
+           {{ auth()->user()->name ?? 'Administrador' }}
           </small>
         </div>
       </div>

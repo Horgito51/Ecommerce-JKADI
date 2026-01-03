@@ -28,15 +28,15 @@ class LoginController extends Controller
 
     // 5. Redirigir según rol
     if ($user->rol === 'gerente_bodega') {
-        return redirect('/admin/productos');
+        return redirect('/admin');
     }
 
     if ($user->rol === 'gerente_compras') {
-        return redirect('/admin/compras/proveedores');
+        return redirect('/admin');
     }
 
     if ($user->rol === 'gerente_ventas') {
-        return redirect('/admin/ventas/clientes');
+        return redirect('/admin');
     }
 
     if ($user->rol === 'admin') {

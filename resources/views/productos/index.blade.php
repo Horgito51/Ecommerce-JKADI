@@ -17,8 +17,8 @@
 </div>
 @endif
     <div class="table-responsive">
-        <table id="tablaProductos" class="table table-striped table-bordered" >   
-            <thead style="background-color:#031832;color:white"> 
+        <table id="tablaProductos" class="table table-striped table-bordered" >
+            <thead style="background-color:#031832;color:white">
                 <tr>
                     <th>ID</th>
                     <th>Descripcion</th>
@@ -53,14 +53,14 @@
                       <td>{{ $producto->pro_precio_venta }}</td>
                     @endif
                     <td>
-                    <div class="d-flex gap-1 justify-content-center">    
+                    <div class="d-flex gap-1 justify-content-center">
                         <a href="{{route('productos.edit', $producto->id_producto)}}"
                         class="btn btn-sm"
                         style="background-color:#031832;color:white; margin:2px;
                                 padding: 4px 10px;
                                 font-size: 0.8rem;
                                 min-width: 65px;">
-                            Editar                            
+                            Editar
                         </a>
 
 
