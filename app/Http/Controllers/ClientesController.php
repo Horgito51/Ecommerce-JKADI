@@ -54,10 +54,6 @@ class ClientesController extends Controller
         $request->validate($rules,$messages);
     }
 
-
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $clientes=Clientes::getClienteBy($request->search)
@@ -65,9 +61,6 @@ class ClientesController extends Controller
         return view('clientes.index', compact('clientes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
 
@@ -75,9 +68,6 @@ class ClientesController extends Controller
         return view('clientes.create',compact('ciudades'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $this->validateCliente($request);
@@ -97,9 +87,6 @@ class ClientesController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id_cliente)
     {
         $ciudades=Ciudades::all();
@@ -107,9 +94,6 @@ class ClientesController extends Controller
         return view('clientes.edit', compact('clientes','ciudades'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id_cliente)
     {
         $clientes = Clientes::getClienteById($id_cliente);
@@ -129,9 +113,6 @@ class ClientesController extends Controller
         ->with('success', 'Cliente actualizado exitosamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id_cliente)
     {
         $resultado=Clientes::destroyClientes($id_cliente);

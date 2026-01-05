@@ -84,7 +84,7 @@
                                                 <option value="">Seleccione</option>
                                                 @foreach ($productos as $p)
                                                     <option value="{{ $p->id_producto }}"
-                                                        data-precio="{{ $p->pro_valor_compra }}"
+                                                        data-precio="{{ $p->pro_precio_venta }}"
                                                         {{ $prod['id_producto'] == $p->id_producto ? 'selected' : '' }}>
                                                         {{ $p->pro_descripcion }}
                                                     </option>
@@ -125,7 +125,7 @@
                                                 <option value="">Seleccione</option>
                                                 @foreach ($productos as $p)
                                                     <option value="{{ $p->id_producto }}"
-                                                        data-precio="{{ $p->pro_valor_compra }}"
+                                                        data-precio="{{ $p->pro_precio_venta }}"
                                                         {{ $prod->id_producto == $p->id_producto ? 'selected' : '' }}>
                                                         {{ $p->pro_descripcion }}
                                                     </option>
@@ -217,7 +217,7 @@
                 <select name="productos[${index}][id_producto]" class="form-control producto" required>
                     <option value="">Seleccione</option>
                     @foreach ($productos as $p)
-                        <option value="{{ $p->id_producto }}" data-precio="{{ $p->pro_valor_compra }}">
+                        <option value="{{ $p->id_producto }}" data-precio="{{ $p->pro_precio_venta }}">
                             {{ $p->pro_descripcion }}
                         </option>
                     @endforeach

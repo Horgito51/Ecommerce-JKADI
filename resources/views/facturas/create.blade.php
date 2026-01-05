@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <option value="">Seleccione</option>
                     @foreach ($productos as $p)
                         <option value="{{ $p->id_producto }}"
-                                data-precio="{{ $p->pro_valor_compra }}">
+                                data-precio="{{ $p->pro_precio_venta }}">
                             {{ $p->pro_descripcion }}
                         </option>
                     @endforeach
