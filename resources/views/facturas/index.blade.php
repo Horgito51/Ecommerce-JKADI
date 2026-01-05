@@ -55,7 +55,7 @@
                             @if ($factura->fac_estado=== 'ABI')
                                 <form action="{{ route('facturas.destroy', $factura) }}"
                                     method="POST"
-                                    class="m-0">
+                                    class="m-0 form-eliminar-facturas">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
@@ -66,7 +66,7 @@
                                                 margin:2px;
                                                 font-size:0.8rem;
                                                 min-width:65px;"
-                                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta Factura?')">
+                                          >
                                         Eliminar
                                     </button>
                                 </form>
@@ -78,4 +78,32 @@
         </tbody>
     </table>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.form-eliminar-facturas').forEach(form => {
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Eliminar Compra?',
+                text: 'Esta acción no se puede deshacer',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#8C0606',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+
+        });
+
+    });
+});
+</script>
 @endsection

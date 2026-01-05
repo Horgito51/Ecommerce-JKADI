@@ -67,14 +67,14 @@
                        @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('gerente_bodega')) )
 
                         <form action="{{route('productos.destroy',$producto->id_producto)}}"
-                            method="POST" class="m-0">
+                            method="POST" class="m-0 form-eliminar-productos">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
                                     class="btn btn-sm"
                                     style="padding: 4px 10px; background-color:#8C0606;color:white; margin:2px;                                            font-size: 0.8rem;
                                        min-width: 65px;"
-                                    onclick="return confirm('¿Estás seguro de que deseas eliminar este Producto?')">
+                                  >
                                 Eliminar
                             </button>
                         </form>
@@ -94,4 +94,32 @@
 </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.form-eliminar-productos').forEach(form => {
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Eliminar Producto?',
+                text: 'Esta acción no se puede deshacer',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#8C0606',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+
+        });
+
+    });
+});
+</script>
 @endsection

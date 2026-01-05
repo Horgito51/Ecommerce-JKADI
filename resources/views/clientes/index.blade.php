@@ -44,8 +44,7 @@
                                     <button type="submit" class="btn btn-sm "
                                         style="padding: 4px 10px; background-color:#8C0606;color:white; margin:2px;
                                             font-size: 0.8rem;
-                                            min-width: 65px;"
-                                        onclick="return confirm('¿Estás seguro de que deseas eliminar este Proveedor?')">
+                                            min-width: 65px;">
                                         Eliminar
                                     </button>
                                 </form>

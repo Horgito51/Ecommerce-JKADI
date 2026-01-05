@@ -170,7 +170,7 @@
                                                    padding:4px 10px;
                                                    font-size:0.8rem;
                                                    min-width:65px;"
-                                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta orden?')">
+                                            >
                                         Eliminar
                                     </button>
                                 </form>
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             Swal.fire({
-                title: '¿Eliminar Cliente?',
+                title: '¿Eliminar Compra?',
                 text: 'Esta acción no se puede deshacer',
                 icon: 'warning',
                 showCancelButton: true,
