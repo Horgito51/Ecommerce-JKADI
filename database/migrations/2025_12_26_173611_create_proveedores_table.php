@@ -19,7 +19,7 @@ return new class extends Migration
             $table->char('prv_mail', 60);
             $table->foreignId('id_ciudad')->references('id')->on('ciudades')
             ->onDelete('restrict');
-            $table->char('prv_celular', 10)->nullable();
+            $table->char('prv_celular', 10);
             $table->char('prv_direccion', 60);
             $table->char('estado_prv', 3);
             $table->timestamps();

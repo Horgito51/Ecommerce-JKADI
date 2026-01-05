@@ -96,7 +96,7 @@ class ProveedorController extends Controller
             'prv_telefono'  => 'nullable|string|min:10|max:10|regex:/^[0-9]+$/',
             'prv_mail'      => 'required|email|max:60',
             'id_ciudad'     => 'required|exists:ciudades,id',
-            'prv_celular'   => 'required|string|min:10|max:10|regex:/^[0-9]+$/',
+            'prv_celular'   => 'nullable|string|min:10|max:10|regex:/^[0-9]+$/',
             'prv_direccion' => 'required|string|max:60',
             'tipo_documento' => 'required|in:RUC,CEDULA',
         ];

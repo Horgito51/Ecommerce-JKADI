@@ -64,7 +64,7 @@
                 </td>
 
                 <td class="col-detalle">{{ $proveedor->prv_ruc_ced }}</td>
-                <td class="col-detalle">{{ $proveedor->prv_telefono }}</td>
+                <td class="col-detalle">{{ $proveedor->prv_telefono ?? 'N/A' }}</td>
                 <td class="col-detalle">{{ $proveedor->prv_mail }}</td>
                 <td class="col-detalle">{{ $proveedor->ciudades->ciu_descripcion ?? '-' }}</td>
                 <td class="col-detalle">{{ $proveedor->prv_celular }}</td>
