@@ -37,10 +37,11 @@
                                             font-size: 0.8rem;
                                             min-width: 65px;">
                                     Editar</a>
-                                <form action="{{ route('clientes.destroy', $cliente) }}" method="POST" class="d-inline">
+                                <form action="{{ route('clientes.destroy', $cliente) }}" method="POST"
+                                class="d-inline form-eliminar-cliente">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm"
+                                    <button type="submit" class="btn btn-sm "
                                         style="padding: 4px 10px; background-color:#8C0606;color:white; margin:2px;
                                             font-size: 0.8rem;
                                             min-width: 65px;"
@@ -56,4 +57,32 @@
         </table>
 
     </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.form-eliminar-cliente').forEach(form => {
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Eliminar Cliente?',
+                text: 'Esta acción no se puede deshacer',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#8C0606',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+
+        });
+
+    });
+});
+</script>
 @endsection

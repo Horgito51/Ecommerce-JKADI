@@ -159,7 +159,7 @@
                             @if ($orden->estado_oc === 'ACT')
                                 <form action="{{ route('ordenes.destroy', $orden->id_compra) }}"
                                       method="POST"
-                                      class="m-0">
+                                      class="m-0 form-eliminar-compra">
                                     @csrf
                                     @method('DELETE')
 
@@ -224,6 +224,35 @@
         row.style.display = (row.style.display === 'table-row') ? 'none' : 'table-row';
     }
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.form-eliminar-compra').forEach(form => {
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Eliminar Cliente?',
+                text: 'Esta acción no se puede deshacer',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#8C0606',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+
+        });
+
+    });
+});
+</script>
+
 @endpush
 
 @endsection
