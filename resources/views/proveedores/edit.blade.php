@@ -26,19 +26,27 @@
                     <div class="col-12 col-md-8" style="margin-top:5px">
                         <label class="form-label">Tipo de documento*</label>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="tipo_documento" value="RUC"
-                            {{ old('tipo_documento', strlen($proveedor->prv_ruc_ced) == 13 ? 'RUC' : 'CEDULA') == 'RUC' ? 'checked' : '' }}>
+                            <input class="form-check-input"
+                                type="radio"
+                                name="tipo_documento"
+                                value="RUC"
+                                {{ old('tipo_documento', strlen(rtrim($proveedor->prv_ruc_ced)) == 13 ? 'RUC' : 'CEDULA') == 'RUC' ? 'checked' : '' }}>
                             <label class="form-check-label">RUC</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="tipo_documento" value="CEDULA"
-                            {{ old('tipo_documento', strlen($proveedor->prv_ruc_ced) == 13 ? 'RUC' : 'CEDULA') == 'CEDULA' ? 'checked' : '' }}>
+                            <input class="form-check-input"
+                                type="radio"
+                                name="tipo_documento"
+                                value="CEDULA"
+                                {{ old('tipo_documento',strlen(rtrim($proveedor->prv_ruc_ced)) == 13 ? 'RUC' : 'CEDULA') == 'CEDULA' ? 'checked' : '' }}>
                             <label class="form-check-label">Cédula</label>
                         </div>
+
                         @error('tipo_documento')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+
 
                     {{-- RUC / CÉDULA --}}
                     <div class="col-12 col-md-6">

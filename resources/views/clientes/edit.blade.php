@@ -26,34 +26,33 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <div class="col-12 col-md-8" style="margin-top:5px">
+                    {{-- tipo documento --}}
+                   <div class="col-12 col-md-8" style="margin-top:5px">
                         <label class="form-label">Tipo de documento *</label>
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input"
-                                   type="radio"
-                                   name="tipo_documento"
-                                   value="RUC"
-                                   {{ old('tipo_documento', strlen($clientes->cli_ruc_ced) == 13 ? 'RUC' : '') == 'RUC' ? 'checked' : '' }}>
+                                type="radio"
+                                name="tipo_documento"
+                                value="RUC"
+                                {{ old('tipo_documento',strlen(rtrim($clientes->cli_ruc_ced)) == 13 ? 'RUC' : '') == 'RUC' ? 'checked' : '' }}>
                             <label class="form-check-label">RUC</label>
                         </div>
-
                         <div class="form-check form-check-inline">
                             <input class="form-check-input"
-                                   type="radio"
-                                   name="tipo_documento"
-                                   value="CEDULA"
-                                   {{ old('tipo_documento', strlen($clientes->cli_ruc_ced) == 10 ? 'CEDULA' : '') == 'CEDULA' ? 'checked' : '' }}>
+                                type="radio"
+                                name="tipo_documento"
+                                value="CEDULA"
+                                {{ old('tipo_documento',strlen(rtrim($clientes->cli_ruc_ced)) == 10 ? 'CEDULA' : '') == 'CEDULA' ? 'checked' : '' }}>
                             <label class="form-check-label">Cédula</label>
                         </div>
-
                         @error('tipo_documento')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
 
-    
+
+
                     <div class="col-12 col-md-6">
                         <label class="form-label">Cédula / RUC *</label>
                         <input type="text"
