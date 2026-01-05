@@ -41,7 +41,7 @@ class ProductoController extends Controller
         $request->file('img')
         );
 
-        return redirect()->route('productos.index')->with('Exitoso','Producto creado correctamente');
+        return redirect()->route('productos.index')->with('Exitoso','Producto creado exitosamente');
     }
 
 
@@ -73,7 +73,7 @@ class ProductoController extends Controller
 
         Producto::updateProducto($id, $request->all());
 
-        return redirect()->route('productos.index')->with('Exitoso','Producto actualizado correctamente');
+        return redirect()->route('productos.index')->with('Exitoso','Producto actualizado exitosamente');
     }
 
     /**
@@ -89,7 +89,7 @@ class ProductoController extends Controller
 
         $productos->destroyProducto();
 
-        return redirect()->route('productos.index')->with('Exitoso','Producto eliminado correctamente');
+        return redirect()->route('productos.index')->with('Exitoso','Producto eliminado exitosamente');
     }
 
 
