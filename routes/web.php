@@ -105,7 +105,7 @@ Route::post('/logout', function () {
     request()->session()->invalidate();
     request()->session()->regenerateToken();
 
-    return redirect('/login');
+    return redirect('/portada');
 })->name('logout');
 
 // Route::resource('facturas',FacturaController::class);
