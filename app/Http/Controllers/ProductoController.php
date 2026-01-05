@@ -94,38 +94,33 @@ class ProductoController extends Controller
 
 
 
-
 private function validateProducto(Request $request, $id = null)
-    {
-        $rules = [
-            'pro_descripcion' => 'required|unique:productos,pro_descripcion' . ($id ? ',' . $id . ',id_producto' : ''),
-            'tipo_Producto' => 'required',
-            'unidad_medida_venta' => 'required',
-            'unidad_medida_compra' => 'required',
-            'saldo_inicial' => 'required|numeric|min:0',
-        ];
+{
+    $rules = [
+        'pro_descripcion' => 'required|unique:productos,pro_descripcion' . ($id ? ',' . $id . ',id_producto' : ''),
+        'tipo_Producto' => 'required',
+        'unidad_medida_venta' => 'required',
+        'unidad_medida_compra' => 'required',
+        'saldo_inicial' => 'required|numeric|min:0',
+        'img' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
+    ];
 
+    $messages = [
+        'pro_descripcion.required' => 'La descripción del producto es obligatoria',
+        'pro_descripcion.unique' => 'Esta descripción de producto ya está registrada',
 
-        if (!$id) {
-            $rules['id_producto'] = 'required|unique:productos,id_producto';
-            $rules['img'] = 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048';
-        }
+        'tipo_Producto.required' => 'Debes seleccionar un tipo de producto',
 
-        $messages = [
-            'id_producto.required' => 'El código del producto es obligatorio',
-            'id_producto.unique' => 'Este código de producto ya está registrado',
+        'saldo_inicial.required' => 'El saldo inicial es obligatorio',
+        'saldo_inicial.numeric' => 'El saldo inicial debe ser un número',
+        'saldo_inicial.min' => 'El saldo inicial no puede ser negativo',
 
-            'pro_descripcion.required' => 'La descripción del producto es obligatorio',
-            'pro_descripcion.unique' => 'Esta descripción de producto ya está registrado',
+        'img.image' => 'El archivo debe ser una imagen',
+        'img.mimes' => 'La imagen debe ser PNG, JPG, JPEG o WEBP',
+    ];
 
-            'tipo_Producto.required' => 'Debes seleccionar un tipo de producto',
+    return $request->validate($rules, $messages);
+}
 
-            'saldo_inicial.required' => 'El saldo inicial es obligatorio',
-            'saldo_inicial.numeric' => 'El saldo inicial debe ser un número',
-            'saldo_inicial.min' => 'El saldo inicial no puede ser negativo',
-        ];
-
-        return $request->validate($rules, $messages);
-    }
 
 }

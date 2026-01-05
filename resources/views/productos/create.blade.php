@@ -8,7 +8,8 @@
         @csrf
         
         <div class="row g-3">
-            {{-- ID Producto --}}
+
+            {{-- ID Producto 
             <div class="col-12 col-md-6">
                 <label for="id_producto">ID Producto: <span class="text-danger">*</span></label>
                 <input 
@@ -23,7 +24,9 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+            --}}
 
+            
             {{-- Descripción Producto --}}
             <div class="col-12 col-md-6">
                 <label for="pro_descripcion">Descripción Producto: <span class="text-danger">*</span></label>
