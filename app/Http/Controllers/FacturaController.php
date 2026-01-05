@@ -71,7 +71,7 @@ class FacturaController extends Controller
     public function create()
     {
         $clientes = Clientes::getClientes();
-        $productos = Producto::getAllProductosP();
+        $productos = Producto::getAllProductos();
         return view('facturas.create', compact('clientes', 'productos'));
     }
 
@@ -122,7 +122,7 @@ class FacturaController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validateFactura($request);
-        
+
         $data = [
             'id_cliente' => $request->id_cliente,
             'fac_descripcion' => $request->fac_descripcion,
@@ -146,7 +146,7 @@ class FacturaController extends Controller
         return redirect()
             ->route('facturas.index')
             ->with('success', 'Factura anulada exitosamente');
-        
+
     }
 
     public function aprobar (string $id_factura){

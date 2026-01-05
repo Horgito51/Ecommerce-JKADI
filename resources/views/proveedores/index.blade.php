@@ -32,7 +32,7 @@
     <a href="{{ route('proveedores.create') }}"
        class="btn d-block d-sm-inline-block"
        style="background-color:#198754;color:white">
-        Agregar Proveedor
+        Crear
     </a>
 </div>
 

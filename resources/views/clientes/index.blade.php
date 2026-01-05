@@ -3,7 +3,7 @@
     <h2>Lista de Clientes</h2>
     <div class="mb-3 gap-2 ">
 
-        <a href="{{ route('clientes.create') }}" class="btn btn-success ml-auto">Agregar Cliente</a>
+        <a href="{{ route('clientes.create') }}" class="btn btn-success ml-auto">Crear</a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->char('pro_um_compra', 3)->nullable();
             $table->char('pro_um_venta', 3)->nullable();
 
-            $table->decimal('pro_valor_compra', 7, 2)->default(0.00);
+            $table->decimal('pro_valor_compra', 7, 2)->default(0.50);
             $table->decimal('pro_precio_venta', 7, 2)->default(1.00);
 
             $table->integer('pro_saldo_inicial')->nullable();

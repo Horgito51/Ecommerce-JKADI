@@ -46,7 +46,7 @@
     <a href="{{ route('ordenes.create') }}"
        class="btn d-block d-sm-inline-block"
        style="background-color:#198754;color:white">
-        Crear orden de compra
+        Crear
     </a>
 </div>
 

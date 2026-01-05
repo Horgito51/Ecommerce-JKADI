@@ -7,7 +7,7 @@
     <a href="{{route('facturas.create')}}"
        class="btn"
        style="background-color:#198754;color:white">
-        Crear factura
+        Crear
     </a>
 </div>
 
@@ -37,10 +37,10 @@
                     <td>${{ number_format($factura->fac_subtotal, 2) }}</td>
                     <td>${{ number_format($factura->fac_iva, 2) }}</td>
                     <td>${{ number_format($factura->fac_total, 2) }}</td>
-                    
+
                     <td>{{ $factura->fac_estado }}</td>
                     <td>
-                        
+
                         <div class="d-flex gap-1 justify-content-center">
 
                             <a href="{{route('facturas.edit',$factura->id_factura)}}"

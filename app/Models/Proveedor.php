@@ -32,7 +32,7 @@ class Proveedor extends Model
      public function ciudades():BelongsTo{
         return $this->belongsTo(Ciudades::class, 'id_ciudad');
     }
-    
+
     public function compras()
     {
         return $this->hasMany(
@@ -100,6 +100,10 @@ class Proveedor extends Model
     }
 
     public static function destroyProveedor(string $id){
+
+        if(Proveedor::findorfail($id)->compras()->exists()){
+            return false;
+        }
         return Proveedor::where('id_proveedor','=',$id)->update(['estado_prv'=>'INA']);
 
     }

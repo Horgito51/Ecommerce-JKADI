@@ -77,11 +77,14 @@ class ProveedorController extends Controller
     public function destroy(string $id)
     {
         $eliminado=Proveedor::destroyProveedor($id);
+
+
         if(!$eliminado){
         return redirect()
         ->route('proveedores.index')
-        ->with('fail', 'Proveedor con compras activas, error al eliminar.');
+        ->with('error', 'No se puede eliminar el proveedor porque tiene compras asociadas.');
         }
+
         return redirect()
         ->route('proveedores.index')
         ->with('success', 'Proveedor eliminado ');

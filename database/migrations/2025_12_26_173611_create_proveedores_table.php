@@ -15,11 +15,11 @@ return new class extends Migration
             $table->char('id_proveedor', 10)->primary();
             $table->char('prv_nombre', 40);
             $table->char('prv_ruc_ced', 13);
-            $table->char('prv_telefono', 10);
+            $table->char('prv_telefono', 10)->nullable();
             $table->char('prv_mail', 60);
             $table->foreignId('id_ciudad')->references('id')->on('ciudades')
             ->onDelete('restrict');
-            $table->char('prv_celular', 10);
+            $table->char('prv_celular', 10)->nullable();
             $table->char('prv_direccion', 60);
             $table->char('estado_prv', 3);
             $table->timestamps();

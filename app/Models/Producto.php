@@ -70,10 +70,6 @@ class Producto extends Model
         return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final','pro_valor_compra','pro_precio_venta')->where('pro_saldo_final','>',0)->where('estado_prod',"=","ACT")->get();
     }
 
-     public static function getAllProductosP()
-    {
-        return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final','pro_valor_compra','pro_precio_venta')->where('pro_saldo_final','>',0)->where('estado_prod',"=","ACT")->get();
-    }
 
     public static function getProductos(){
 

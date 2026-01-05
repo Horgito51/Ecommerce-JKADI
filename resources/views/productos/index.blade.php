@@ -12,7 +12,7 @@
 @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('gerente_bodega')) )
 
 <div class="col-12 text-left">
-    <a href="{{route('productos.create')}}" class="btn" style="background-color:#198754;color:white">Agregar Producto</a>
+    <a href="{{route('productos.create')}}" class="btn" style="background-color:#198754;color:white">Crear</a>
 
 </div>
 @endif
