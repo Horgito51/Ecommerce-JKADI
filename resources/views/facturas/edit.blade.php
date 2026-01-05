@@ -111,7 +111,7 @@
                                         </td>
 
                                         <td class="text-center">
-                                            <button type="button" class="btn btn-sm btn-danger btnEliminar" 
+                                            <button type="button" class="btn btn-sm btn-danger btnEliminar"
                                             {{ $bloqueado ? 'hidden' : '' }}>X</button>
                                         </td>
                                     </tr>
@@ -192,8 +192,8 @@
             <div class="mt-4">
                 <button type="submit" class="btn btn-success" {{ $bloqueado ? 'hidden' : '' }}>Actualizar</button>
                 <a href="{{ route('facturas.aprobar', $factura->id_factura) }}"
-                    style="background-color:#031832;color:white" class="btn btn-secondary"
-                    onclick="return confirm('¿Estás seguro de que deseas aprobar esta Factura?')"
+                    style="background-color:#031832;color:white"
+                    class="btn btn-secondary btn-aprobar-factura"
                      {{ $bloqueado ? 'hidden' : '' }}>Aprobar</a>
 
                 <a href="{{ route('facturas.index') }}" class="btn btn-secondary">{{$bloqueado ? 'Regresar':'Cancelar'}}</a>
@@ -289,5 +289,36 @@
             recalcularTotales();
         });
     </script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.btn-aprobar-factura').forEach(btn => {
+
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const url = btn.getAttribute('href');
+
+            Swal.fire({
+                title: '¿Aprobar factura?',
+                text: 'Esta acción no se puede deshacer',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#031832',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, aprobar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+
+    });
+
+});
+</script>
 
 @endsection

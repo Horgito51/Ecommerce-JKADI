@@ -8,24 +8,6 @@
 
 @section('content')
 
-@push('styles')
-<style>
-    @media (max-width: 576px) {
-        th.col-detalle, td.col-detalle { display: none !important; }
-    }
-
-    .fila-detalle { display:none; background:#f8f9fa; }
-    .fila-detalle .detalle-box{
-        padding: 10px 12px;
-        border: 1px solid #031832;
-        border-radius: 8px;
-        text-align: left;
-        color: #031832;
-    }
-    .detalle-item span{ font-weight: 600; }
-</style>
-@endpush
-
 <h2 class="mb-3" style="color:#031832">Lista de Proveedores</h2>
 
 <div class="d-flex flex-column flex-sm-row gap-2 mb-3">
@@ -73,13 +55,6 @@
                 <td>
                     <div class="d-flex flex-column flex-md-row gap-1 justify-content-center acciones-botones">
 
-                        {{-- Hamburguesa SOLO en celular --}}
-                        <button type="button"
-                                class="btn btn-sm d-sm-none btn-hamburguesa"
-                                onclick="toggleDetalle('{{ $proveedor->id_proveedor }}')">
-                            ☰
-                        </button>
-
                         <a href="{{ route('proveedores.edit', $proveedor->id_proveedor) }}"
                            class="btn btn-sm"
                            style="background-color:#031832;color:white; margin:2px;
@@ -105,20 +80,6 @@
                     </div>
                 </td>
             </tr>
-
-            {{-- FILA DETALLE (solo móvil) --}}
-            <tr id="detalle-{{ $proveedor->id_proveedor }}" class="fila-detalle d-sm-none">
-                <td colspan="4">
-                    <div class="detalle-box">
-                        <div class="detalle-item"><span>RUC/Cédula:</span> {{ $proveedor->prv_ruc_ced }}</div>
-                        <div class="detalle-item"><span>Teléfono:</span> {{ $proveedor->prv_telefono }}</div>
-                        <div class="detalle-item"><span>Email:</span> {{ $proveedor->prv_mail }}</div>
-                        <div class="detalle-item"><span>Ciudad:</span> {{ $proveedor->ciudades->ciu_descripcion ?? '-' }}</div>
-                        <div class="detalle-item"><span>Celular:</span> {{ $proveedor->prv_celular }}</div>
-                        <div class="detalle-item"><span>Dirección:</span> {{ $proveedor->prv_direccion }}</div>
-                    </div>
-                </td>
-            </tr>
         @endforeach
         </tbody>
     </table>
@@ -128,19 +89,8 @@
     {{ $proveedores->appends(request()->query())->links() }}
 </div>
 
-@push('scripts')
-<script>
-    function toggleDetalle(id) {
-        const row = document.getElementById('detalle-' + id);
-        if (!row) return;
 
-        document.querySelectorAll('.fila-detalle').forEach(r => {
-            if (r !== row) r.style.display = 'none';
-        });
 
-        row.style.display = (row.style.display === 'table-row') ? 'none' : 'table-row';
-    }
-</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -170,6 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-@endpush
+
 
 @endsection

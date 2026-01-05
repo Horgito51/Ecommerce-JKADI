@@ -213,9 +213,9 @@
                 Actualizar compra
             </button>
              <a href="{{ route('ordenes.aprobar', $compra->id_compra) }}"
-                class="btn btn-success" style="background-color:#031832"
-                {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}
-                onclick="return confirm('¿Estás seguro de aprobar esta orden de compra?');">
+                class="btn btn-success btn-aprobar-compra"
+                style="background-color:#031832"
+                {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
                 Aprobar
                 </a>
 
@@ -243,19 +243,10 @@
         const btnAgregar = document.getElementById('btnAgregar');
         const tbody = document.querySelector('#tabla-productos tbody');
 
-        // =========================
-        // SIEMPRE calcular totales al cargar
-        // =========================
         recalcularTotales();
 
-        // =========================
-        // 🚫 MODO DETALLE: NO INTERACCIONES
-        // =========================
         if (!editable) return;
 
-        // =========================
-        // AGREGAR FILA
-        // =========================
         btnAgregar.addEventListener('click', function () {
 
             const fila = `
@@ -311,9 +302,6 @@
             index++;
         });
 
-        // =========================
-        // ELIMINAR FILA
-        // =========================
         tbody.addEventListener('click', function (e) {
             if (e.target.classList.contains('btnEliminar')) {
                 e.target.closest('tr').remove();
@@ -321,9 +309,6 @@
             }
         });
 
-        // =========================
-        // CAMBIO PRODUCTO
-        // =========================
         tbody.addEventListener('change', function (e) {
 
             if (!e.target.classList.contains('producto')) return;
@@ -353,9 +338,6 @@
             recalcularTotales();
         });
 
-        // =========================
-        // CAMBIO CANTIDAD
-        // =========================
         tbody.addEventListener('input', function (e) {
 
             if (!e.target.classList.contains('cantidad')) return;
@@ -368,9 +350,6 @@
             recalcularTotales();
         });
 
-        // =========================
-        // TOTALES (SIEMPRE DISPONIBLE)
-        // =========================
         function recalcularTotales() {
 
             let subtotalGeneral = 0;
@@ -392,6 +371,37 @@
         }
 
     });
+</script>
+
+ <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.btn-aprobar-compra').forEach(btn => {
+
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const url = btn.getAttribute('href');
+
+            Swal.fire({
+                title: '¿Aprobar Orden de compra?',
+                text: 'Esta acción no se puede deshacer',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#031832',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, aprobar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+
+    });
+
+});
 </script>
 
 @endsection

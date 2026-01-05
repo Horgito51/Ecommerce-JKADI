@@ -10,32 +10,7 @@
 
 @section('content')
 
-@push('styles')
-<style>
-    /* SOLO ocultar columnas en celular, no tocar botones */
-    @media (max-width: 576px) {
-        th.col-detalle, td.col-detalle {
-            display: none !important;
-        }
-    }
 
-    /* Fila detalle móvil */
-    .fila-detalle {
-        display: none;
-        background: #f8f9fa;
-    }
-    .fila-detalle .detalle-box{
-        padding: 10px 12px;
-        border: 1px solid #031832;
-        border-radius: 8px;
-        text-align: left;
-        color: #031832;
-    }
-    .detalle-item span{
-        font-weight: 600;
-    }
-</style>
-@endpush
 
 <h2 class="mb-3" style="color:#031832">
     Lista de Órdenes de Compra
@@ -137,14 +112,7 @@
                     <td>
                         <div class="d-flex flex-column flex-md-row gap-1 justify-content-center acciones-botones">
 
-                            {{-- Hamburguesa SOLO en celular (NO toca estilos de tus botones) --}}
-                            <button type="button"
-                                    class="btn btn-sm d-sm-none btn-hamburguesa"
-                                    onclick="toggleDetalle('{{ $orden->id_compra }}')">
-                                ☰
-                            </button>
 
-                            {{-- Editar/Detalle (MISMO estilo original) --}}
                             <a href="{{ route('ordenes.edit', $orden->id_compra) }}"
                                class="btn btn-sm"
                                style="background-color:#031832;
@@ -155,7 +123,6 @@
                                 {{ $orden->estado_oc === 'ACT' ? 'Editar' : 'Detalle' }}
                             </a>
 
-                            {{-- Eliminar (MISMO estilo original) --}}
                             @if ($orden->estado_oc === 'ACT')
                                 <form action="{{ route('ordenes.destroy', $orden->id_compra) }}"
                                       method="POST"
@@ -181,25 +148,7 @@
 
                 </tr>
 
-                {{-- FILA DETALLE (solo móvil) --}}
-                <tr id="detalle-{{ $orden->id_compra }}" class="fila-detalle d-sm-none">
-                    <td colspan="4">
-                        <div class="detalle-box">
-                            <div class="detalle-item"><span>Fecha:</span> {{ \Carbon\Carbon::parse($orden->created_at)->format('d/m/Y') }}</div>
-                            <div class="detalle-item"><span>Subtotal:</span> ${{ number_format($orden->oc_subtotal, 2) }}</div>
-                            <div class="detalle-item"><span>IVA:</span> ${{ number_format($orden->oc_iva, 2) }}</div>
-                            <div class="detalle-item"><span>Total:</span> ${{ number_format($orden->oc_total, 2) }}</div>
-                            <div class="detalle-item">
-                                <span>Estado:</span>
-                                {{
-                                    $orden->estado_oc === 'ACT' ? 'Activo' :
-                                    ($orden->estado_oc === 'ANU' ? 'Anulado' :
-                                    ($orden->estado_oc === 'APR' ? 'Aprobado' : $orden->estado_oc))
-                                }}
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+
 
             @endforeach
         </tbody>
@@ -210,20 +159,6 @@
     {{ $compras->appends(request()->query())->links('pagination::bootstrap-5') }}
 </div>
 
-@push('scripts')
-<script>
-    function toggleDetalle(id) {
-        const row = document.getElementById('detalle-' + id);
-        if (!row) return;
-
-        // cerrar otros (opcional)
-        document.querySelectorAll('.fila-detalle').forEach(r => {
-            if (r !== row) r.style.display = 'none';
-        });
-
-        row.style.display = (row.style.display === 'table-row') ? 'none' : 'table-row';
-    }
-</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -253,6 +188,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-@endpush
+
 
 @endsection
