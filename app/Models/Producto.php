@@ -98,7 +98,7 @@ class Producto extends Model
         }
 
         return self::create([
-            'id_producto'        => $data['id_producto'],
+            'id_producto'        => self::crearIdProducto(),
             'pro_descripcion'    => $data['pro_descripcion'],
             'id_tipo'            => $data['tipo_Producto'],
             'pro_um_compra'      => $data['unidad_medida_compra'],
@@ -131,6 +131,20 @@ class Producto extends Model
         $this->save();
     }
 
+    public static function crearIdProducto(){
+        $ultimoProducto=self::orderBy('id_producto', 'desc')->first();
+
+        if(!$ultimoProducto){
+            return 'P001';
+
+        }
+
+        $numero = intval(substr($ultimoProducto->id_producto, 1));
+
+        $nuevoNumero = $numero + 1;
+
+        return 'P' . str_pad($nuevoNumero, 3, '0', STR_PAD_LEFT);
+    }
 
 
 
