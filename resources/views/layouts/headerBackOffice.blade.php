@@ -22,13 +22,13 @@
         </small>
       </div>
 
-      <!-- Buscador dinámico (GENÉRICO) -->
+      <!-- Buscador dinámico -->
       <div class="col-12 col-md-5 mt-3 mt-md-0">
         <form class="d-flex"
               action="{{ $searchRoute ?? '#' }}"
               method="GET">
 
-          {{-- 🔎 Parámetros extra opcionales (filtros, estados, etc.) --}}
+          {{-- Parámetros extra opcionales (filtros, estados, etc.) --}}
           @isset($searchExtraParams)
             @foreach($searchExtraParams as $key => $val)
               @if(is_array($val))
@@ -66,7 +66,7 @@
 
           <div class="d-flex flex-column align-items-center">
             
-            <!-- SVG (solo visual, NO botón) -->
+            <!-- SVG -->
             <svg xmlns="http://www.w3.org/2000/svg"
                 width="34"
                 height="34"
