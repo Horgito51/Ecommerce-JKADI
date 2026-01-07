@@ -76,6 +76,7 @@ class Producto extends Model
         return self::where('estado_prod','=','ACT')->paginate(9);
     }
 
+    
     public function scopeGetProductoBy($query,$search){
                 if ($search) {
             $query->where(function ($q) use ($search) {

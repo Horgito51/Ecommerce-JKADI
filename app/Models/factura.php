@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use function Symfony\Component\String\s;
 
 class Factura extends Model
 {
@@ -158,7 +160,7 @@ public static function updateFacturas(string $idFactura, array $data)
 
     }
 
-    public function scopegetFacturaBy($query,$search){
+    public function scopeGetFacturaBy($query,$search){
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('fac_descripcion', 'like', "%{$search}%")

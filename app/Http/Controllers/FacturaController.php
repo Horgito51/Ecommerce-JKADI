@@ -59,9 +59,9 @@ class FacturaController extends Controller
         $request->validate($rules, $messages);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $facturas = Factura::getFacturas();
+        $facturas = Factura::getFacturaBy($request->search)->get();
         return view('facturas.index', compact('facturas'));
     }
 
