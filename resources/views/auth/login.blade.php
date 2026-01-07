@@ -31,20 +31,31 @@
                     <!-- USUARIO -->
                     <div class="mb-3 text-start">
                         <label class="form-label">Usuario</label>
-                        <input type="text" name="name"
-                               class="form-control"
-                               placeholder="Value"
-                               required>
+                        <input type="text" name="log_usuario"
+                               class="form-control @error('log_usuario') is-invalid
+                               @enderror"
+                               placeholder="Ingrese su usuario"
+                               novalidate>
+                        @error('log_usuario')   
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- CONTRASEÑA -->
                     <div class="mb-4 text-start">
                         <label class="form-label">Contraseña</label>
                         <input type="password" name="password"
-                               class="form-control"
-                               placeholder="Value"
-                               required>
+                               class="form-control @error('password') is-invalid
+                               @enderror"
+                               placeholder="Ingrese su contraseña"
+                               novalidate>
                     </div>
+
+                    @if ($errors->has('login'))
+                        <div class="alert alert-danger text-center">
+                            {{ $errors->first('login') }}
+                        </div>
+                    @endif
 
                     <!-- BOTONES -->
                     <div class="d-flex justify-content-center gap-2 mb-3">
