@@ -11,6 +11,8 @@ use App\Http\Controllers\FacturaController;
 use GuzzleHttp\Client;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProveedorController;
+//Intento del logout pa todos 
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/portada', function () {
 
@@ -97,6 +99,14 @@ Route::prefix('admin')->group(function () {
     });
 
 });
+//Ruta para el logout
+Route::post('/logout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+
+    return redirect('/portada');
+})->name('logout');
 
 // Route::resource('facturas',FacturaController::class);
 

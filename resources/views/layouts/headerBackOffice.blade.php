@@ -22,13 +22,13 @@
         </small>
       </div>
 
-      <!-- Buscador dinámico (GENÉRICO) -->
+      <!-- Buscador dinámico -->
       <div class="col-12 col-md-5 mt-3 mt-md-0">
         <form class="d-flex"
               action="{{ $searchRoute ?? '#' }}"
               method="GET">
 
-          {{-- 🔎 Parámetros extra opcionales (filtros, estados, etc.) --}}
+          {{-- Parámetros extra opcionales (filtros, estados, etc.) --}}
           @isset($searchExtraParams)
             @foreach($searchExtraParams as $key => $val)
               @if(is_array($val))
@@ -62,22 +62,44 @@
 
       <!-- Usuario -->
       <div class="col-12 col-md-2 mt-3 mt-md-0 text-center">
-        <div class="d-flex flex-column align-items-center">
-          <svg xmlns="http://www.w3.org/2000/svg"
-               width="34"
-               height="34"
-               fill="white"
-               class="bi bi-person-circle"
-               viewBox="0 0 16 16">
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-            <path fill-rule="evenodd"
-                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8"/>
-          </svg>
-          <small class="text-white mt-1">
-           {{ auth()->user()->name ?? 'Administrador' }}
-          </small>
+        <div class="dropdown d-inline-block">
+
+          <div class="d-flex flex-column align-items-center">
+            
+            <!-- SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg"
+                width="34"
+                height="34"
+                fill="white"
+                class="bi bi-person-circle"
+                viewBox="0 0 16 16">
+              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+              <path fill-rule="evenodd"
+                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8"/>
+            </svg>
+
+            <!-- Pa que sea el boton dropdown del logout -->
+            <button class="btn btn-link dropdown-toggle text-white p-0 mt-1"
+                    type="button"
+                    id="userDropdown"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+              {{ auth()->user()->name ?? 'Administrador' }}
+            </button>
+
+            <!-- MENÚ -->
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+              <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="dropdown-item">Cerrar sesión</button>
+              </form>
+            </div>
+
+          </div>
         </div>
       </div>
+
 
     </div>
   </div>

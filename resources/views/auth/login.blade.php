@@ -14,8 +14,10 @@
     <div class="text-center w-100">
 
         <!-- LOGO -->
+        <a href="{{ route('portada.index') }}">
         <img src="{{ asset('img/Logo.png') }}" alt="J-KADI SHOP"
-             class="mb-4" style="max-width:120px;">
+             class="mb-4" style="max-width:400px;">
+        </a>
 
         <!-- CARD LOGIN -->
         <div class="card mx-auto shadow" style="max-width:360px;">
