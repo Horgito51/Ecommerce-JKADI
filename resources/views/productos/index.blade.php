@@ -42,8 +42,8 @@
                     <td>{{ $producto->id_producto }}</td>
                     <td>{{ $producto->pro_descripcion }}</td>
                     @unless((auth()->check() && (auth()->user()->hasRole('gerente_compras') || auth()->user()->hasRole('gerente_ventas')) ))
-                    <td>{{ $producto->pro_um_compra }}</td>
-                    <td>{{ $producto->pro_um_venta }}</td>
+                    <td>{{ $producto->unidadMedidaCompra->um_descripcion }}</td>
+                    <td>{{ $producto->unidadMedidaVenta->um_descripcion }}</td>
                     <td>{{ $producto->pro_saldo_final }}</td>
                     @endunless
                     @if((auth()->check() && (auth()->user()->hasRole('gerente_compras'))))

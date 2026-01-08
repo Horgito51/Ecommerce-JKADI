@@ -23,9 +23,20 @@ class Producto extends Model
         'pro_saldo_inicial',
         'pro_valor_compra',
         'pro_precio_compra',
+        'pro_saldo_final',
     ];
 
     //relaciones
+
+    public function unidadMedidaVenta()
+    {
+        return $this->belongsTo(unidadesMedidas::class, 'pro_um_venta', 'id_unidad_medida');
+    }
+
+    public function unidadMedidaCompra()
+    {
+        return $this->belongsTo(unidadesMedidas::class, 'pro_um_compra', 'id_unidad_medida');
+    }
     public function tipoProducto()
     {
         return $this->belongsTo(tiposProducto::class, 'id_tipo', 'id_tipo');
@@ -90,7 +101,8 @@ class Producto extends Model
                 'img',
                 'pro_saldo_inicial',
                 'pro_valor_compra',
-                'pro_precio_venta'
+                'pro_precio_venta',
+                'pro_saldo_final',
             )
             ->where('estado_prod', '=', 'ACT')
             ->when($search !== '', function ($q) use ($search) {
