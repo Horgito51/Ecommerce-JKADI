@@ -124,7 +124,6 @@ class ClientesController extends Controller
                 ->with('error', 'No se puede eliminar el cliente porque tiene facturas asociadas.');
         }
 
-        dd($resultado);
         return redirect()->route('clientes.index')
         ->with('success', 'Cliente eliminado exitosamente.');
     }

@@ -101,6 +101,17 @@ class ProveedorController extends Controller
             'tipo_documento' => 'required|in:RUC,CEDULA',
         ];
 
+         if ($request->tipo_documento === 'RUC') {
+            $rules['prv_ruc_ced'] = 'unique:proveedores,prv_ruc_ced|required|digits:13|regex:/^[0-9]+$/';
+        } else {
+            $rules['prv_ruc_ced'] = 'unique:proveedores,prv_ruc_ced|required   |digits:10|regex:/^[0-9]+$/';
+        }
+        if ($id_proveedor != null) {
+            $rules['prv_ruc_ced'] .= '|unique:proveedores,prv_ruc_ced,' . $id_proveedor . ', id_proveedor';
+            //   $rules['cli_ruc_ced'] .= ',' . $id_cliente . ',id_cliente';
+        }
+
+
         $messages = [
             'prv_nombre.required' => 'El nombre del proveedor es obligatorio',
             'prv_nombre.max' => 'El nombre no puede exceder 40 caracteres',
@@ -133,15 +144,6 @@ class ProveedorController extends Controller
             'prv_direccion.max' => 'La dirección no puede exceder 60 caracteres',
         ];
 
-        if ($request->tipo_documento === 'RUC') {
-            $rules['prv_ruc_ced'] = 'required|digits:13|regex:/^[0-9]+$/';
-        } else {
-            $rules['prv_ruc_ced'] = 'required|digits:10|regex:/^[0-9]+$/';
-        }
-        if ($id_proveedor != null) {
-            $rules['prv_ruc_ced'] .= '|unique:proveedores,prv_ruc_ced,' . $id_proveedor . ', id_proveedor';
-            //   $rules['cli_ruc_ced'] .= ',' . $id_cliente . ',id_cliente';
-        }
 
         $request->validate($rules, $messages);
     }

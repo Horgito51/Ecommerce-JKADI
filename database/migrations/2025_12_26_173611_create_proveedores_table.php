@@ -14,7 +14,7 @@ return new class extends Migration
    Schema::create('proveedores', function (Blueprint $table) {
             $table->char('id_proveedor', 10)->primary();
             $table->char('prv_nombre', 40);
-            $table->char('prv_ruc_ced', 13);
+            $table->char('prv_ruc_ced', 13)->unique();
             $table->char('prv_telefono', 10)->nullable();
             $table->char('prv_mail', 60);
             $table->foreignId('id_ciudad')->references('id')->on('ciudades')
