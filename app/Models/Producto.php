@@ -63,6 +63,7 @@ class Producto extends Model
     }
 
 
+
     //MD concepto
 
     public static function getAllProductos()
