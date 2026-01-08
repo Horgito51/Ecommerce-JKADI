@@ -7,7 +7,7 @@
         <h4 class="mb-4">Editar Factura</h4>
 
         @php
-            $bloqueado = $factura->fac_estado === 'APR';
+            $bloqueado = $factura->fac_estado !== 'ABI';
         @endphp
 
         <form method="POST" action="{{ route('facturas.update', $factura->id_factura) }}">
@@ -196,7 +196,10 @@
                     class="btn btn-secondary btn-aprobar-factura"
                      {{ $bloqueado ? 'hidden' : '' }}>Aprobar</a>
 
-                <a href="{{ route('facturas.index') }}" class="btn btn-secondary">{{$bloqueado ? 'Regresar':'Cancelar'}}</a>
+                <a href="{{ route('facturas.index') }}" class="btn btn-secondary"
+                 style="{{ $bloqueado ?  'background-color:#031832' : 'background-color:#8C0606;' }}"
+                 >
+                 {{$bloqueado ? 'Regresar':'Cancelar'}}</a>
 
             </div>
 

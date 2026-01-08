@@ -61,7 +61,7 @@ class Clientes extends Model
     }
 
     public static function createClientes(array $data){
-        
+
         return self::create([
             'id_cliente'   => self::crearIdCliente(),
             'cli_nombre'   => $data['cli_nombre'],
@@ -78,14 +78,29 @@ class Clientes extends Model
         return self::where('id_cliente', trim($id_cliente))->first();
     }
 
-    public function scopeGetClienteBy($query,$search){
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('cli_nombre', 'like', "%{$search}%")
+ public static function getClientesBy($search = '')
+{
+    return self::select(
+            'id_cliente',
+            'cli_nombre',
+            'cli_ruc_ced',
+            'cli_telefono',
+            'cli_email',
+            'cli_direccion',
+            'ciudad_id',
+            'estado_cli'
+        )
+        ->where('estado_cli', '=', 'ACT')
+        ->when($search !== '', function ($q) use ($search) {
+            $q->where(function ($w) use ($search) {
+                $w->where('id_cliente', 'like', "%{$search}%")
+                  ->orWhere('cli_nombre', 'like', "%{$search}%")
                   ->orWhere('cli_ruc_ced', 'like', "%{$search}%")
-                  ->orWhere('id_cliente', 'like', "%{$search}%");
+                  ->orWhere('cli_email', 'like', "%{$search}%");
             });
-        }
-    }
+        })
+        ->orderBy('id_cliente', 'desc')
+        ->paginate(10);
+}
 
 }

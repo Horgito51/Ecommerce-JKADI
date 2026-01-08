@@ -55,7 +55,7 @@ class Compra extends Model
     public static function getCompras(array $estados, string $search = '')
     {
         return self::with('proveedor')
-            ->whereIn('estado_oc', $estados)
+
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
 

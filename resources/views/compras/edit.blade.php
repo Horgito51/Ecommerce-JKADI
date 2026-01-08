@@ -223,9 +223,7 @@
 
             <a href="{{ route('ordenes.index') }}" class="btn btn-secondary"
             style="{{ $compra->estado_oc === 'ACT' ? 'background-color:#8C0606;' : 'background-color:#031832' }}"
-
             >
-
                 {{ $compra->estado_oc === 'ACT' ? 'Cancelar' : 'Regresar' }}
             </a>
         </div>

@@ -25,46 +25,6 @@
     </a>
 </div>
 
-<form method="GET"
-      action="{{ route('ordenes.index') }}"
-      class="mb-3"
-      onchange="this.submit()">
-
-    {{-- mantener búsqueda --}}
-    <input type="hidden" name="search" value="{{ request('search') }}">
-
-    <div class="d-flex flex-wrap gap-4 align-items-center">
-
-        <label class="form-check" style="margin:5px">
-            <input class="form-check-input"
-                   type="checkbox"
-                   name="estado[]"
-                   value="ACT"
-                   {{ in_array('ACT', request('estado', [])) ? 'checked' : '' }}>
-            <span class="form-check-label">Activo</span>
-        </label>
-
-        <label class="form-check" style="margin:8px">
-            <input class="form-check-input"
-                   type="checkbox"
-                   name="estado[]"
-                   value="APR"
-                   {{ in_array('APR', request('estado', [])) ? 'checked' : '' }}>
-            <span class="form-check-label">Aprobado</span>
-        </label>
-
-        <label class="form-check" style="margin:8px">
-            <input class="form-check-input"
-                   type="checkbox"
-                   name="estado[]"
-                   value="ANU"
-                   {{ in_array('ANU', request('estado', [])) ? 'checked' : '' }}>
-            <span class="form-check-label">Anulado</span>
-        </label>
-
-    </div>
-</form>
-
 {{-- TABLA RESPONSIVE --}}
 <div class="table-responsive">
     <table class="table table-bordered align-middle">

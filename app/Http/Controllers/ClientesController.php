@@ -56,8 +56,8 @@ class ClientesController extends Controller
 
     public function index(Request $request)
     {
-        $clientes=Clientes::getClienteBy($request->search)
-                        ->paginate(10);
+        $clientes=Clientes::getClientesBy($request->search);
+
         return view('clientes.index', compact('clientes'));
     }
 
@@ -115,13 +115,16 @@ class ClientesController extends Controller
 
     public function destroy(string $id_cliente)
     {
+
         $resultado=Clientes::destroyClientes($id_cliente);
 
         if (!$resultado) {
+
             return redirect()->route('clientes.index')
                 ->with('error', 'No se puede eliminar el cliente porque tiene facturas asociadas.');
         }
 
+        dd($resultado);
         return redirect()->route('clientes.index')
         ->with('success', 'Cliente eliminado exitosamente.');
     }

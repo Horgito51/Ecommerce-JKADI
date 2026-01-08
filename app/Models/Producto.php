@@ -76,15 +76,32 @@ class Producto extends Model
         return self::where('estado_prod','=','ACT')->paginate(9);
     }
 
-    
-    public function scopeGetProductoBy($query,$search){
-                if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('pro_descripcion', 'like', "%{$search}%")
-                  ->orWhere('id_producto', 'like', "%{$search}%");
-            });
-        }
+
+    public static function getProductoBy($search = '')
+    {
+        return self::select(
+                'id_producto',
+                'id_tipo',
+                'pro_descripcion',
+                'pro_um_venta',
+                'pro_um_compra',
+                'estado_prod',
+                'img',
+                'pro_saldo_inicial',
+                'pro_valor_compra',
+                'pro_precio_venta'
+            )
+            ->where('estado_prod', '=', 'ACT')
+            ->when($search !== '', function ($q) use ($search) {
+                $q->where(function ($w) use ($search) {
+                    $w->where('id_producto', 'like', "%{$search}%")
+                    ->orWhere('pro_descripcion', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('id_producto', 'desc')
+            ->paginate(10);
     }
+
 
 
     public static function createProducto(array $data, ?UploadedFile $imagen = null){

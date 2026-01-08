@@ -16,8 +16,7 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
-        $productos = Producto::getProductoBy($request->search)
-                        ->paginate(10);
+        $productos = Producto::getProductoBy($request->search);
 
         return view('productos.index', compact('productos'));
     }

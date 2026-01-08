@@ -50,7 +50,7 @@
                                       padding:4px 10px;
                                       font-size:0.8rem;
                                       min-width:65px;">
-                                {{$factura->fac_estado ==='APR' ? 'Detalle':'Editar'}}
+                                {{$factura->fac_estado !=='ACT' ? 'Detalle':'Editar'}}
                             </a>
                             @if ($factura->fac_estado=== 'ABI')
                                 <form action="{{ route('facturas.destroy', $factura) }}"

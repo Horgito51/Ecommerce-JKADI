@@ -21,6 +21,7 @@
             </thead>
             <tbody>
                 @foreach ($clientes as $cliente)
+
                     <tr>
                         <td>{{ $cliente->id_cliente }}</td>
                         <td>{{ $cliente->cli_nombre }}</td>
@@ -51,6 +52,7 @@
                             </div>
                         </td>
                     </tr>
+
                 @endforeach
             </tbody>
         </table>
