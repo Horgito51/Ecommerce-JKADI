@@ -86,7 +86,8 @@
 </div>
 
 <div class="d-flex justify-content-center mt-3">
-    {{ $proveedores->appends(request()->query())->links() }}
+    {{ $proveedores->appends(request()->query())->links('pagination::bootstrap-5') }}
+
 </div>
 
 
