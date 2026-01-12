@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             ProductoSeeder::class,
             ProveedorSeeder::class,
             ContabilidadSeeder::class,
-            // TriggerSeeder::class,
+            TriggerSeeder::class,
+            ProceduresSeeder::class,
         ]);
     }
 }

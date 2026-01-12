@@ -106,7 +106,7 @@ class Compra extends Model
             //detalle
             foreach ($data['productos'] as $producto) {
                 $subtotal = $producto['pxo_cantidad'] * $producto['pxo_valor'];
-                Proxoc::create([
+                Proxoc::createProxOc([
                     'id_compra'    => $idCompra,
                     'id_producto'  => $producto['id_producto'],
                     'pxo_cantidad' => $producto['pxo_cantidad'],
