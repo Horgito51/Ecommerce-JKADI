@@ -33,4 +33,33 @@ class Proxoc extends Model
     {
         return $this->belongsTo(Producto::class, 'id_producto', 'id_producto');
     }
+
+
+        public static function getProxOc(){
+        return self::select('id_compra', 'id_producto', 'pxo_cantidad', 'pxo_valor', 'pxo_subtotal', 'pxo_estado')
+            ->whereIn('estado_pxoc', ['ACT', 'APR'])
+            ->paginate(10);
+    }
+
+    public static function createProxOc(array $data){
+        return self::create($data);
+    }
+
+    public static function updateProxOc($id_compra, $id_producto, $data){
+        return self::where('id_compra', $id_compra)
+            ->where('id_producto',$id_producto)
+            ->update($data);
+    }
+
+    public static function destroyProxOc($id_factura, $id_producto){
+        return self::where('id_factura', $id_factura)
+            ->where('id_producto',$id_producto)
+            ->delete();
+    }
+
+    public static function getProxOcById($id_compra, $id_producto){
+        return self::where('id_compra', $id_compra)
+            ->where('id_producto',$id_producto)
+            ->first();
+    }
 }

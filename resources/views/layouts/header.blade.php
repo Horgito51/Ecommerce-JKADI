@@ -59,8 +59,8 @@
                 style="font-size: 0.65rem;">
             0
           </span>
-
-          <p class="text-white mb-0 mt-1 small d-none d-md-block">Carrito</p>
+            <p class="text-white mb-0 mt-1 small d-none d-md-block">Carrito</p>
+        
         </div>
       </div>
 

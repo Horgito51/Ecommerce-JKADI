@@ -132,7 +132,7 @@
                     <input type="text" id="subtotal" class="form-control" readonly>
                 </div>
                 <div class="mb-2">
-                    <label>IVA (15%)</label>
+                    <label>IVA </label>
                     <input type="text" id="iva" class="form-control" readonly>
                 </div>
                 <div class="mb-2">
