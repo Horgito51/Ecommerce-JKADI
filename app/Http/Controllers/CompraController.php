@@ -34,14 +34,13 @@ class CompraController extends Controller
     {
         $this->validateCompra($request);
 
-        $data = [
+        Compra::createCo0mpra([
             'id_proveedor' => $request->id_proveedor,
             'oc_subtotal'  => $request->oc_subtotal,
             'oc_iva'       => $request->oc_iva,
             'oc_total'     => $request->oc_total,
             'productos'    => $request->productos,
-        ];
-        Compra::createCompra($data);
+        ]);
         return redirect()
             ->route('ordenes.index')
             ->with('success', 'Orden de compra creada exitosamente');
@@ -67,15 +66,13 @@ class CompraController extends Controller
     {
         $this->validateCompra($request);
 
-        $data = [
+        Compra::updateCompra($id, [
             'id_proveedor' => $request->id_proveedor,
             'oc_subtotal'  => $request->oc_subtotal,
             'oc_iva'       => $request->oc_iva,
             'oc_total'     => $request->oc_total,
             'productos'    => $request->productos,
-        ];
-
-        Compra::updateCompra($id, $data);
+        ]);
         return redirect()
             ->route('ordenes.index')
             ->with('success', 'Orden de compra actualizada exitosamente');
