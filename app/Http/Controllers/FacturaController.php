@@ -81,17 +81,17 @@ class FacturaController extends Controller
     public function store(Request $request)
     {
         $this->validateFactura($request);
-        $data = [
+        Factura::createFactura([
             'id_cliente' => $request->id_cliente,
             'fac_descripcion' => $request->fac_descripcion,
             'fac_subtotal'  => $request->fac_subtotal,
             'fac_iva'       => $request->fac_iva,
             'fac_total'     => $request->fac_total,
             'productos'    => $request->productos,
-        ];
+        ]);
 
 
-        Factura::createFactura($data);
+
         return redirect()
             ->route('facturas.index')
             ->with('success', 'Factura creada exitosamente');
@@ -123,15 +123,14 @@ class FacturaController extends Controller
     {
         $this->validateFactura($request);
 
-        $data = [
+        Factura::updateFacturas($id, [
             'id_cliente' => $request->id_cliente,
             'fac_descripcion' => $request->fac_descripcion,
             'fac_subtotal'  => $request->fac_subtotal,
             'fac_iva'       => $request->fac_iva,
             'fac_total'     => $request->fac_total,
             'productos'    => $request->productos,
-        ];
-        Factura::updateFacturas($id, $data);
+        ]);
         return redirect()
             ->route('facturas.index')
             ->with('success', 'Factura actualizada exitosamente');
