@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Ecommerce\CatalogoController;
+use App\Http\Controllers\Ecommerce\CarritoController;
 use App\Models\Producto;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -26,7 +27,11 @@ Route::get('/', function () {
     return redirect()->route('portada.index');
 });
 
+Route::group([],function(){
+    Route::get('/carrito',[CarritoController::class,'index'])->name('carrito.index');
 
+
+});
 
 
 Route::group([], function () {
@@ -108,6 +113,3 @@ Route::post('/logout', function () {
     return redirect('/portada');
 })->name('logout');
 
-// Route::resource('facturas',FacturaController::class);
-
-// Route::get('/admin/proveedores',[ProveedorController::class,'index'])->name('proveedores.index');
