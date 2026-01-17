@@ -21,12 +21,12 @@
 
       <!-- Buscador -->
       <div class="col-12 col-md-6 order-4 order-md-3 mt-3 mt-md-0">
-        <form class="d-flex" role="search" method="GET" action="/productos">
+        <form class="d-flex" role="search" method="GET" action="{{ route('catalogo.index') }}">
           <input class="form-control me-2 rounded-pill"
-                 type="search"
-                 placeholder="Buscar producto"
-                 name="q"
-                 value="{{ request('q') }}">
+            type="search"
+            placeholder="Buscar producto"
+            name="search"
+            value="{{ request('search') }}">
           <button class="btn btn-light rounded-circle d-flex align-items-center justify-content-center"
                   type="submit"
                   style="width: 45px; height: 45px; flex-shrink: 0;">

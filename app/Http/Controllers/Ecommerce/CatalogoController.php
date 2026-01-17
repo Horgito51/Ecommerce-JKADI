@@ -11,8 +11,8 @@ use Illuminate\View\View;
 
 class CatalogoController extends Controller
 {
-    public function index(){
-         $productos =Producto::getProductos();
+    public function index(Request $request){
+         $productos =Producto::getProductoBy($request->search);
         $categorias=tiposProducto::getAllTiposProducto();
         return view('Ecommerce.catalogo',compact('productos','categorias'));
     }
