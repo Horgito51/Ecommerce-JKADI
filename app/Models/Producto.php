@@ -1,16 +1,16 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 class Producto extends Model
 {
     public $incrementing = false;
     protected $keyType = 'string';
     protected $table = 'productos';
-    //  protected $connection = 'pgsql_remoto';
+    //protected $connection = 'pgsql_remoto';
     protected $primaryKey = 'id_producto';
     public $timestamps = false;
     protected $fillable = [
@@ -23,6 +23,7 @@ class Producto extends Model
         'img',
         'pro_saldo_inicial',
         'pro_valor_compra',
+        'pro_precio_venta',
         'pro_precio_compra',
         'pro_saldo_final',
     ];
@@ -136,24 +137,42 @@ class Producto extends Model
             'pro_um_compra'      => $data['unidad_medida_compra'],
             'pro_um_venta'       => $data['unidad_medida_venta'],
             'pro_saldo_inicial'  => $data['saldo_inicial'],
+            'pro_valor_compra'   => $data['pro_valor_compra'],
+            'pro_precio_venta'   => $data['pro_precio_venta'],
             'img'                => $nombreImagen,
             'estado_prod'        => 'ACT',
         ]);
     }
 
 
-    public static function updateProducto(string $id, array $data){
+    public static function updateProducto(string $id, array $data, ?UploadedFile $imagen = null){
         $producto = self::findOrFail($id);
 
-        $producto->update([
+        $updateData = [
             'pro_descripcion'   => $data['pro_descripcion'],
             'id_tipo'           => $data['tipo_Producto'],
             'pro_um_venta'      => $data['unidad_medida_venta'],
             'pro_um_compra'     => $data['unidad_medida_compra'],
             'pro_saldo_inicial' => $data['saldo_inicial'],
-            'pro_valor_compra'=>$data['pro_valor_compra'],
-            'pro_precio_venta'=>$data['pro_precio_venta'],
-        ]);
+            'pro_valor_compra'  => $data['pro_valor_compra'],
+            'pro_precio_venta'  => $data['pro_precio_venta'],
+        ];
+
+        if ($imagen && $imagen->isValid()) {
+            // Eliminar imagen anterior si existe
+            if ($producto->img) {
+                Storage::delete('public/products/' . $producto->img);
+            }
+
+            $nombreImagen = $imagen->getClientOriginalName();
+            $imagen->move(
+                storage_path('app/public/products'),
+                $nombreImagen
+            );
+            $updateData['img'] = $nombreImagen;
+        }
+
+        $producto->update($updateData);
     }
 
 

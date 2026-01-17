@@ -4,7 +4,7 @@
 <div class="container mt-4">
     <h2 class="mb-4">Editar Producto</h2>
 
-    <form action="{{ route('productos.update', $productos->id_producto) }}" method="POST">
+    <form action="{{ route('productos.update', $productos->id_producto) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -132,6 +132,39 @@
 
         </div>
 
+        {{-- Imagen del Producto --}}
+        <div class="row mt-3">
+             <div class="col-12">
+                <label for="img">Imagen del Producto:</label>
+
+                {{-- Imagen Actual --}}
+                @if($productos->img)
+                    <div class="mb-2">
+                         <label class="d-block text-muted">Imagen Actual:</label>
+                         <img src="{{ asset('storage/products/' . $productos->img) }}" alt="Imagen del producto" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; padding: 5px;">
+                    </div>
+                @endif
+
+                <input
+                    type="file"
+                    id="img"
+                    name="img"
+                    accept="image/*"
+                    class="form-control @error('img') is-invalid @enderror"
+                    onchange="previewImageEdit(event)"
+                >
+                @error('img')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+
+                 {{-- Preview Nueva Imagen --}}
+                 <div class="mt-3" id="preview_container" style="display: none;">
+                    <label class="d-block text-muted">Nueva Imagen:</label>
+                    <img id="img_preview" src="#" alt="Vista previa" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; padding: 5px;">
+                </div>
+            </div>
+        </div>
+
         {{-- BOTONES --}}
         <div class="mt-4 d-flex gap-2">
             <button type="submit" class="btn btn-primary">
@@ -144,4 +177,16 @@
 
     </form>
 </div>
+
+<script>
+    function previewImageEdit(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('img_preview');
+            output.src = reader.result;
+            document.getElementById('preview_container').style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 @endsection
