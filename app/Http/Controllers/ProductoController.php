@@ -70,7 +70,7 @@ class ProductoController extends Controller
     {
         $this->validateProducto($request, $id);
 
-        Producto::updateProducto($id, $request->all());
+        Producto::updateProducto($id, $request->all(), $request->file('img'));
 
         return redirect()->route('productos.index')->with('Exitoso','Producto actualizado exitosamente');
     }
@@ -101,6 +101,8 @@ private function validateProducto(Request $request, $id = null)
         'unidad_medida_venta' => 'required',
         'unidad_medida_compra' => 'required',
         'saldo_inicial' => 'required|numeric|min:0',
+        'pro_valor_compra' => 'required|numeric|min:0',
+        'pro_precio_venta' => 'required|numeric|min:0',
         'img' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
     ];
 
@@ -113,6 +115,14 @@ private function validateProducto(Request $request, $id = null)
         'saldo_inicial.required' => 'El saldo inicial es obligatorio',
         'saldo_inicial.numeric' => 'El saldo inicial debe ser un número',
         'saldo_inicial.min' => 'El saldo inicial no puede ser negativo',
+
+        'pro_valor_compra.required' => 'El precio de compra es obligatorio',
+        'pro_valor_compra.numeric' => 'El precio de compra debe ser un número',
+        'pro_valor_compra.min' => 'El precio de compra no puede ser negativo',
+
+        'pro_precio_venta.required' => 'El precio de venta es obligatorio',
+        'pro_precio_venta.numeric' => 'El precio de venta debe ser un número',
+        'pro_precio_venta.min' => 'El precio de venta no puede ser negativo',
 
         'img.image' => 'El archivo debe ser una imagen',
         'img.mimes' => 'La imagen debe ser PNG, JPG, JPEG o WEBP',

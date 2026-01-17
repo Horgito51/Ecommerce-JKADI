@@ -1,114 +1,107 @@
 /* Importar fuente Google */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html {
-  color: #222;
-  font-size: 1em;
-  line-height: 1.4;
+    color: #222;
+    font-size: 1em;
+    line-height: 1.4;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  padding: 0;
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 /* Estilos del header - MÁS ESPECÍFICO */
 .cabecera {
-  background-color: #031832 !important;
-  padding: 20px 0 !important;
-  color: white !important;
-  width: 100% !important;
-  
+    background-color: #031832 !important;
+    padding: 20px 0 !important;
+    color: white !important;
+    width: 100% !important;
 }
 
 .cabecera .row {
-  margin: 0;
+    margin: 0;
 }
 
 .logo {
-  max-width: 150px;
-  height: auto;
+    max-width: 150px;
+    height: auto;
 }
 
 /* Animación para imágenes */
 .anim-img {
-  padding: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 .anim-img:hover {
-  transform: scale(1.1);
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* --- FOOTER --- */
 
 footer {
-  background-color: #031832;
-  color: white;
-  padding: 17px 20px;
-  text-align: center;
-  height: auto;
+    background-color: #031832;
+    color: white;
+    padding: 17px 20px;
+    text-align: center;
+    height: auto;
 }
 
 .footer-content h1 {
-  font-size: 24px;
-  margin-bottom: 30px;
+    font-size: 24px;
+    margin-bottom: 30px;
 }
 
 .contact-info p {
-  margin: 15px 0;
-  font-size: 16px;
+    margin: 15px 0;
+    font-size: 16px;
 }
 
-.btn.dashboardButton{
-
-background-color:#031832;
-color: white;
-border-radius: 5px;
+.btn.dashboardButton {
+    background-color: #031832;
+    color: white;
+    border-radius: 5px;
 }
-
-
 
 .copyright {
-  margin-top: 30px;
-  font-size: 14px;
-  opacity: 0.7;
+    margin-top: 30px;
+    font-size: 14px;
+    opacity: 0.7;
 }
 
 /* Footer usado por tu clase footerView */
 .footer {
-  background-color: #031832;
-  color: white;
+    background-color: #031832;
+    color: white;
 }
 
 .footer_img {
-  cursor: pointer;
-  transition: transform 0.2s ease;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
 .footer_img:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 /* Clase .foot (si la usas en otra versión del footer) */
-.foot{
-  display: grid;
-  grid-template-columns: 30% 40% 30% ;
-  height: 180px;
+.foot {
+    display: grid;
+    grid-template-columns: 30% 40% 30%;
+    height: 180px;
 }
-
-
-
-
-
 
 #tablaProductos {
     margin: 20px;
@@ -121,11 +114,10 @@ border-radius: 5px;
     text-align: left;
 }
 
-#boton_crear{
-  height: 50px;
-  width: 100%;
+#boton_crear {
+    height: 50px;
+    width: 100%;
 }
-
 
 /* Personalización de formularios */
 .form-group label {
@@ -233,45 +225,46 @@ border-radius: 5px;
 }
 
 /* Mantén cards “visibles” para dropdowns */
-.card{
-  position: relative;
-  z-index: 1;
-  overflow: visible;
+.card {
+    position: relative;
+    z-index: 1;
+    overflow: visible;
 }
 
 /* Por defecto, deja visible (para selects normales) */
-.card-body{
-  overflow: visible;
+.card-body {
+    overflow: visible;
 }
 
 /* PERO si el card-body es table-responsive, debe poder scrollear en X */
 .card-body.table-responsive,
-.table-responsive{
-  overflow-x: auto !important;
-  overflow-y: visible !important;
-  -webkit-overflow-scrolling: touch;
+.table-responsive {
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Z-index para que los selects no queden detrás */
-select.form-control{
-  position: relative;
-  z-index: 5;
+select.form-control {
+    position: relative;
+    z-index: 5;
 }
 
 /* Evita que algo se salga del viewport horizontal */
-html, body{
-  max-width: 100%;
-  overflow-x: clip;
+html,
+body {
+    max-width: 100%;
+    overflow-x: clip;
 }
 
 /* (Opcional) compacta la tabla en móvil */
-@media (max-width: 576px){
-  #tabla-productos th,
-  #tabla-productos td{
-    font-size: 0.85rem;
-    padding: 6px;
-    vertical-align: middle;
-  }
+@media (max-width: 576px) {
+    #tabla-productos th,
+    #tabla-productos td {
+        font-size: 0.85rem;
+        padding: 6px;
+        vertical-align: middle;
+    }
 }
 
 /* Botón hamburguesa pal movil */
@@ -291,26 +284,25 @@ html, body{
 
 /* Separación real entre botones de acciones (móvil) */
 @media (max-width: 576px) {
-  td .acciones-botones > button,
-  td .acciones-botones > a,
-  td .acciones-botones > form {
-    margin-bottom: 8px !important;
-  }
+    td .acciones-botones > button,
+    td .acciones-botones > a,
+    td .acciones-botones > form {
+        margin-bottom: 8px !important;
+    }
 
-  td .acciones-botones > form:last-child,
-  td .acciones-botones > a:last-child,
-  td .acciones-botones > button:last-child {
-    margin-bottom: 0 !important;
-  }
+    td .acciones-botones > form:last-child,
+    td .acciones-botones > a:last-child,
+    td .acciones-botones > button:last-child {
+        margin-bottom: 0 !important;
+    }
 }
-
 
 /* intercalado de filas colores */
 .fila-zebra {
-  background-color: rgba(0,0,0,.05);
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* Fila detalle */
 .fila-detalle {
-  background-color: #f8f9fa !important;
+    background-color: #f8f9fa !important;
 }
