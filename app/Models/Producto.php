@@ -10,7 +10,7 @@ class Producto extends Model
     public $incrementing = false;
     protected $keyType = 'string';
     protected $table = 'productos';
-     protected $connection = 'pgsql_remoto';
+    //  protected $connection = 'pgsql_remoto';
     protected $primaryKey = 'id_producto';
     public $timestamps = false;
     protected $fillable = [
