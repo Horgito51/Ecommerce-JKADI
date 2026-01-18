@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
     public function login(Request $request)
     {
-        //Validaciones
         $request->validate(
             [
                 'log_usuario' => 'required',
@@ -31,15 +28,30 @@ class LoginController extends Controller
                 ->withErrors(['login' => 'El usuario o la contraseña son incorrectos'])
                 ->withInput($request->only('log_usuario'));
         }
-        $request->session()->regenerate();
 
+        $request->session()->regenerate();
         $user = Auth::user();
 
-        //Acceso para el rol
+        //BACKOFFICE
         if (in_array($user->rol, ['gerente_bodega', 'gerente_compras', 'gerente_ventas', 'admin'])) {
             return redirect('/admin');
         }
 
-        abort(403, 'Rol no válido');
+        //ECOMMERCE (cliente)
+        if (in_array($user->rol, ['cliente', 'usuario'])) {
+
+            $redirect = $request->input('redirect')
+                ?? $request->session()->pull('redirect_after_login')
+                ?? route('catalogo.index');
+
+            return redirect($redirect);
+        }
+
+        //fallback: por si algún rol raro se coló
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return back()->withErrors(['login' => 'Rol no autorizado'])->withInput($request->only('log_usuario'));
     }
 }

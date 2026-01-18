@@ -15,6 +15,10 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProveedorController;
 //Intento del logout pa todos
 use Illuminate\Support\Facades\Auth;
+//Intento de registro
+use App\Http\Controllers\RegisterController;
+//pasarela de pago
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/portada',  [PortadaController::class,'index'])->name('portada.index');
 
@@ -27,8 +31,12 @@ Route::get('/', function () {
 
 Route::group([],function(){
     Route::get('/carrito',[CarritoController::class,'index'])->name('carrito.index');
-
-
+    // Endpoints para el sidebar / acciones del carrito
+    Route::get('/carrito/data', [CarritoController::class, 'show'])->name('carrito.show');
+    Route::post('/carrito/add', [CarritoController::class, 'add'])->name('carrito.add');
+    Route::patch('/carrito/update', [CarritoController::class, 'update'])->name('carrito.update');
+    Route::delete('/carrito/remove/{id_producto}', [CarritoController::class, 'remove'])->name('carrito.remove');
+    Route::delete('/carrito/clear', [CarritoController::class, 'clear'])->name('carrito.clear');
 });
 
 
@@ -111,3 +119,20 @@ Route::post('/logout', function () {
     return redirect('/portada');
 })->name('logout');
 
+//Registro de usuario
+Route::controller(RegisterController::class)->group(function () {
+
+    // Formulario de registro
+    Route::get('/register', 'form')->name('register.form');
+
+    // Procesar registro
+    Route::post('/register', 'store')->name('register.store');
+
+});
+
+//rutas de pasarela de pago
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+
+
+Route::post('/checkout/proceder', [CheckoutController::class, 'proceed'])
+    ->name('checkout.proceed'); // botón "proceder al pago"

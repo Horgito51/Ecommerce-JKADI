@@ -15,7 +15,7 @@ class Clientes extends Model
     protected $primaryKey = 'id_cliente';
     public $incrementing = false;
     protected $fillable =['id_cliente', 'cli_nombre','cli_ruc_ced', 'estado_cli', 'cli_telefono',
-     'cli_direccion', 'cli_email', 'ciudad_id'];
+     'cli_direccion', 'cli_email', 'ciudad_id', 'user_id',];
 
     public function ciudades():BelongsTo{
         return $this->belongsTo(Ciudades::class, 'ciudad_id');
@@ -71,6 +71,7 @@ class Clientes extends Model
             'cli_direccion'=> $data['cli_direccion'],
             'cli_email'    => $data['cli_email'],
             'estado_cli'   => $data['estado_cli'],
+            'user_id'       => $data['user_id'] ?? null,
         ]);
     }
 
@@ -101,6 +102,10 @@ class Clientes extends Model
         })
         ->orderBy('id_cliente', 'desc')
         ->paginate(10);
+}
+public function user()
+{
+    return $this->belongsTo(User::class, 'user_id');
 }
 
 }

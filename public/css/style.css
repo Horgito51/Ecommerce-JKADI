@@ -331,3 +331,284 @@ body {
     order: 2;
 }
 
+/* -------------------------------
+   Style para carrito, si ecuentro otra forma de hacer pues se elimina
+   ------------------------------- */
+
+.jk-container {
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.jk-header {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.jk-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #031832;
+}
+
+.jk-muted {
+    color: #666;
+    font-size: 14px;
+}
+
+.jk-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.jk-card {
+    border: 1px solid #eee;
+    border-radius: 14px;
+    padding: 14px;
+    background: #fff;
+}
+
+.jk-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.jk-price {
+    font-weight: 700;
+}
+
+.jk-table-wrap {
+    overflow-x: auto;
+}
+
+.jk-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 780px;
+}
+
+.jk-table th,
+.jk-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.jk-right {
+    text-align: right;
+}
+
+.jk-product {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.jk-img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    background: #fafafa;
+}
+
+.jk-product-name {
+    font-weight: 650;
+}
+
+.jk-qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.jk-input {
+    width: 64px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.jk-btn {
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.jk-btn:hover {
+    background: #fafafa;
+}
+
+.jk-btn-sm {
+    padding: 6px 10px;
+    border-radius: 10px;
+}
+
+.jk-btn-primary {
+    background: #031832;
+    color: #fff;
+    border-color: #031832;
+}
+
+.jk-btn-primary:hover {
+    background: #052659;
+}
+
+.jk-btn-danger {
+    background: #b00020;
+    color: #fff;
+    border-color: #b00020;
+}
+
+.jk-btn-danger:hover {
+    filter: brightness(0.95);
+}
+
+.jk-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 12px;
+    flex-wrap: wrap;
+}
+
+/* Toast simple */
+.jk-toast {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    background: #111;
+    color: #fff;
+    padding: 12px 14px;
+    border-radius: 12px;
+    display: none;
+    max-width: 420px;
+    z-index: 9999;
+}
+
+.jk-toast.show {
+    display: block;
+}
+
+/* ----------------------------
+   JKADI - SIDEBAR CARRITO (DRAWER)
+   ---------------------------- */
+.jk-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+  z-index: 9998;
+}
+
+.jk-overlay.open{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.jk-drawer{
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(420px, 92vw);
+  background: #fff;
+  transform: translateX(100%);
+  transition: transform .22s ease;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -12px 0 28px rgba(0,0,0,.18);
+}
+
+.jk-drawer.open{ transform: translateX(0); }
+
+.jk-drawer-header{
+  padding: 14px;
+  border-bottom: 1px solid #eee;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+}
+
+.jk-drawer-title{
+  font-weight: 700;
+  color: #031832;
+}
+
+.jk-drawer-close{
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+}
+
+.jk-drawer-body{
+  padding: 14px;
+  overflow: auto;
+  flex: 1;
+}
+
+.jk-drawer-footer{
+  padding: 14px;
+  border-top: 1px solid #eee;
+  display: grid;
+  gap: 10px;
+}
+
+.jk-drawer-row{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+}
+
+/* items en drawer */
+.jk-cart-item{
+  display:flex;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid #f1f1f1;
+}
+
+.jk-cart-item img{
+  width:58px;
+  height:58px;
+  object-fit:cover;
+  border-radius:12px;
+  border:1px solid #eee;
+  background:#fafafa;
+}
+
+.jk-cart-meta{ flex: 1; }
+.jk-cart-title{ font-weight: 650; font-size: 14px; margin-bottom: 4px; }
+.jk-cart-line{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.jk-mini-qty{ display:flex; gap:8px; align-items:center; margin-top:8px; }
+.jk-mini-qty input{
+  width:54px;
+  padding:6px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  text-align:center;
+}

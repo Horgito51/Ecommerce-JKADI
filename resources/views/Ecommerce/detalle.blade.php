@@ -1,5 +1,5 @@
 @extends('layouts.content')
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
 <div class="container-fluid bg-white min-vh-100 py-4">
     <style>
@@ -236,10 +236,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Botón agregar al carrito (placeholder)
     if (btnAgregarCarrito) {
-        btnAgregarCarrito.addEventListener('click', function() {
-            const cantidad = inputCantidad.value;
-            // TODO: Implementar funcionalidad real del carrito
-            console.log(`Agregar al carrito: ${cantidad} items`);
+        btnAgregarCarrito.addEventListener('click', async function() {
+            const cantidad = parseInt(inputCantidad.value, 10) || 1;
+
+            // deshabilitar para evitar doble click
+            btnAgregarCarrito.disabled = true;
+
+            try {
+                const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                const res = await fetch('/carrito/add', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({
+                        id_producto: @json($producto->id_producto),
+                        cantidad: cantidad
+                    })
+                });
+
+                const data = await res.json().catch(() => ({}));
+
+                if (!res.ok) {
+                    // backend devuelve 422 con message (ej: stock insuficiente)
+                    alert(data.message || 'No se pudo agregar al carrito.');
+                    return;
+                }
+                // Opcional: si quieres ir al carrito directo:
+                // window.location.href = "{{ route('carrito.index') }}";
+
+                window.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
+                if (window.CartDrawer) window.CartDrawer.open();
+
+            } catch (e) {
+                alert('Error de red al agregar al carrito.');
+            } finally {
+                btnAgregarCarrito.disabled = false;
+            }
         });
     }
 });

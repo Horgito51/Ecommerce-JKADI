@@ -21,8 +21,9 @@
                        style="background-color:#031832; color:white; border-radius:5px;margin:10px">
                         Comprar Ahora
                     </a>
-                    <a class="btn btn-lg px-4 py-2"
-                       style="background-color:#031832; color:white; border-radius:5px;margin:10px">
+                    <a href="{{ route('register.form') }}"
+                    class="btn btn-lg px-4 py-2"
+                    style="background-color:#031832; color:white; border-radius:5px;margin:10px">
                         Registrarse
                     </a>
                 </div>

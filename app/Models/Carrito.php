@@ -19,8 +19,11 @@ class Carrito extends Model
         'expires_at' => 'datetime',
     ];
 
+    // app/Models/Carrito.php
     public function items()
     {
-        return $this->hasMany(CarritoItem::class, 'carrito_id');
+        return $this->hasMany(\App\Models\CarritoItem::class, 'carrito_id')
+            ->orderBy('id_producto', 'asc'); // orden estable
     }
+
 }
