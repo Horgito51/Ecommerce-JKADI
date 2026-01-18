@@ -71,12 +71,10 @@
             <span class="fw-bold" id="checkout-total">$0.00</span>
           </div>
 
-          <form method="POST" action="{{ route('checkout.proceed') }}" class="mt-3">
-            @csrf
-            <button type="submit" class="btn btn-dark w-100">
-              Proceder al pago
-            </button>
+          <form method="GET" action="{{ route('checkout.paymentForm') }}" class="mt-3">
+            <button type="submit" class="btn btn-dark w-100">Proceder al pago</button>
           </form>
+
 
           <a class="btn btn-outline-secondary w-100 mt-2" href="{{ route('carrito.index') }}">
             Volver al carrito
