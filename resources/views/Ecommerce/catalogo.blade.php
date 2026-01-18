@@ -5,48 +5,77 @@
 
         {{-- Categorías (solo visual por ahora) --}}
         <div class="d-flex flex-wrap justify-content-center gap-4 mb-5">
+            {{-- Botón para ver TODOS --}}
+            <a href="{{ route('catalogo.index') }}" class="btn px-4 py-3 rounded-pill shadow-sm"
+                style="background-color: {{ !request('categoria') ? '#0056b3' : '#031832' }}; color:white; margin: 10px;">
+                Todos los productos
+            </a>
+
+            {{-- Botones de categorías --}}
             @foreach ($categorias as $categoria)
-                <button class="btn px-4 py-3 rounded-pill shadow-sm" style="background-color:#031832; color:white; margin: 10px;">
+                <a href="{{ route('catalogo.index', ['categoria' => $categoria->id_tipo]) }}"
+                    class="btn px-4 py-3 rounded-pill shadow-sm"
+                    style="background-color: {{ request('categoria') == $categoria->id_tipo ? '#0056b3' : '#031832' }}; color:white; margin: 10px;">
                     {{ $categoria->tipo_descripcion }}
-                </button>
+                </a>
             @endforeach
         </div>
         {{-- GRID DE PRODUCTOS --}}
-        <div class="row g-4">
-            @foreach ($productos as $producto)
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="card h-100 shadow-sm">
+        <div class="productos-grid">
+            <div class="row g-4" style="margin-left: 0; margin-right: 0;">
 
-                        {{-- IMAGEN --}}
-                        <img src="{{ asset('storage/products/' . $producto->img) }}" class="card-img-top img-fluid"
-                            alt="{{ $producto->pro_descripcion }}" style="height: 220px; object-fit: contain;">
+                @foreach ($productos as $producto)
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 p-2">
+                        <a href="{{ route('catalogo.detalle', $producto->id_producto) }}" class="text-decoration-none"
+                            style="color: inherit;">
+                            <div class="card h-100 shadow-sm border-0 overflow-hidden">
 
-                        <div class="card-body text-center">
-                            <h5 class="card-title fw-bold">
-                                {{ $producto->pro_descripcion }}
-                            </h5>
+                                {{-- Contenedor de imagen con fondo --}}
+                                <div class="bg-light p-3"
+                                    style="height: 220px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="{{ asset('storage/products/' . $producto->img) }}" class="img-fluid"
+                                        alt="{{ $producto->pro_descripcion }}"
+                                        style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                                </div>
 
-                            <p class="text-muted mb-2">
-                                Precio<br>
-                                <strong>${{ number_format($producto->pro_precio_venta, 2) }}</strong>
-                            </p>
+                                {{-- Cuerpo de la tarjeta --}}
+                                <div class="card-body d-flex flex-column text-center p-3">
 
-                            <a style="background-color:#031832;"href="{{ route('catalogo.detalle', $producto->id_producto) }}"
-                                class="btn btn-primary w-100">
-                                Comprar ahora
-                            </a>
-                        </div>
+                                    {{-- Nombre del producto --}}
+                                    <h6 class="card-title fw-bold mb-3" style="min-height: 48px; line-height: 1.4;">
+                                        {{ Str::limit($producto->pro_descripcion, 50) }}
+                                    </h6>
 
+                                    {{-- Precio --}}
+                                    <div class="mb-3 mt-auto">
+                                        <p class="text-muted mb-1 small">Precio</p>
+                                        <h5 class="fw-bold mb-0" style="color: #031832;">
+                                            ${{ number_format($producto->pro_precio_venta, 2) }}
+                                        </h5>
+                                    </div>
+
+                                    {{-- Botón de compra --}}
+                                    <span class="btn w-100 text-white fw-semibold py-2 rounded-pill"
+                                        style="background-color: #031832; transition: all 0.3s ease;">
+                                        Comprar ahora
+                                    </span>
+                                </div>
+
+                            </div>
+                        </a>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
 
+            </div>
+        </div>
+
+        {{-- Paginación --}}
+
+        <div class="pagination-wrapper d-flex justify-content-center mt-5">
+            {{ $productos->onEachSide(1)->links('pagination::bootstrap-5') }}
         </div>
 
 
-        <div class="d-flex justify-content-center mt-5">
-            {{ $productos->links('pagination::bootstrap-5') }}
-        </div>
 
     </div>
 @endsection

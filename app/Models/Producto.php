@@ -91,7 +91,7 @@ class Producto extends Model
     }
 
 
-    public static function getProductoBy($search = '')
+    public static function getProductoBy($search = '', $categoria = null)
     {
         return self::select(
                 'id_producto',
@@ -113,8 +113,11 @@ class Producto extends Model
                     ->orWhere('pro_descripcion', 'like', "%{$search}%");
                 });
             })
+            ->when($categoria, function ($q) use ($categoria) {
+                $q->where('id_tipo', $categoria);
+            })
             ->orderBy('id_producto', 'desc')
-            ->paginate(10);
+            ->paginate(12);
     }
 
 

@@ -21,4 +21,9 @@ class tiposProducto extends Model
         return self::select('id_tipo','tipo_descripcion')->get();
     }   
 
+    public function productos()
+    {
+        return $this->hasMany(Producto::class, 'id_tipo', 'id_tipo');
+    }
+
 }

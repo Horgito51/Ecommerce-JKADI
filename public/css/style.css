@@ -31,6 +31,8 @@ body {
     margin: 0;
 }
 
+
+
 .logo {
     max-width: 150px;
     height: auto;
@@ -306,3 +308,23 @@ body {
 .fila-detalle {
     background-color: #f8f9fa !important;
 }
+
+
+
+/* ===== PAGINACIÓN===== */
+.pagination {
+    justify-content: center;
+}
+
+.pagination-wrapper > div {
+    flex-direction: column;
+    align-items: center;
+}
+
+.pagination-wrapper .small {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    order: 2;
+}
+
