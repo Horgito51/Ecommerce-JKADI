@@ -61,7 +61,7 @@ class ProductoSeeder extends Seeder
 
             ['id_producto'=>'P035','pro_descripcion'=>'Sardinas','id_tipo'=>'CAR','pro_um_compra'=>'PK','pro_um_venta'=>'PK','pro_valor_compra'=>1.00,'pro_precio_venta'=>1.30,'pro_saldo_inicial'=>300,'pro_qty_ingresos'=>0,'pro_qty_egresos'=>0,'pro_qty_ajustes'=>0,'pro_saldo_final'=>300,'estado_prod'=>'ACT','user_id'=>'root@localhost','fecha_alta'=>'2025-07-04 07:59:57','fecha_baja'=>null,'img'=>'Sardinas.png'],
 
-            ['id_producto'=>'P036','pro_descripcion'=>'Atún','id_tipo'=>'CAR','pro_um_compra'=>'PK','pro_um_venta'=>'PK','pro_valor_compra'=>1.20,'pro_precio_venta'=>1.50,'pro_saldo_inicial'=>300,'pro_qty_ingresos'=>0,'pro_qty_egresos'=>0,'pro_qty_ajustes'=>0,'pro_saldo_final'=>300,'estado_prod'=>'ACT','user_id'=>'root@localhost','fecha_alta'=>'2025-07-04 07:59:57','fecha_baja'=>null,'img'=>'Atún.png'],
+            ['id_producto'=>'P036','pro_descripcion'=>'Atún','id_tipo'=>'CAR','pro_um_compra'=>'PK','pro_um_venta'=>'PK','pro_valor_compra'=>1.20,'pro_precio_venta'=>1.50,'pro_saldo_inicial'=>300,'pro_qty_ingresos'=>0,'pro_qty_egresos'=>0,'pro_qty_ajustes'=>0,'pro_saldo_final'=>300,'estado_prod'=>'ACT','user_id'=>'root@localhost','fecha_alta'=>'2025-07-04 07:59:57','fecha_baja'=>null,'img'=>'Atun.png'],
 
             ['id_producto'=>'P037','pro_descripcion'=>'Jugo de Naranja','id_tipo'=>'BEB','pro_um_compra'=>'LT','pro_um_venta'=>'LT','pro_valor_compra'=>1.80,'pro_precio_venta'=>2.20,'pro_saldo_inicial'=>300,'pro_qty_ingresos'=>0,'pro_qty_egresos'=>0,'pro_qty_ajustes'=>0,'pro_saldo_final'=>300,'estado_prod'=>'ACT','user_id'=>'root@localhost','fecha_alta'=>'2025-07-04 07:59:57','fecha_baja'=>null,'img'=>'JugodeNaranja.png'],
 
@@ -165,7 +165,7 @@ class ProductoSeeder extends Seeder
 
             ['id_producto'=>'P051','pro_descripcion'=>'Manzana','id_tipo'=>'GRN','pro_um_compra'=>'KG','pro_um_venta'=>'KG','pro_valor_compra'=>1.50,'pro_precio_venta'=>2.00,'pro_saldo_inicial'=>300,'pro_qty_ingresos'=>0,'pro_qty_egresos'=>0,'pro_qty_ajustes'=>0,'pro_saldo_final'=>300,'estado_prod'=>'ACT','user_id'=>'root@localhost','fecha_alta'=>'2025-07-04 07:59:57','fecha_baja'=>null,'img'=>'Manzana.png'],
 
-            ['id_producto'=>'P003','pro_descripcion'=>'Azúcar','id_tipo'=>'GRN','pro_um_compra'=>'KG','pro_um_venta'=>'KG','pro_valor_compra'=>1.10,'pro_precio_venta'=>1.40,'pro_saldo_inicial'=>300,'pro_qty_ingresos'=>0,'pro_qty_egresos'=>0,'pro_qty_ajustes'=>0,'pro_saldo_final'=>300,'estado_prod'=>'ACT','user_id'=>'root@localhost','fecha_alta'=>'2025-07-04 07:59:57','fecha_baja'=>null,'img'=>'Azúcar.png'],
+            ['id_producto'=>'P003','pro_descripcion'=>'Azúcar','id_tipo'=>'GRN','pro_um_compra'=>'KG','pro_um_venta'=>'KG','pro_valor_compra'=>1.10,'pro_precio_venta'=>1.40,'pro_saldo_inicial'=>300,'pro_qty_ingresos'=>0,'pro_qty_egresos'=>0,'pro_qty_ajustes'=>0,'pro_saldo_final'=>300,'estado_prod'=>'ACT','user_id'=>'root@localhost','fecha_alta'=>'2025-07-04 07:59:57','fecha_baja'=>null,'img'=>'Azucar.png'],
 
             ['id_producto'=>'P004','pro_descripcion'=>'Leche en Polvo','id_tipo'=>'HEL','pro_um_compra'=>'KG','pro_um_venta'=>'KG','pro_valor_compra'=>3.50,'pro_precio_venta'=>4.20,'pro_saldo_inicial'=>300,'pro_qty_ingresos'=>0,'pro_qty_egresos'=>0,'pro_qty_ajustes'=>0,'pro_saldo_final'=>300,'estado_prod'=>'ACT','user_id'=>'root@localhost','fecha_alta'=>'2025-07-04 07:59:57','fecha_baja'=>null,'img'=>'LecheenPolvo.png'],
 
