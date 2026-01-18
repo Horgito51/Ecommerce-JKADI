@@ -105,131 +105,32 @@
     <div class="row g-4 justify-content-center">
 
         <!-- Bebidas -->
-        <div class="col-6 col-md-4 col-lg-3" style="margin-bottom:15px">
-            <a href="{{ route('catalogo.index') }}" class="text-decoration-none">
-                <div class="card text-center h-100 border-0 shadow-sm rounded-4 hover-lift">
-                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center mb-3"
-                             style="width:70px; height:70px; background-color:#E8EEF5;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"
-                                 fill="currentColor" viewBox="0 0 24 24" style="color:#031832">
-                                <path d="M6 2h12l-1 20H7L6 2zm2 4v2h8V6H8z"/>
-                            </svg>
-                        </div>
-                        <h6 class="fw-bold mb-0" style="color:#031832">Bebidas y Chocolates</h6>
-                    </div>
-                </div>
-            </a>
-        </div>
+@foreach ($categorias as $categoria)
+    <div class="col-6 col-md-4 col-lg-3 mb-3">
 
-        <!-- Cárnicos -->
-        <div class="col-6 col-md-4 col-lg-3" style="margin-bottom:15px">
-            <a href="{{ route('catalogo.index') }}" class="text-decoration-none">
-                <div class="card text-center h-100 border-0 shadow-sm rounded-4 hover-lift">
-                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center mb-3"
-                             style="width:70px; height:70px; background-color:#E8EEF5;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"
-                                 fill="currentColor" viewBox="0 0 24 24" style="color:#031832">
-                                <path d="M4 10c0-4 4-6 8-6s8 2 8 6-4 8-8 8-8-4-8-8z"/>
-                            </svg>
-                        </div>
-                        <h6 class="fw-bold mb-0" style="color:#031832">Cárnicos y Embutidos</h6>
-                    </div>
-                </div>
-            </a>
-        </div>
+        <a href="{{ route('catalogo.index', ['categoria' => $categoria['id']]) }}"
+           class="text-decoration-none">
 
-        <!-- Condimentos -->
-        <div class="col-6 col-md-4 col-lg-3" style="margin-bottom:15px">
-            <a href="{{ route('catalogo.index') }}" class="text-decoration-none">
-                <div class="card text-center h-100 border-0 shadow-sm rounded-4 hover-lift">
-                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center mb-3"
-                             style="width:70px; height:70px; background-color:#E8EEF5;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"
-                                 viewBox="0 0 64 64" fill="currentColor" style="color:#031832">
-                                <path d="M38 6h8v6l4 4v36c0 3-2 6-6 6H34c-4 0-6-3-6-6V16l4-4V6z"/>
-                            </svg>
-                        </div>
-                        <h6 class="fw-bold mb-0" style="color:#031832">Condimentos y Aceites</h6>
-                    </div>
-                </div>
-            </a>
-        </div>
+            <div class="card text-center h-100 border-0 shadow-sm rounded-4 hover-lift">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
 
-        <!-- Panadería -->
-        <div class="col-6 col-md-4 col-lg-3" style="margin-bottom:15px">
-            <a href="{{ route('catalogo.index') }}" class="text-decoration-none">
-                <div class="card text-center h-100 border-0 shadow-sm rounded-4 hover-lift">
-                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center mb-3"
-                             style="width:70px; height:70px; background-color:#E8EEF5;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"
-                                 fill="currentColor" viewBox="0 0 24 24" style="color:#031832">
-                                <path d="M4 12c0-4 4-8 8-8s8 4 8 8-4 8-8 8z"/>
-                            </svg>
-                        </div>
-                        <h6 class="fw-bold mb-0" style="color:#031832">Panadería y Galletas</h6>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mb-3"
+                         style="width:70px; height:70px; background-color:#E8EEF5; color:#031832">
+                        {!! $categoria['svg'] !!}
                     </div>
-                </div>
-            </a>
-        </div>
 
-        <!-- Granos -->
-        <div class="col-6 col-md-4 col-lg-3" style="margin-bottom:15px">
-            <a href="{{ route('catalogo.index') }}" class="text-decoration-none">
-                <div class="card text-center h-100 border-0 shadow-sm rounded-4 hover-lift">
-                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center mb-3"
-                             style="width:70px; height:70px; background-color:#E8EEF5;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"
-                                 viewBox="0 0 64 64" fill="none" stroke="currentColor"
-                                 stroke-width="3" style="color:#031832">
-                                <path d="M18 8h28l-2 6v38a4 4 0 0 1-4 4H24a4 4 0 0 1-4-4V14l-2-6z"/>
-                            </svg>
-                        </div>
-                        <h6 class="fw-bold mb-0" style="color:#031832">Granos y Cereales</h6>
-                    </div>
-                </div>
-            </a>
-        </div>
+                    <h6 class="fw-bold mb-0" style="color:#031832">
+                        {{ $categoria['nombre'] }}
+                    </h6>
 
-        <!-- Lácteos -->
-        <div class="col-6 col-md-4 col-lg-3" style="margin-bottom:15px">
-            <a href="{{ route('catalogo.index') }}" class="text-decoration-none">
-                <div class="card text-center h-100 border-0 shadow-sm rounded-4 hover-lift">
-                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center mb-3"
-                             style="width:70px; height:70px; background-color:#E8EEF5;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"
-                                 fill="currentColor" viewBox="0 0 24 24" style="color:#031832">
-                                <path d="M6 2h12v20H6z"/>
-                            </svg>
-                        </div>
-                        <h6 class="fw-bold mb-0" style="color:#031832">Lácteos y Refrigerados</h6>
-                    </div>
                 </div>
-            </a>
-        </div>
+            </div>
 
-        <!-- Limpieza -->
-        <div class="col-6 col-md-4 col-lg-3" style="margin-bottom:15px">
-            <a href="{{ route('catalogo.index') }}" class="text-decoration-none">
-                <div class="card text-center h-100 border-0 shadow-sm rounded-4 hover-lift">
-                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center mb-3"
-                             style="width:70px; height:70px; background-color:#E8EEF5;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"
-                                 fill="currentColor" viewBox="0 0 24 24" style="color:#031832">
-                                <path d="M8 2h8v4H8zm-2 6h12l-1 14H7z"/>
-                            </svg>
-                        </div>
-                        <h6 class="fw-bold mb-0" style="color:#031832">Limpieza e Higiene</h6>
-                    </div>
-                </div>
-            </a>
-        </div>
+        </a>
+
+    </div>
+@endforeach
+
 
     </div>
 </section>

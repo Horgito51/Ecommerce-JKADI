@@ -72,10 +72,73 @@
         {{-- Paginación --}}
 
         <div class="pagination-wrapper d-flex justify-content-center mt-5">
-            {{ $productos->onEachSide(1)->links('pagination::bootstrap-5') }}
+            {{ $productos->links('pagination::bootstrap-5', ['class' => 'pagination pagination-sm']) }}
+
         </div>
-
-
-
+        <p class="text-muted small text-center mt-2">
+    Página {{ $productos->currentPage() }} de {{ $productos->lastPage() }} ·
+    {{ $productos->total() }} productos
+</p>
     </div>
+
+    <style>
+<style>
+        /* CONTENEDOR */
+.pagination {
+    justify-content: center;
+    gap: 6px;
+}
+
+.pagination + p,
+p.text-sm.text-gray-700 {
+    display: none;
+}
+
+/* BOTONES */
+.page-link {
+    color: #0d6efd;
+    background-color: transparent;
+    border: 1px solid #dee2e6;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+/* OCULTAR TEXTO "Showing x to y of z results" DE LARAVEL */
+nav[aria-label="Pagination Navigation"] p,
+.pagination-wrapper p,
+.text-sm.text-gray-700,
+.flex.justify-between p {
+    display: none !important;
+}
+
+
+/* HOVER */
+.page-link:hover {
+    background-color: #e9ecef;
+    color: #0a58ca;
+}
+
+p.text-sm.text-gray-700 {
+    display: none;
+}
+
+
+/* ACTIVO */
+.page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+}
+
+/* DESHABILITADO */
+.page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+    </style>
+
+
 @endsection

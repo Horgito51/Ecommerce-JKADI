@@ -140,6 +140,9 @@ footer {
     border-radius: 0.5rem;
 }
 
+
+
+
 /* Ajuste del formulario para pantallas pequeñas */
 @media (max-width: 576px) {
     .container {

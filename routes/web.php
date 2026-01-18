@@ -3,6 +3,7 @@
 use App\Http\Controllers\Ecommerce\CatalogoController;
 use App\Http\Controllers\Ecommerce\CarritoController;
 use App\Models\Producto;
+use App\Http\Controllers\Ecommerce\PortadaController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\ProductoController;
@@ -12,13 +13,10 @@ use App\Http\Controllers\FacturaController;
 use GuzzleHttp\Client;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProveedorController;
-//Intento del logout pa todos 
+//Intento del logout pa todos
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/portada', function () {
-
-    return view('Ecommerce.dashboard');
-})->name('portada.index');
+Route::get('/portada',  [PortadaController::class,'index'])->name('portada.index');
 
 
 // ECOMMERCE
