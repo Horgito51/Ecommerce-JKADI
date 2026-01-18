@@ -89,20 +89,21 @@
                     <div class="mb-4">
                         <div class="input-group" style="width: 150px;">
                             <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary" type="button" id="btnMenos" {{ $producto->pro_saldo_final == 0 ? 'disabled' : '' }}>
-                                    <i class="fas fa-minus"></i>
+                                <button class="btn btn-outline-secondary"  type="button" id="btnMenos" {{ $producto->pro_saldo_final == 0 ? 'disabled' : '' }}>
+                                    <i class="fas fa-minus" style="color: #031832;">-</i>
                                 </button>
                             </div>
                             <input type="number"
                                    class="form-control text-center font-weight-bold"
+                                   style="color: #031832;"
                                    id="cantidad"
                                    value="1"
                                    min="1"
                                    max="{{ $producto->pro_saldo_final }}"
                                    {{ $producto->pro_saldo_final == 0 ? 'disabled' : '' }}>
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="btnMas" {{ $producto->pro_saldo_final == 0 ? 'disabled' : '' }}>
-                                    <i class="fas fa-plus"></i>
+                                <button class="btn btn-outline-secondary"  type="button" id="btnMas" {{ $producto->pro_saldo_final == 0 ? 'disabled' : '' }}>
+                                    <i class="fas fa-plus" style="color: #031832;">+</i>
                                 </button>
                             </div>
                         </div>
