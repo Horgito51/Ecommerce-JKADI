@@ -124,7 +124,7 @@ p.text-sm.text-gray-700 {
     display: none;
 }
 
-
+ex
 /* ACTIVO */
 .page-item.active .page-link {
     background-color: #0d6efd;
