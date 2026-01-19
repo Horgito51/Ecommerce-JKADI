@@ -69,7 +69,7 @@ Route::prefix('admin')->group(function () {
 
             Route::get('/', function () {
                 return view('admin.dashboard');
-            })->name('admin.index');;
+            })->name('bodega.index');;
 
         });
 
@@ -79,7 +79,7 @@ Route::prefix('admin')->group(function () {
         ->group(function () {
             Route::get('/', function () {
                 return view('admin.dashboard');
-            })->name('admin.index');;
+            })->name('compras.index');;
             Route::resource('proveedores', ProveedorController::class);
 
             Route::resource('ordenes',CompraController::class);
@@ -92,7 +92,7 @@ Route::prefix('admin')->group(function () {
         ->group(function () {
             Route::get('/', function () {
                 return view('admin.dashboard');
-            })->name('admin.index');;
+            })->name('ventas.index');;
 
             Route::resource('clientes', ClientesController::class);
 
