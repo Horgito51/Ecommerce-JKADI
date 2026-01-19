@@ -4,12 +4,35 @@
 
       <!-- Logo -->
       <div class="col-6 col-md-2">
+    @if(auth()->check() && (auth()->user()->hasRole('admin')))
        <a href="{{ route('admin.index') }}">
          <img src="{{ asset('img/Logo.png') }}"
              alt="J-KADI Sports"
              class="img-fluid"
              style="max-width: 140px;">
        </a>
+       @elseif(auth()->check() && (auth()->user()->hasRole('gerente_compras')))
+       <a href="{{ route('compras.index') }}">
+         <img src="{{ asset('img/Logo.png') }}"
+             alt="J-KADI Sports"
+             class="img-fluid"
+             style="max-width: 140px;">
+       </a>
+       @elseif(auth()->check() && (auth()->user()->hasRole('ventas')))
+       <a href="{{ route('ventas.index') }}">
+         <img src="{{ asset('img/Logo.png') }}"
+             alt="J-KADI Sports"
+             class="img-fluid"
+             style="max-width: 140px;">
+       </a>
+       @elseif(auth()->check() && (auth()->user()->hasRole('gerente_bodega')))
+       <a href="{{ route('bodega.index') }}">
+         <img src="{{ asset('img/Logo.png') }}"
+             alt="J-KADI Sports"
+             class="img-fluid"
+             style="max-width: 140px;">
+       </a>
+       @endif
       </div>
 
       <!-- Título Backoffice -->
@@ -65,7 +88,7 @@
         <div class="dropdown d-inline-block">
 
           <div class="d-flex flex-column align-items-center">
-            
+
             <!-- SVG -->
             <svg xmlns="http://www.w3.org/2000/svg"
                 width="34"
