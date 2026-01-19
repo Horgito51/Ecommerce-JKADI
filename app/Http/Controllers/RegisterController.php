@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Clientes;
+use App\Models\Register;
 use App\Models\Ciudades;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use DomainException;
 
 class RegisterController extends Controller
 {
@@ -28,7 +26,7 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        // 1) Validación (misma lógica que Clientes + password)
+        // 1) Validación (se queda en Controller)
         $rules = [
             'cli_nombre'       => 'required|string|max:50',
             'cli_telefono'     => 'required|digits:10',
@@ -69,61 +67,19 @@ class RegisterController extends Controller
 
         $redirect = $request->input('redirect', route('catalogo.index'));
 
-        $email = trim(mb_strtolower($request->cli_email));
-        $doc   = trim($request->cli_ruc_ced);
+        // 2) Lógica de negocio al Model (Register)
+        try {
+            $user = Register::registrarCliente($request->all());
+        } catch (DomainException $e) {
+            return back()
+                ->withErrors(['cli_email' => $e->getMessage()])
+                ->withInput();
+        }
 
-        // 2) Transacción para asegurar consistencia
-        return DB::transaction(function () use ($request, $email, $doc, $redirect) {
+        // 3) Sesión/HTTP flow se queda en Controller
+        Auth::login($user);
+        $request->session()->regenerate();
 
-            // Buscar cliente existente por (cedula/ruc) o email
-            $cliente = Clientes::where('cli_ruc_ced', $doc)
-                ->orWhere('cli_email', $email)
-                ->first();
-
-            // Buscar user existente por email (users.email es unique)
-            $user = User::where('email', $email)->first();
-
-            // Si ya existe cliente y ya tiene cuenta asociada
-            if ($cliente && !is_null($cliente->user_id)) {
-                return back()
-                    ->withErrors(['cli_email' => 'Este cliente ya tiene una cuenta registrada. Inicie sesión.'])
-                    ->withInput();
-            }
-
-            // Si no existe user, crearlo
-            if (!$user) {
-                $user = User::create([
-                    'name'     => $request->cli_nombre,
-                    'email'    => $email,
-                    'password' => Hash::make($request->password),
-                    'rol'      => 'cliente',
-                ]);
-            }
-
-            // Si existe cliente -> asociarlo al user
-            if ($cliente) {
-                $cliente->user_id = $user->id;
-                $cliente->cli_email = $email; // por si estaba vacío o diferente
-                $cliente->save();
-            } else {
-                // Si NO existe cliente -> crear cliente y asociarlo
-                Clientes::createClientes([
-                    'cli_nombre'    => $request->cli_nombre,
-                    'cli_ruc_ced'   => $doc,
-                    'cli_telefono'  => $request->cli_telefono,
-                    'ciudad_id'     => $request->ciudad_id,
-                    'cli_direccion' => $request->cli_direccion,
-                    'cli_email'     => $email,
-                    'estado_cli'    => 'ACT',
-                    'user_id'       => $user->id,
-                ]);
-            }
-
-            // 3) Logear al usuario y redirigir
-            Auth::login($user);
-            request()->session()->regenerate();
-
-            return redirect($redirect);
-        });
+        return redirect($redirect);
     }
 }
