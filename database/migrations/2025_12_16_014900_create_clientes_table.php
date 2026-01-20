@@ -17,7 +17,7 @@ return new class extends Migration
             $table->char('cli_ruc_ced',13)->unique();
             $table->char('cli_direccion',100);
             $table->char('cli_telefono',10);
-            $table->char('cli_email',50);
+            $table->char('cli_email',50)->unique();
             $table->foreignId('ciudad_id')->references('id')->on('ciudades')
             ->onDelete('restrict');
             $table->enum('estado_cli', ['ACT', 'INA', 'SUS'])->default('ACT');
