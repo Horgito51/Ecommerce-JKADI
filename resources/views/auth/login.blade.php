@@ -35,14 +35,14 @@
                 <form method="POST" action="{{ route('login.post') }}" novalidate>
                     @csrf
                     <input type="hidden" name="redirect"value="{{ old('redirect', request('redirect') ?? route('catalogo.index')) }}">
-                    <!-- USUARIO -->
+                    <!-- Correo -->
                     <div class="mb-3 text-start">
-                        <label class="form-label">Usuario</label>
-                        <input type="text" name="log_usuario"
-                               class="form-control @error('log_usuario') is-invalid @enderror"
-                               placeholder="Ingrese su usuario"
-                               value="{{ old('log_usuario') }}">
-                        @error('log_usuario')
+                        <label class="form-label">Correo electrónico</label>
+                        <input type="email" name="email"
+                            class="form-control @error('email') is-invalid @enderror"
+                            placeholder="correo@ejemplo.com"
+                            value="{{ old('email') }}">
+                        @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
