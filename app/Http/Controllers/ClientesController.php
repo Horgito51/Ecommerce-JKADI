@@ -13,7 +13,7 @@ class ClientesController extends Controller
     {
         $rules = [
             'cli_nombre'   => 'required|string|max:50',
-            'cli_telefono' => 'required|digits:10',
+            'cli_telefono' => 'required|digits:10|regex:/^[0-9]+$/',
             'cli_direccion' => 'required|string|max:100',
             'ciudad_id'    => 'required|exists:ciudades,id',
             'cli_email'    => 'required|email|max:50',

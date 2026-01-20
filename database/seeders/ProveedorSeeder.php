@@ -20,7 +20,7 @@ class ProveedorSeeder extends Seeder
                 'id_ciudad' => rand(1, 20),
                 'prv_celular' => '0972442941',
                 'prv_direccion' => 'Av. Principal 1000 y Secundaria',
-                'estado_prv' => 'INA',
+                'estado_prv' => 'ACT',
             ],
 
             [
@@ -56,7 +56,7 @@ class ProveedorSeeder extends Seeder
                 'id_ciudad' => rand(1, 20),
                 'prv_celular' => '0983333333',
                 'prv_direccion' => 'Av. Loja y Remigio',
-                'estado_prv' => 'INA',
+                'estado_prv' => 'ACT',
             ],
 
             [
@@ -80,7 +80,7 @@ class ProveedorSeeder extends Seeder
                 'id_ciudad' => rand(1, 20),
                 'prv_celular' => '0985555555',
                 'prv_direccion' => 'Vía Crucita km 3',
-                'estado_prv' => 'INA',
+                'estado_prv' => 'ACT',
             ],
 
             [
@@ -92,7 +92,7 @@ class ProveedorSeeder extends Seeder
                 'id_ciudad' => rand(1, 20),
                 'prv_celular' => '0996666666',
                 'prv_direccion' => 'Av. Universitaria',
-                'estado_prv' => 'INA',
+                'estado_prv' => 'ACT',
             ],
 
             [
@@ -128,7 +128,7 @@ class ProveedorSeeder extends Seeder
                 'id_ciudad' => rand(1, 20),
                 'prv_celular' => '0989999999',
                 'prv_direccion' => 'Av. Teodoro Gómez',
-                'estado_prv' => 'SUS',
+                'estado_prv' => 'ACT',
             ],
 
         ]);

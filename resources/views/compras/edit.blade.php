@@ -192,7 +192,9 @@
                     <input type="text" id="subtotal" class="form-control" readonly>
                 </div>
                 <div class="mb-2">
-                    <label>IVA (15%)</label>
+                    <label>IVA
+
+                    </label>
                     <input type="text" id="iva" class="form-control" readonly>
                 </div>
                 <div class="mb-2">
@@ -356,7 +358,7 @@
                 subtotalGeneral += parseFloat(el.value) || 0;
             });
 
-            const iva = subtotalGeneral * 0.15;
+            const iva = subtotalGeneral * {{ config('properties.iva') }};
             const total = subtotalGeneral + iva;
 
             document.getElementById('subtotal').value = subtotalGeneral.toFixed(2);

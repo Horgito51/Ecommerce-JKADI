@@ -45,7 +45,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    
+
                     <div class="col-12 mb-3">
                         <label class="form-label">Descripción</label>
                         <textarea name="fac_descripcion"
@@ -162,7 +162,7 @@
                     <input type="text" id="subtotal" class="form-control" readonly>
                 </div>
                 <div class="mb-2">
-                    <label>IVA (15%)</label>
+                    <label>IVA </label>
                     <input type="text" id="iva" class="form-control" readonly>
                 </div>
                 <div class="mb-2">
@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function () {
             subtotalGeneral += parseFloat(el.value) || 0;
         });
 
-        const iva = subtotalGeneral * 0.15;
+        const iva = subtotalGeneral * {{ config('properties.iva') }};
         const total = subtotalGeneral + iva;
 
         // visibles

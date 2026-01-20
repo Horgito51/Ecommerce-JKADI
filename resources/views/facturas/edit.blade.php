@@ -175,7 +175,7 @@
                         <input type="text" id="subtotal" class="form-control" readonly>
                     </div>
                     <div class="mb-2">
-                        <label>IVA (15%)</label>
+                        <label>IVA </label>
                         <input type="text" id="iva" class="form-control" readonly>
                     </div>
                     <div class="mb-2">
@@ -277,7 +277,7 @@
                 let subtotal = 0;
                 document.querySelectorAll('.subtotal').forEach(el => subtotal += parseFloat(el.value) || 0);
 
-                const iva = subtotal * 0.15;
+                const iva = subtotal * {{ config('properties.iva') }};
                 const total = subtotal + iva;
 
                 document.getElementById('subtotal').value = subtotal.toFixed(2);

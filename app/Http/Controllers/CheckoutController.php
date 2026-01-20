@@ -42,7 +42,7 @@ class CheckoutController extends Controller
             }
         }
 
-        $ivaRate = 0.15;
+        $ivaRate = config('properties.iva');
         $iva = round($subtotal * $ivaRate, 2);
         $total = round($subtotal + $iva, 2);
 

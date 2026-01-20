@@ -34,7 +34,7 @@ class CompraController extends Controller
     {
         $this->validateCompra($request);
 
-        Compra::createCo0mpra([
+        Compra::createCompra([
             'id_proveedor' => $request->id_proveedor,
             'oc_subtotal'  => $request->oc_subtotal,
             'oc_iva'       => $request->oc_iva,
