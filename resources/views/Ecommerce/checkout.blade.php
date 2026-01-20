@@ -49,32 +49,64 @@
         <div class="card-body">
           <h5 class="mb-3">Resumen del pedido</h5>
 
-          <div id="checkout-items" class="d-flex flex-column gap-3">
-            <div class="text-muted">Cargando carrito...</div>
-          </div>
+          @if($items->isEmpty())
+            <div class="alert alert-warning mb-3">Tu carrito está vacío.</div>
+          @else
+            <div class="d-flex flex-column gap-3">
+              @foreach($items as $it)
+                @php
+                  $p = $it->producto;
+                  $nombre = $p->pro_descripcion ?? $it->id_producto;
+                  $img = !empty($p->img) ? "/storage/products/{$p->img}" : null;
+                  $price = (float) $it->precio_unitario;
+                  $qty = (int) $it->cantidad;
+                  $line = $price * $qty;
+                @endphp
+
+                <div class="d-flex gap-3 align-items-center">
+                  <div style="width:64px;height:64px;border:1px solid #eee;border-radius:12px;overflow:hidden;flex:0 0 auto;display:flex;align-items:center;justify-content:center;">
+                    @if($img)
+                      <img src="{{ $img }}" style="max-width:100%;max-height:100%;object-fit:contain;" onerror="this.outerHTML='<div class=&quot;text-muted small&quot;>Sin img</div>'">
+                    @else
+                      <div class="text-muted small">Sin img</div>
+                    @endif
+                  </div>
+
+                  <div class="flex-grow-1">
+                    <div class="fw-semibold">{{ $nombre }}</div>
+                    <div class="text-muted small">${{ number_format($price, 2) }} c/u · x{{ $qty }}</div>
+                  </div>
+
+                  <div class="fw-bold">${{ number_format($line, 2) }}</div>
+                </div>
+              @endforeach
+            </div>
+          @endif
 
           <hr>
 
           <div class="d-flex justify-content-between">
             <span class="fw-semibold">Subtotal</span>
-            <span class="fw-bold" id="checkout-subtotal">$0.00</span>
+            <span class="fw-bold">${{ number_format($subtotal, 2) }}</span>
           </div>
 
-          {{-- IVA --}}
           <div class="d-flex justify-content-between mt-2">
-            <span class="fw-semibold">IVA (15%)</span>
-            <span class="fw-bold" id="checkout-iva">$0.00</span>
+            <span class="fw-semibold">IVA</span>
+            <span class="fw-bold">${{ number_format($iva, 2) }}</span>
           </div>
 
           <div class="d-flex justify-content-between mt-2">
             <span class="fw-semibold">Total</span>
-            <span class="fw-bold" id="checkout-total">$0.00</span>
+            <span class="fw-bold">${{ number_format($total, 2) }}</span>
           </div>
 
-          <form method="GET" action="{{ route('checkout.paymentForm') }}" class="mt-3">
-            <button type="submit" class="btn btn-dark w-100">Proceder al pago</button>
-          </form>
-
+          {{-- Abre modal --}}
+          <button type="button"
+                  class="btn btn-dark w-100 mt-3"
+                  id="btnOpenPay"
+                  {{ $items->isEmpty() ? 'disabled' : '' }}>
+            Pagar
+          </button>
 
           <a class="btn btn-outline-secondary w-100 mt-2" href="{{ route('carrito.index') }}">
             Volver al carrito
@@ -86,76 +118,72 @@
   </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', async () => {
-  const itemsWrap = document.getElementById('checkout-items');
-  const subtotalEl = document.getElementById('checkout-subtotal');
-  const ivaEl = document.getElementById('checkout-iva');
-  const totalEl = document.getElementById('checkout-total');
+{{-- MODAL --}}
+<div class="modal fade" id="payModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
 
-  const IVA_RATE = 0.15;
-  const money = (n) => `$${Number(n || 0).toFixed(2)}`;
+      <div class="modal-header">
+        <h5 class="modal-title">Pago con tarjeta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
 
-  try {
-    const res = await fetch('/carrito/data', {
-      headers: { 'Accept': 'application/json' },
-      credentials: 'same-origin'
-    });
-
-    if (!res.ok) {
-      itemsWrap.innerHTML = `<div class="text-danger">No se pudo cargar el carrito.</div>`;
-      return;
-    }
-
-    const data = await res.json();
-
-    // OJO: tu API devuelve items con { producto: {...}, precio_unitario, cantidad }
-    const items = data.items || [];
-    const subtotal = Number(data.subtotal || 0);
-
-    const iva = +(subtotal * IVA_RATE).toFixed(2);
-    const total = +(subtotal + iva).toFixed(2);
-
-    if (items.length === 0) {
-      itemsWrap.innerHTML = `<div class="alert alert-warning mb-0">Tu carrito está vacío.</div>`;
-      subtotalEl.textContent = money(0);
-      ivaEl.textContent = money(0);
-      totalEl.textContent = money(0);
-      return;
-    }
-
-    itemsWrap.innerHTML = items.map(it => {
-      const p = it.producto || {};
-      const nombre = p.pro_descripcion || it.id_producto || '';
-      const imgFile = p.img || '';
-      const img = imgFile ? `/storage/products/${imgFile}` : '';
-
-      const price = Number(it.precio_unitario || 0);
-      const qty = Number(it.cantidad || 0);
-      const line = price * qty;
-
-      return `
-        <div class="d-flex gap-3 align-items-center">
-          <div style="width:64px;height:64px;border:1px solid #eee;border-radius:12px;overflow:hidden;flex:0 0 auto;display:flex;align-items:center;justify-content:center;">
-            ${img ? `<img src="${img}" style="max-width:100%;max-height:100%;object-fit:contain;" onerror="this.outerHTML='<div class=&quot;text-muted small&quot;>Sin img</div>'">`
-                  : `<div class="text-muted small">Sin img</div>`}
-          </div>
-          <div class="flex-grow-1">
-            <div class="fw-semibold">${nombre}</div>
-            <div class="text-muted small">${money(price)} c/u · x${qty}</div>
-          </div>
-          <div class="fw-bold">${money(line)}</div>
+      <div class="modal-body">
+        <div class="alert alert-info py-2 mb-3">
+          Simulación
         </div>
-      `;
-    }).join('');
 
-    subtotalEl.textContent = money(subtotal);
-    ivaEl.textContent = money(iva);
-    totalEl.textContent = money(total);
+        <form id="payForm" method="POST" action="{{ route('checkout.proceed') }}" novalidate>
+          @csrf
 
-  } catch (e) {
-    itemsWrap.innerHTML = `<div class="text-danger">Error cargando carrito.</div>`;
-  }
-});
-</script>
+          <div class="mb-3">
+            <label class="form-label">Nombre en la tarjeta</label>
+            <input type="text" class="form-control" id="cardName" name="card_name" placeholder="Ej: Danny Yánez" required>
+            <div class="invalid-feedback">Ingrese el nombre del titular.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Número de tarjeta</label>
+            <input type="text" class="form-control" id="cardNumber" name="card_number"
+                   inputmode="numeric" placeholder="1234 5678 9012 3456" maxlength="19" required>
+            <div class="invalid-feedback">Número inválido (deben ser 16 dígitos).</div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="form-label">Expira (MM/YY)</label>
+              <input type="text" class="form-control" id="cardExp" name="card_exp" placeholder="MM/YY" maxlength="5" required>
+              <div class="invalid-feedback">Fecha inválida o vencida.</div>
+            </div>
+
+            <div class="col-6">
+              <label class="form-label">CVV</label>
+              <input type="password" class="form-control" id="cardCvv" name="card_cvv"
+                     inputmode="numeric" placeholder="123" maxlength="3" required>
+              <div class="invalid-feedback">CVV inválido (3 dígitos).</div>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <div class="d-flex justify-content-between">
+              <span class="fw-semibold">Total a pagar</span>
+              <span class="fw-bold">${{ number_format($total, 2) }}</span>
+            </div>
+          </div>
+
+          <div class="alert alert-success mt-3 d-none" id="paySuccess">
+            Pago simulado exitoso
+          </div>
+
+          <button type="submit" class="btn btn-dark w-100 mt-3" id="btnConfirmPay">
+            Confirmar pago
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="{{ asset('js/checkout.js') }}"></script>
 @endsection

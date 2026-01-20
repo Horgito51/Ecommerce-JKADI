@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Clientes;
 use App\Models\Carrito;
 use Illuminate\Http\Request;
@@ -22,19 +21,25 @@ class CheckoutController extends Controller
 
         $cliente = Clientes::where('user_id', $user->id)->first();
 
-        // Traer carrito activo del usuario
+        // SOLO carrito activo, no se crea uno nuevo aquí
         $carrito = Carrito::where('user_id', $user->id)
-            ->where('estado', 'activo')
+            ->where('estado', Carrito::ESTADO_ACTIVO)
             ->first();
 
         $items = collect();
         $subtotal = 0;
 
         if ($carrito) {
-            // IMPORTANTE: con producto para tener nombre/imagen
-            $items = $carrito->items()->with('producto')->get();
-
-            $subtotal = $items->sum(fn($it) => (float)$it->precio_unitario * (int)$it->cantidad);
+            // Si expiró, se marca abandonado y se trata como vacío
+            if ($carrito->expires_at && $carrito->expires_at->isPast()) {
+                $carrito->update(['estado' => Carrito::ESTADO_ABANDONADO]);
+                $carrito = null;
+            } else {
+                $items = $carrito->items()->with('producto')->get();
+                $subtotal = $items->sum(fn ($it) =>
+                    (float)$it->precio_unitario * (int)$it->cantidad
+                );
+            }
         }
 
         $ivaRate = 0.15;
@@ -52,15 +57,37 @@ class CheckoutController extends Controller
         ));
     }
 
-    public function proceed(Request $request)
+    public function proceed(Request $request, \App\Services\CheckoutService $checkout)
     {
         if (!Auth::check()) {
-            return redirect()->route('login.form', [
-                'redirect' => route('checkout.index')
-            ]);
+            return redirect()->route('login.form', ['redirect' => route('checkout.index')]);
         }
 
-        // Luego aquí validamos carrito != vacío y llamamos pasarela
-        return back()->with('success', 'Aquí se llamará a la pasarela de pago.');
+        // Validación mínima server-side (simulación)
+        $request->validate([
+            'card_name'   => ['required','string','min:3','max:80'],
+            'card_number' => ['required','string'],
+            'card_exp'    => ['required','string'],
+            'card_cvv'    => ['required','string'],
+        ]);
+
+        $user = Auth::user();
+
+        $carrito = Carrito::where('user_id', $user->id)
+            ->where('estado', Carrito::ESTADO_ACTIVO)
+            ->first();
+
+        if (!$carrito) {
+            return redirect()->route('carrito.index')->with('error', 'No tienes un carrito activo.');
+        }
+
+        $idFactura = $checkout->pagarSimuladoCrearFacturaYConvertir(
+            $carrito,
+            'Venta e-commerce (pago simulado)'
+        );
+
+        return redirect()->route('portada.index')
+            ->with('success', "Pago simulado exitoso ✅ | Factura generada y aprobada: {$idFactura}");
     }
+
 }
