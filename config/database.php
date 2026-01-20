@@ -98,15 +98,6 @@ return [
             'sslmode' => 'prefer',
         ],
 
-                'pgsql_remoto' => [
-            'driver' => 'pgsql',
-            'host' => env('DB2_HOST'),
-            'port' => env('DB2_PORT', '5432'),
-            'database' => env('DB2_DATABASE'),
-            'username' => env('DB2_USERNAME'),
-            'password' => env('DB2_PASSWORD'),
-        ],
-
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',

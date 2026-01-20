@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ContabilidadSeeder::class,
             TriggerSeeder::class,
             ProceduresSeeder::class,
+            columna_user_en_clientes::class,
         ]);
     }
 }
