@@ -23,10 +23,12 @@ class CatalogoController extends Controller
         $producto = Producto::with('tipoProducto')
             ->where('id_producto', $id)
             ->firstOrFail();
-        
-        return view('Ecommerce.detalle', compact('producto'));
+
+        $productosRelacionados = Producto::getRelatedProducts($producto->id_tipo, $producto->id_producto);
+
+        return view('Ecommerce.detalle', compact('producto', 'productosRelacionados'));
     }
 
-    
+
 
 }

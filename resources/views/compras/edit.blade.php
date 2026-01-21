@@ -5,7 +5,7 @@
 <div class="container-fluid">
 
     <h4 class="mb-4">
-        {{ $compra->estado_oc === 'ACT' ? 'Editar Orden de Compra' : 'Detalle de Orden de Compra' }}
+        {{ $compra->estado_oc === 'ABI' ? 'Editar Orden de Compra' : 'Detalle de Orden de Compra' }}
     </h4>
 
     <form method="POST" action="{{ route('ordenes.update', $compra->id_compra) }}">
@@ -23,7 +23,7 @@
                         <select name="id_proveedor"
                                 class="form-control @error('id_proveedor') is-invalid @enderror"
                                 required
-                                {{ $compra->estado_oc !== 'ACT' ? 'disabled' : '' }}>
+                                {{ $compra->estado_oc !== 'ABI' ? 'disabled' : '' }}>
                             <option value="">Seleccione un proveedor</option>
                             @foreach ($proveedores as $prov)
                                 <option value="{{ $prov->id_proveedor }}"
@@ -48,7 +48,7 @@
                 <button type="button"
                         class="btn btn-sm btn-primary"
                         id="btnAgregar"
-                        {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
+                        {{ $compra->estado_oc !== 'ABI' ? 'hidden' : '' }}>
                     + Agregar producto
                 </button>
             </div>
@@ -74,7 +74,7 @@
                                         <select name="productos[{{ $i }}][id_producto]"
                                                 class="form-control producto"
                                                 required
-                                                {{ $compra->estado_oc !== 'ACT' ? 'disabled' : '' }}>
+                                                {{ $compra->estado_oc !== 'ABI' ? 'disabled' : '' }}>
                                             <option value="">Seleccione</option>
                                             @foreach ($productos as $p)
                                                 <option value="{{ $p->id_producto }}"
@@ -92,7 +92,7 @@
                                                class="form-control cantidad"
                                                value="{{ $prod['pxo_cantidad'] }}"
                                                min="1"
-                                               {{ $compra->estado_oc !== 'ACT' ? 'readonly' : '' }}
+                                               {{ $compra->estado_oc !== 'ABI' ? 'readonly' : '' }}
                                                required>
                                     </td>
 
@@ -115,7 +115,7 @@
                                     <td class="text-center">
                                         <button type="button"
                                                 class="btn btn-sm btn-danger btnEliminar"
-                                                {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
+                                                {{ $compra->estado_oc !== 'ABI' ? 'hidden' : '' }}>
                                             X
                                         </button>
                                     </td>
@@ -130,7 +130,7 @@
                                         <select name="productos[{{ $i }}][id_producto]"
                                                 class="form-control producto"
                                                 required
-                                                {{ $compra->estado_oc !== 'ACT' ? 'disabled' : '' }}>
+                                                {{ $compra->estado_oc !== 'ABI' ? 'disabled' : '' }}>
                                             <option value="">Seleccione</option>
                                             @foreach ($productos as $p)
                                                 <option value="{{ $p->id_producto }}"
@@ -148,7 +148,7 @@
                                                class="form-control cantidad"
                                                value="{{ $prod->pivot->pxo_cantidad }}"
                                                min="1"
-                                               {{ $compra->estado_oc !== 'ACT' ? 'readonly' : '' }}
+                                               {{ $compra->estado_oc !== 'ABI' ? 'readonly' : '' }}
                                                required>
                                     </td>
 
@@ -171,7 +171,7 @@
                                     <td class="text-center">
                                         <button type="button"
                                                 class="btn btn-sm btn-danger btnEliminar"
-                                                {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
+                                                {{ $compra->estado_oc !== 'ABI' ? 'hidden' : '' }}>
                                             X
                                         </button>
                                     </td>
@@ -211,22 +211,22 @@
         <div class="mt-4 d-flex flex-column flex-md-row gap-2">
             <button type="submit"
                     class="btn btn-success"
-                    {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
+                    {{ $compra->estado_oc !== 'ABI' ? 'hidden' : '' }}>
                 Actualizar compra
             </button>
              <a href="{{ route('ordenes.aprobar', $compra->id_compra) }}"
                 class="btn btn-success btn-aprobar-compra"
                 style="background-color:#031832"
-                {{ $compra->estado_oc !== 'ACT' ? 'hidden' : '' }}>
+                {{ $compra->estado_oc !== 'ABI' ? 'hidden' : '' }}>
                 Aprobar
                 </a>
 
 
 
             <a href="{{ route('ordenes.index') }}" class="btn btn-secondary"
-            style="{{ $compra->estado_oc === 'ACT' ? 'background-color:#8C0606;' : 'background-color:#031832' }}"
+            style="{{ $compra->estado_oc === 'ABI' ? 'background-color:#8C0606;' : 'background-color:#031832' }}"
             >
-                {{ $compra->estado_oc === 'ACT' ? 'Cancelar' : 'Regresar' }}
+                {{ $compra->estado_oc === 'ABI' ? 'Cancelar' : 'Regresar' }}
             </a>
         </div>
 
@@ -235,7 +235,7 @@
 </div>
 
 <script>
-    const editable = {{ $compra->estado_oc === 'ACT' ? 'true' : 'false' }};
+    const editable = {{ $compra->estado_oc === 'ABI' ? 'true' : 'false' }};
 
     document.addEventListener('DOMContentLoaded', function () {
 
