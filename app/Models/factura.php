@@ -15,6 +15,7 @@ class Factura extends Model
     protected $table = 'facturas';
     protected $primaryKey = 'id_factura';
     public $incrementing = false;
+
     protected $fillable = [
         'id_factura',
         'id_cliente',
