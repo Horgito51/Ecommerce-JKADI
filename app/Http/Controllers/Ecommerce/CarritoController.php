@@ -10,7 +10,7 @@ class CarritoController extends Controller
 {
     public function index()
     {
-        return view('ecommerce.carrito');
+        return view('Ecommerce.carrito');
     }
 
     // GET /carrito/data
