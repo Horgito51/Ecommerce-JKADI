@@ -128,6 +128,8 @@ Route::controller(RegisterController::class)->group(function () {
     // Procesar registro
     Route::post('/register', 'store')->name('register.store');
 
+    Route::get('/register/verificar', 'verificarCliente')->name('register.verificar');
+
 });
 
 //rutas de pasarela de pago
