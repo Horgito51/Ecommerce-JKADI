@@ -62,7 +62,7 @@
 
                     <td class="col-detalle">
                         {{
-                            $orden->estado_oc === 'ACT' ? 'Activo' :
+                            $orden->estado_oc === 'ABI' ? 'Abierto' :
                             ($orden->estado_oc === 'ANU' ? 'Anulado' :
                             ($orden->estado_oc === 'APR' ? 'Aprobado' : $orden->estado_oc))
                         }}
@@ -80,10 +80,10 @@
                                       padding:4px 10px;
                                       font-size:0.8rem;
                                       min-width:65px;">
-                                {{ $orden->estado_oc === 'ACT' ? 'Editar' : 'Detalle' }}
+                                {{ $orden->estado_oc === 'ABI' ? 'Editar' : 'Detalle' }}
                             </a>
 
-                            @if ($orden->estado_oc === 'ACT')
+                            @if ($orden->estado_oc === 'ABI')
                                 <form action="{{ route('ordenes.destroy', $orden->id_compra) }}"
                                       method="POST"
                                       class="m-0 form-eliminar-compra">

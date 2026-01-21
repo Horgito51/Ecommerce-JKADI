@@ -101,7 +101,7 @@ class Compra extends Model
                 'oc_subtotal'  => $data['oc_subtotal'],
                 'oc_iva'       => $data['oc_iva'],
                 'oc_total'     => $data['oc_total'],
-                'estado_oc'    => 'ACT',
+                'estado_oc'    => 'ABI',
             ]);
             //detalle
             foreach ($data['productos'] as $producto) {
@@ -112,7 +112,7 @@ class Compra extends Model
                     'pxo_cantidad' => $producto['pxo_cantidad'],
                     'pxo_valor'    => $producto['pxo_valor'],
                     'pxo_subtotal' => $subtotal,
-                    'estado_pxoc'  => 'ACT',
+                    'estado_pxoc'  => 'ABI',
                 ]);
             }
 
@@ -130,7 +130,7 @@ class Compra extends Model
                 'oc_subtotal'  => $data['oc_subtotal'],
                 'oc_iva'       => $data['oc_iva'],
                 'oc_total'     => $data['oc_total'],
-                'estado_oc'    => 'ACT',
+                'estado_oc'    => 'ABI',
             ]);
 
             Proxoc::where('id_compra', $idCompra)->delete();
@@ -142,7 +142,7 @@ class Compra extends Model
                     'pxo_cantidad' => $producto['pxo_cantidad'],
                     'pxo_valor'    => $producto['pxo_valor'],
                     'pxo_subtotal' => $subtotal,
-                    'estado_pxoc'  => 'ACT',
+                    'estado_pxoc'  => 'ABI',
                 ]);
             }
 

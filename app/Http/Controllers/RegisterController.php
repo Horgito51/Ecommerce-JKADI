@@ -1,8 +1,9 @@
-<?php
+x<?php
 
 namespace App\Http\Controllers;
 
-use App\Models\Register;
+use App\Models\User;
+use App\Models\Clientes;
 use App\Models\Ciudades;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

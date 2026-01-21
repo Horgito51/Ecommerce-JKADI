@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Proveedor;
 use App\Models\Ciudades;
 use Illuminate\Http\Request;
+
 class ProveedorController extends Controller
 {
     public function index(Request $request)

@@ -12,9 +12,9 @@ class CompraController extends Controller
 
     public function index(Request $request)
     {
-        $estados = $request->input('estado', ['ACT']); // default: Activos
+        $estados = $request->input('estado', ['ABI']); // default: Activos
         if (empty($estados)) {
-            $estados = ['ACT'];
+            $estados = ['ABI'];
         }
 
         $search = trim((string) $request->input('search', ''));

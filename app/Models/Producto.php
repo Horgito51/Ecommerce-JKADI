@@ -195,12 +195,16 @@ class Producto extends Model
 
         $numero = intval(substr($ultimoProducto->id_producto, 1));
 
-        $nuevoNumero = $numero + 1;
-
         return 'P' . str_pad($nuevoNumero, 3, '0', STR_PAD_LEFT);
     }
 
-
-
+    public static function getRelatedProducts($id_tipo, $id_producto, $limit = 10)
+    {
+        return self::where('id_tipo', $id_tipo)
+            ->where('id_producto', '!=', $id_producto)
+            ->where('estado_prod', 'ACT')
+            ->limit($limit)
+            ->get();
+    }
 
 }

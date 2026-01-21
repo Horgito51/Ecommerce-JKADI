@@ -10,7 +10,6 @@ public function up(): void
     {
         Schema::create('recepciones', function (Blueprint $table) {
             $table->char('id_recibo', 7)->primary();
-            $table->char('user_id', 12);
             $table->char('rec_descripcion', 30);
             $table->dateTime('rec_fechahora');
             $table->integer('rec_num_produc');
@@ -19,7 +18,7 @@ public function up(): void
         });
         Schema::create('ajustes', function (Blueprint $table) {
             $table->char('id_ajuste', 7)->primary();
-            $table->char('user_id', 12);
+
             $table->char('aju_descripcion', 30);
             $table->dateTime('aju_fechahora');
             $table->integer('aju_num_produc');
@@ -29,7 +28,7 @@ public function up(): void
 
         Schema::create('entregas', function (Blueprint $table) {
             $table->char('id_entrega', 7)->primary();
-            $table->char('user_id', 12);
+
             $table->char('ent_descripcion', 30);
             $table->dateTime('ent_fechahora');
             $table->integer('ent_num_produc');
