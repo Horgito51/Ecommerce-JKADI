@@ -7,6 +7,8 @@ use App\Models\Ciudades;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DomainException;
+use Illuminate\Http\JsonResponse;
+use App\Models\Clientes;
 
 class RegisterController extends Controller
 {
@@ -82,4 +84,61 @@ class RegisterController extends Controller
 
         return redirect($redirect);
     }
+
+    public function verificarCliente(Request $request): JsonResponse
+{
+    $request->validate([
+        'cli_ruc_ced' => 'required',
+        'tipo_documento' => 'nullable|in:CEDULA,RUC',
+    ]);
+
+    $doc  = trim($request->cli_ruc_ced);
+    $tipo = $request->tipo_documento;
+
+    // Validación de longitud según tipo (opcional pero útil)
+    if ($tipo === 'RUC' && strlen($doc) !== 13) {
+        return response()->json([
+            'found' => false,
+            'message' => 'Para RUC deben ser 13 dígitos.',
+        ], 422);
+    }
+    if ($tipo === 'CEDULA' && strlen($doc) !== 10) {
+        return response()->json([
+            'found' => false,
+            'message' => 'Para cédula deben ser 10 dígitos.',
+        ], 422);
+    }
+
+    $cliente = Clientes::where('cli_ruc_ced', $doc)->first();
+
+    if (!$cliente) {
+        return response()->json([
+            'found' => false,
+            'message' => 'No encontramos un cliente con este documento. Puedes continuar con el registro ingresando tus datos.',
+        ]);
+    }
+
+    // Si ya tiene cuenta asociada
+    if (!is_null($cliente->user_id)) {
+        return response()->json([
+            'found' => true,
+            'has_account' => true,
+            'message' => 'Este cliente ya tiene una cuenta registrada. Inicia sesión para continuar.',
+        ]);
+    }
+
+    // Existe cliente pero aún no tiene cuenta -> autocompletar
+    return response()->json([
+        'found' => true,
+        'has_account' => false,
+        'cliente' => [
+            'cli_nombre' => $cliente->cli_nombre,
+            'cli_telefono' => $cliente->cli_telefono,
+            'ciudad_id' => $cliente->ciudad_id,
+            'cli_direccion' => $cliente->cli_direccion,
+            'cli_email' => $cliente->cli_email,
+        ],
+        'message' => 'Encontramos un registro asociado a este documento. Parece que ya te atendimos en tienda física. Autocompletamos tus datos para que termines el registro más rápido. Verifica que todo esté correcto antes de continuar.',
+    ]);
+}
 }
