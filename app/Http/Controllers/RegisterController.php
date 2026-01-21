@@ -7,6 +7,8 @@ use App\Models\Ciudades;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DomainException;
+use Illuminate\Http\JsonResponse;
+use App\Models\Clientes;
 
 class RegisterController extends Controller
 {
@@ -26,17 +28,19 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        // 1) Validación (se queda en Controller)
+        //Reglas base
         $rules = [
             'cli_nombre'       => 'required|string|max:50',
             'cli_telefono'     => 'required|digits:10',
             'cli_direccion'    => 'required|string|max:100',
-            'ciudad_id'        => 'required|exists:ciudades,id',
+            'ciudad_id'        => 'required_without:ciudad_id_hidden|exists:ciudades,id',
+            'ciudad_id_hidden' => 'required_without:ciudad_id|exists:ciudades,id',
             'cli_email'        => 'required|email|max:50',
             'tipo_documento'   => 'required|in:CEDULA,RUC',
             'cli_ruc_ced'      => 'required',
             'password'         => 'required|min:8|confirmed',
             'redirect'         => 'nullable|string',
+            
         ];
 
         $messages = [
@@ -56,18 +60,23 @@ class RegisterController extends Controller
             'password.confirmed' => 'Las contraseñas no coinciden',
         ];
 
-        // Longitud por tipo documento
+        //Longitud por tipo documento
         if ($request->tipo_documento === 'RUC') {
             $rules['cli_ruc_ced'] .= '|digits:13';
         } else {
             $rules['cli_ruc_ced'] .= '|digits:10';
         }
 
+        //Validar
         $request->validate($rules, $messages);
+
+        //Normalizar ciudad si el select estaba deshabilitado se usa el hidden
+        $ciudadId = $request->input('ciudad_id_hidden') ?: $request->input('ciudad_id');
+        $request->merge(['ciudad_id' => $ciudadId]);
 
         $redirect = $request->input('redirect', route('catalogo.index'));
 
-        // 2) Lógica de negocio al Model (Register)
+        //Lógica de negocio al Model
         try {
             $user = Register::registrarCliente($request->all());
         } catch (DomainException $e) {
@@ -76,10 +85,68 @@ class RegisterController extends Controller
                 ->withInput();
         }
 
-        // 3) Sesión/HTTP flow se queda en Controller
+        //Sesión/HTTP
         Auth::login($user);
         $request->session()->regenerate();
 
         return redirect($redirect);
     }
+
+
+    public function verificarCliente(Request $request): JsonResponse
+{
+    $request->validate([
+        'cli_ruc_ced' => 'required',
+        'tipo_documento' => 'nullable|in:CEDULA,RUC',
+    ]);
+
+    $doc  = trim($request->cli_ruc_ced);
+    $tipo = $request->tipo_documento;
+
+    // Validación de longitud según tipo
+    if ($tipo === 'RUC' && strlen($doc) !== 13) {
+        return response()->json([
+            'found' => false,
+            'message' => 'Para RUC deben ser 13 dígitos.',
+        ], 422);
+    }
+    if ($tipo === 'CEDULA' && strlen($doc) !== 10) {
+        return response()->json([
+            'found' => false,
+            'message' => 'Para cédula deben ser 10 dígitos.',
+        ], 422);
+    }
+
+    $cliente = Clientes::where('cli_ruc_ced', $doc)->first();
+
+    if (!$cliente) {
+        return response()->json([
+            'found' => false,
+            'message' => 'No encontramos un cliente con este documento. Puedes continuar con el registro ingresando tus datos.',
+        ]);
+    }
+
+    // Si ya tiene cuenta asociada
+    if (!is_null($cliente->user_id)) {
+        return response()->json([
+            'found' => true,
+            'has_account' => true,
+            'message' => 'Este cliente ya tiene una cuenta registrada. Inicia sesión para continuar.',
+        ]);
+    }
+
+    // Existe cliente pero aún no tiene cuenta -> autocompletar
+    return response()->json([
+        'found' => true,
+        'has_account' => false,
+        'cliente' => [
+            'cli_nombre' => $cliente->cli_nombre,
+            'cli_telefono' => $cliente->cli_telefono,
+            'ciudad_id' => $cliente->ciudad_id,
+            'cli_direccion' => $cliente->cli_direccion,
+            'cli_email' => $cliente->cli_email,
+        ],
+        'message' => 'Encontramos un registro asociado a este documento. Parece que ya te atendimos en tienda física. Autocompletamos tus datos para que termines el registro más rápido. Verifica que todo esté correcto antes de continuar.',
+    ]);
+}
 }

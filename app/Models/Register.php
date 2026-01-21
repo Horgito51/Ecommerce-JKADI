@@ -10,13 +10,7 @@ use DomainException;
 class Register extends Model
 {
     /**
-     * Si NO tienes tabla 'registers', puedes dejarlo así.
-     * Este model se usa como "proceso" (lógica de registro).
-     * No necesitas $table ni $fillable aquí porque no vas a hacer Register::create().
-     */
-
-    /**
-     * Registra (o vincula) un Cliente con un User y devuelve el User final.
+     * Registra o asocia un Cliente con un User.
      *
      * Reglas:
      * - Si existe cliente y ya tiene user_id => error
@@ -30,20 +24,20 @@ class Register extends Model
 
         return DB::transaction(function () use ($data, $email, $doc) {
 
-            // 1) Buscar cliente por documento o email
+            //Buscar cliente por ruc o ced o email
             $cliente = Clientes::where('cli_ruc_ced', $doc)
                 ->orWhere('cli_email', $email)
                 ->first();
 
-            // 2) Buscar user por email
+            //Buscar user por email
             $user = User::where('email', $email)->first();
 
-            // 3) Si cliente existe y ya tiene cuenta asociada => bloquear
+            // Si cliente existe y tiene cuenta existente
             if ($cliente && !is_null($cliente->user_id)) {
                 throw new DomainException('Este cliente ya tiene una cuenta registrada. Inicie sesión.');
             }
 
-            // 4) Si no existe user => crear
+            // Si no existe user se lo crea
             if (!$user) {
                 $user = User::create([
                     'name'     => $data['cli_nombre'],
@@ -53,7 +47,7 @@ class Register extends Model
                 ]);
             }
 
-            // 5) Asociar / Crear cliente
+            // Asociar y Crear cliente
             if ($cliente) {
                 // Cliente existe pero sin user_id
                 $cliente->user_id   = $user->id;
