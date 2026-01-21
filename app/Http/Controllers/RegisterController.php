@@ -28,7 +28,6 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        //Reglas base
         $rules = [
             'cli_nombre'       => 'required|string|max:50',
             'cli_telefono'     => 'required|digits:10',
@@ -68,16 +67,20 @@ class RegisterController extends Controller
         }
 
         //Validar
-        $request->validate($rules, $messages);
-
+    
+       // dd($request);
         //Normalizar ciudad si el select estaba deshabilitado se usa el hidden
         $ciudadId = $request->input('ciudad_id_hidden') ?: $request->input('ciudad_id');
         $request->merge(['ciudad_id' => $ciudadId]);
-
         $redirect = $request->input('redirect', route('catalogo.index'));
 
+
+           $request->validate($rules, $messages);
         //Lógica de negocio al Model
         try {
+            // dd($request);
+            // dd($request);
+            // dd($request);
             $user = Register::registrarCliente($request->all());
         } catch (DomainException $e) {
             return back()
