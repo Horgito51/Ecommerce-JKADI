@@ -84,15 +84,16 @@
 
                             {{-- input y botón --}}
                             <div class="input-group">
-                               <input type="text"
-                                        name="cli_ruc_ced"
-                                        id="cli_ruc_ced"
-                                        inputmode="numeric"
-                                        pattern="[0-9]*"
-                                        oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-                                        class="form-control @error('cli_ruc_ced') is-invalid @enderror"
-                                        value="{{ old('cli_ruc_ced') }}"
-                                        required>
+                                <input type="text"
+                                    name="cli_ruc_ced"
+                                    id="cli_ruc_ced"
+                                    inputmode="numeric"
+                                    pattern="[0-9]*"
+                                    oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                                    class="form-control @error('cli_ruc_ced') is-invalid @enderror"
+                                    value="{{ old('cli_ruc_ced') }}"
+                                    required>
+
                                 <button class="btn btn-outline-secondary" type="button" id="btnVerificar">
                                     Verificar
                                 </button>
@@ -124,7 +125,11 @@
                         {{-- CIUDAD --}}
                         <div class="col-12 col-md-6">
                             <label class="form-label">Ciudad *</label>
-                            <select name="ciudad_id" class="form-select @error('ciudad_id') is-invalid @enderror" required>
+
+                            <select id="ciudad_select"
+                                    name="ciudad_id"
+                                    class="form-select @error('ciudad_id') is-invalid @enderror"
+                                    required>
                                 <option value="">Seleccione una ciudad</option>
                                 @foreach ($ciudades as $ciudad)
                                     <option value="{{ $ciudad->id }}"
@@ -133,6 +138,10 @@
                                     </option>
                                 @endforeach
                             </select>
+
+                            {{-- input espejo para bloquear --}}
+                            <input type="hidden" id="ciudad_hidden" name="ciudad_id_hidden">
+
                             @error('ciudad_id')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

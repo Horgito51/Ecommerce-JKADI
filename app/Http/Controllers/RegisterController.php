@@ -28,17 +28,19 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        // 1) Validación (se queda en Controller)
+        //Reglas base
         $rules = [
             'cli_nombre'       => 'required|string|max:50',
             'cli_telefono'     => 'required|digits:10',
             'cli_direccion'    => 'required|string|max:100',
-            'ciudad_id'        => 'required|exists:ciudades,id',
+            'ciudad_id'        => 'required_without:ciudad_id_hidden|exists:ciudades,id',
+            'ciudad_id_hidden' => 'required_without:ciudad_id|exists:ciudades,id',
             'cli_email'        => 'required|email|max:50',
             'tipo_documento'   => 'required|in:CEDULA,RUC',
             'cli_ruc_ced'      => 'required',
             'password'         => 'required|min:8|confirmed',
             'redirect'         => 'nullable|string',
+            
         ];
 
         $messages = [
@@ -58,18 +60,23 @@ class RegisterController extends Controller
             'password.confirmed' => 'Las contraseñas no coinciden',
         ];
 
-        // Longitud por tipo documento
+        //Longitud por tipo documento
         if ($request->tipo_documento === 'RUC') {
             $rules['cli_ruc_ced'] .= '|digits:13';
         } else {
             $rules['cli_ruc_ced'] .= '|digits:10';
         }
 
+        //Validar
         $request->validate($rules, $messages);
+
+        //Normalizar ciudad si el select estaba deshabilitado se usa el hidden
+        $ciudadId = $request->input('ciudad_id_hidden') ?: $request->input('ciudad_id');
+        $request->merge(['ciudad_id' => $ciudadId]);
 
         $redirect = $request->input('redirect', route('catalogo.index'));
 
-        // 2) Lógica de negocio al Model (Register)
+        //Lógica de negocio al Model
         try {
             $user = Register::registrarCliente($request->all());
         } catch (DomainException $e) {
@@ -78,12 +85,13 @@ class RegisterController extends Controller
                 ->withInput();
         }
 
-        // 3) Sesión/HTTP flow se queda en Controller
+        //Sesión/HTTP
         Auth::login($user);
         $request->session()->regenerate();
 
         return redirect($redirect);
     }
+
 
     public function verificarCliente(Request $request): JsonResponse
 {
@@ -95,7 +103,7 @@ class RegisterController extends Controller
     $doc  = trim($request->cli_ruc_ced);
     $tipo = $request->tipo_documento;
 
-    // Validación de longitud según tipo (opcional pero útil)
+    // Validación de longitud según tipo
     if ($tipo === 'RUC' && strlen($doc) !== 13) {
         return response()->json([
             'found' => false,
