@@ -159,14 +159,6 @@
             <h3 class="h4 font-weight-bold mb-4">Productos relacionados</h3>
 
             <div class="d-flex flex-nowrap overflow-auto pb-4" style="gap: 15px;">
-                @php
-                    $productosRelacionados = App\Models\Producto::where('id_tipo', $producto->id_tipo)
-                        ->where('id_producto', '!=', $producto->id_producto)
-                        ->where('estado_prod', 'ACT')
-                        ->limit(10)
-                        ->get();
-                @endphp
-
                 @forelse($productosRelacionados as $relacionado)
                     <div class="card border-0 shadow-sm flex-shrink-0" style="width: 260px;">
                         <a href="{{ route('catalogo.detalle', $relacionado->id_producto) }}" class="text-decoration-none">
