@@ -122,14 +122,53 @@ Route::post('/logout', function () {
 //Registro de usuario
 Route::controller(RegisterController::class)->group(function () {
 
-    // Formulario de registro
-    Route::get('/register', 'form')->name('register.form');
+    /*
+    | Paso 1 – Verificación de documento
+    */
 
-    // Procesar registro
-    Route::post('/register', 'store')->name('register.store');
+    // Mostrar pantalla: cédula / RUC
+    Route::get('/register/step-1', 'step1')
+        ->name('register.step1');
 
-    Route::get('/register/verificar', 'verificarCliente')->name('register.verificar');
+    // Procesar documento y decidir flujo
+    Route::post('/register/step-1', 'step1Check')
+        ->name('register.step1.check')
+        ->middleware('throttle:10,1'); // opcional recomendado
 
+
+    /*
+    | Paso 2A – Cliente si existe pero no tiene cuenta
+    */
+
+    // Mostrar formulario: email + contraseña
+    Route::get('/register/existing', 'existingForm')
+        ->name('register.existing.form');
+
+    // Crear user y asociar al cliente existente
+    Route::post('/register/existing', 'storeExisting')
+        ->name('register.existing.store');
+
+
+    /*
+    | Paso 2B – Cliente NO existe indica el formulario completo
+    */
+
+    // Formulario completo (reusa tu blade actual)
+    Route::get('/register', 'form')
+        ->name('register.form');
+
+    // Procesar registro completo
+    Route::post('/register', 'store')
+        ->name('register.store');
+
+
+    /*
+    | Endpoint opcional (AJAX) – verificación segura para ya no devuolver datos personales
+    */
+
+    Route::post('/register/verificar', 'verificarCliente')
+        ->name('register.verificar')
+        ->middleware('throttle:10,1');
 });
 
 //rutas de pasarela de pago
