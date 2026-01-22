@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('pro_qty_ingresos')->unsigned()->default(0);
             $table->integer('pro_qty_egresos')->unsigned()->default(0);
             $table->integer('pro_qty_ajustes')->unsigned()->default(0);
-            $table->integer('pro_saldo_final')->unsigned()->default(0);
+            $table->integer('pro_saldo_final')->unsigned()->default(0)->check('pro_saldo_final >= 0');
 
             $table->char('estado_prod', 3)->default('ACT');
             $table->char('user_id', 50)->nullable();
