@@ -195,6 +195,8 @@ class Producto extends Model
 
         $numero = intval(substr($ultimoProducto->id_producto, 1));
 
+        $nuevoNumero = $numero + 1;
+
         return 'P' . str_pad($nuevoNumero, 3, '0', STR_PAD_LEFT);
     }
 
