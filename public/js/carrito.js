@@ -156,6 +156,11 @@ function applyData(data) {
     document.getElementById('subtotalBottom').textContent = money(state.subtotal);
 
     renderTable();
+    const btnCheckout = document.getElementById('btnCheckout');
+    if (btnCheckout) {
+    btnCheckout.classList.toggle('disabled', !state.items.length);
+    btnCheckout.setAttribute('aria-disabled', (!state.items.length).toString());
+    }
 }
 
 function renderTable() {
@@ -198,7 +203,7 @@ function renderTable() {
                     step="1"
                     value="${it.cantidad}"
                     data-stock="${stock}"
-                    onkeydown="if(event.key==='Enter'){ changeQty('${it.id_producto}', this.value, this.dataset.stock) }"
+                    onkeydown="if(event.key==='Enter'){ changeQty('${it.id_producto}', this.value) }"
                     onblur="validateQtyAndFix('${it.id_producto}', this)"
                     >
 
@@ -242,7 +247,7 @@ function validateQtyAndFix(id_producto, inputEl) {
     changeQty(id_producto, qty, !hasError);
 }
 
-async function changeQty(id_producto, cantidad, showSuccess = false) {
+async function changeQty(id_producto, cantidad) {
     let qty = parseInt(cantidad, 10);
 
     if (Number.isNaN(qty) || qty < 1) {
@@ -283,9 +288,13 @@ async function clearCart() {
     }
     
     try {
+        
         const data = await api('/carrito/clear', { method: 'DELETE' });
         applyData(data);
         showAlert('Carrito vaciado correctamente.', 'success');
+        const modalEl = document.getElementById('confirmClearModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal?.hide();
     } catch (e) {
         // api() ya muestra la alerta de error
     }

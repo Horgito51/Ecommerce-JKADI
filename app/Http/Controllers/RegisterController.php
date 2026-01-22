@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DomainException;
 use Illuminate\Http\JsonResponse;
+use App\Models\Carrito;
 
 class RegisterController extends Controller
 {
@@ -148,6 +149,8 @@ class RegisterController extends Controller
 
         Auth::login($user);
         $request->session()->regenerate();
+        Carrito::mergeCookieCartToUser($user->id);
+
 
         return redirect($redirect);
     }
@@ -268,6 +271,7 @@ class RegisterController extends Controller
 
         Auth::login($user);
         $request->session()->regenerate();
+        Carrito::mergeCookieCartToUser($user->id);
 
         return redirect($redirect);
     }

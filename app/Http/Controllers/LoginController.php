@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Carrito;
 
 class LoginController extends Controller
 {
@@ -32,6 +33,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
         $user = Auth::user();
+        Carrito::mergeCookieCartToUser($user->id);
 
         // BACKOFFICE
         if (in_array($user->rol, ['gerente_bodega', 'gerente_compras', 'gerente_ventas', 'admin'])) {

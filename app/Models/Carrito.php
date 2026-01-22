@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\DB;
 class Carrito extends Model
 {
     protected $table = 'carritos';
@@ -162,7 +163,9 @@ class Carrito extends Model
         $stock = (int) ($producto->pro_saldo_final ?? 0);
 
         if ($stock <= 0) {
-            abort(response()->json(['message' => 'Producto sin stock.'], 422));
+            throw new HttpResponseException(
+                response()->json(['message' => 'Producto sin stock.'], 422)
+            );
         }
 
         $item = CarritoItem::where('carrito_id', $this->id)
@@ -181,10 +184,9 @@ class Carrito extends Model
         $nuevaCantidad = $item->cantidad + $cantidadAgregar;
 
         if ($nuevaCantidad > $stock) {
-            abort(response()->json([
-                'message' => "Stock insuficiente. Disponible: {$stock}",
-                'stock'   => $stock
-            ], 422));
+            throw new HttpResponseException(
+                response()->json(['message' => 'Stock insuficiente o las unidades están en el carrito '], 422)
+            );
         }
 
         $item->update(['cantidad' => $nuevaCantidad]);
@@ -210,16 +212,15 @@ class Carrito extends Model
         if ($stock <= 0) {
             $item->delete();
             $this->renew();
-            abort(response()->json([
-                'message' => 'Producto sin stock, se removio del carrito.',
-            ], 422));
+            throw new HttpResponseException(
+            response()->json(['message' => 'Producto sin stock, se removió del carrito'], 422)
+            );
         }
 
         if ($cantidad > $stock) {
-            abort(response()->json([
-                'message' => "Stock insuficiente. Disponible: {$stock}",
-                'stock'   => $stock
-            ], 422));
+            throw new HttpResponseException(
+                response()->json(['message' => 'Stock insuficiente o las unidades ya estan en el carrito.'], 422)
+            );
         }
 
         $item->update(['cantidad' => $cantidad]);
@@ -251,6 +252,101 @@ class Carrito extends Model
         $this->update(['estado' => self::ESTADO_CONVERTIDO]);
 
         // Opcional: si era anonimo, romper el token para que no reapunte al convertido
+        cookie()->queue(self::COOKIE_NAME, '', -1);
+    }
+
+    public static function mergeCookieCartToUser(int $userId): void
+    {
+        // 1) Leer token de cookie (carrito anónimo)
+        $token = request()->cookie(self::COOKIE_NAME);
+        if (!$token) return;
+
+        // 2) Buscar carrito anónimo ACTIVO por token
+        $guest = self::where('token', $token)
+            ->whereNull('user_id')
+            ->where('estado', self::ESTADO_ACTIVO)
+            ->first();
+
+        if (!$guest) {
+            // Si no existe, igual limpiamos cookie para evitar basura
+            cookie()->queue(self::COOKIE_NAME, '', -1);
+            return;
+        }
+
+        DB::transaction(function () use ($userId, $guest) {
+
+            // 3) Obtener carrito ACTIVO del usuario (o crearlo)
+            $userCart = self::where('user_id', $userId)
+                ->where('estado', self::ESTADO_ACTIVO)
+                ->first();
+
+            if ($userCart) {
+                if ($userCart->isExpired()) {
+                    $userCart->update(['estado' => self::ESTADO_ABANDONADO]);
+
+                    $userCart = self::create([
+                        'user_id'    => $userId,
+                        'token'      => (string) Str::uuid(),
+                        'estado'     => self::ESTADO_ACTIVO,
+                        'expires_at' => now()->addDays(self::TTL_DAYS),
+                    ]);
+                } else {
+                    $userCart->renew();
+                }
+            } else {
+                $userCart = self::create([
+                    'user_id'    => $userId,
+                    'token'      => (string) Str::uuid(),
+                    'estado'     => self::ESTADO_ACTIVO,
+                    'expires_at' => now()->addDays(self::TTL_DAYS),
+                ]);
+            }
+
+            // 4) Sumar items del guest al user (cap por stock)
+            $guestItems = $guest->items()->get();
+
+            foreach ($guestItems as $gItem) {
+                $producto = Producto::where('id_producto', $gItem->id_producto)->first();
+                if (!$producto) continue;
+
+                $stock = (int) ($producto->pro_saldo_final ?? 0);
+                if ($stock <= 0) continue;
+
+                $existing = CarritoItem::where('carrito_id', $userCart->id)
+                    ->where('id_producto', $gItem->id_producto)
+                    ->first();
+
+                $guestQty = (int) $gItem->cantidad;
+
+                if ($existing) {
+                    $newQty = min($stock, (int)$existing->cantidad + $guestQty);
+
+                    // si ya estaba en el carrito, conservamos su precio_unitario actual del item
+                    $existing->update(['cantidad' => $newQty]);
+                } else {
+                    $newQty = min($stock, $guestQty);
+
+                    if ($newQty > 0) {
+                        CarritoItem::create([
+                            'carrito_id'      => $userCart->id,
+                            'id_producto'     => $gItem->id_producto,
+                            'cantidad'        => $newQty,
+                            // snapshot: usa el precio del guest si existe, si no el del producto
+                            'precio_unitario' => $gItem->precio_unitario ?? $producto->pro_precio_venta,
+                        ]);
+                    }
+                }
+            }
+
+            // 5) Desactivar carrito guest y limpiar sus items
+            $guest->items()->delete();
+            $guest->update(['estado' => self::ESTADO_ABANDONADO]);
+
+            // 6) Renovar carrito del user
+            $userCart->renew();
+        });
+
+        // 7) Borrar cookie del carrito anónimo (ya se fusionó)
         cookie()->queue(self::COOKIE_NAME, '', -1);
     }
 }
