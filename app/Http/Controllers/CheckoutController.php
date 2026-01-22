@@ -46,7 +46,7 @@ class CheckoutController extends Controller
         $iva = round($subtotal * $ivaRate, 2);
         $total = round($subtotal + $iva, 2);
 
-        return view('ecommerce.checkout', compact(
+        return view('Ecommerce.checkout', compact(
             'user',
             'cliente',
             'items',

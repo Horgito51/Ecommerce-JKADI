@@ -7,7 +7,8 @@ use App\Models\unidadesMedidas;
 use App\Models\tiposProducto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use function Symfony\Component\String\s;
+use App\Models\Proxoc;
+use App\Models\Proxfac;
 
 class ProductoController extends Controller
 {
@@ -85,6 +86,23 @@ class ProductoController extends Controller
             return redirect()->route('productos.index')->with('error','No se puede eliminar un producto con saldo disponible');
         }
 
+        // Verificar si el producto tiene compras activas asociadas
+        $tieneCompraActiva = Proxoc::where('id_producto', $id)
+            ->where('estado_pxoc', '!=', 'ANU')
+            ->exists();
+
+        if ($tieneCompraActiva) {
+            return redirect()->route('productos.index')->with('error', 'No se puede eliminar el producto porque está asociado a un proceso de compra activo');
+        }
+
+        // Verificar si el producto tiene facturas activas asociadas
+        $tieneFacturaActiva = Proxfac::where('id_producto', $id)
+            ->where('pxf_estado', '!=', 'ANU')
+            ->exists();
+
+        if ($tieneFacturaActiva) {
+            return redirect()->route('productos.index')->with('error', 'No se puede eliminar el producto porque está asociado a un proceso de facturación activo');
+        }
 
         $productos->destroyProducto();
 

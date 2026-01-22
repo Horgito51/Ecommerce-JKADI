@@ -20,14 +20,14 @@ return new class extends Migration
             $table->char('pro_um_compra', 3)->nullable();
             $table->char('pro_um_venta', 3)->nullable();
 
-            $table->decimal('pro_valor_compra', 7, 2)->default(0.50);
-            $table->decimal('pro_precio_venta', 7, 2)->default(1.00);
+            $table->decimal('pro_valor_compra', 7, 2)->check('pro_valor_compra >= 0')   ;
+            $table->decimal('pro_precio_venta', 7, 2)->check('pro_precio_venta >= pro_valor_compra');
 
             $table->integer('pro_saldo_inicial')->nullable();
-            $table->integer('pro_qty_ingresos')->default(0);
-            $table->integer('pro_qty_egresos')->default(0);
-            $table->integer('pro_qty_ajustes')->default(0);
-            $table->integer('pro_saldo_final')->default(0);
+            $table->integer('pro_qty_ingresos')->unsigned()->default(0);
+            $table->integer('pro_qty_egresos')->unsigned()->default(0);
+            $table->integer('pro_qty_ajustes')->unsigned()->default(0);
+            $table->integer('pro_saldo_final')->unsigned()->default(0);
 
             $table->char('estado_prod', 3)->default('ACT');
             $table->char('user_id', 50)->nullable();

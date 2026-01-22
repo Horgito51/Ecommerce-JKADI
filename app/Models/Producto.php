@@ -87,7 +87,7 @@ class Producto extends Model
 
     public static function getProductos(){
 
-        return self::where('estado_prod','=','ACT')->paginate(9);
+        return self::where('estado_prod','=','ACT')->where('pro_saldo_final','>',0)->paginate(9);
     }
 
 
@@ -106,7 +106,7 @@ class Producto extends Model
                 'pro_precio_venta',
                 'pro_saldo_final',
             )
-            ->where('estado_prod', '=', 'ACT')
+            ->where('estado_prod', '=', 'ACT')->where('pro_saldo_final','>',0)
             ->when($search !== '', function ($q) use ($search) {
                 $q->where(function ($w) use ($search) {
                     $w->where('id_producto', 'ILIKE', "%{$search}%")

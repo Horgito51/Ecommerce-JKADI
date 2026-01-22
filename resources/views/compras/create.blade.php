@@ -148,7 +148,7 @@
 
         {{-- ================= BOTONES ================= --}}
         <div class="mt-4 d-flex flex-column flex-md-row gap-2">
-            <button type="submit" class="btn btn-success">
+            <button type="submit" class="btn btn-success" id="btnGuardar">
                 Guardar compra
             </button>
             <a href="{{ route('ordenes.index') }}" class="btn btn-secondary">
@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target.classList.contains('cantidad')) {
             const fila = e.target.closest('tr');
             const cantidad = parseFloat(e.target.value || 0);
-            const precio = parseFloat(fila.querySelector('.valor').value || 0);
+            const preciomier = parseFloat(fila.querySelector('.valor').value || 0);
 
             fila.querySelector('.subtotal').value = (cantidad * precio).toFixed(3);
             recalcularTotales();
@@ -284,6 +284,11 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('oc_iva').value = iva.toFixed(2);
         document.getElementById('oc_total').value = total.toFixed(2);
     }
+
+    document.querySelector('form').addEventDListener('submit', function(event) {
+    const botonGuardar = document.getElementById('btnGuardar');
+    botonGuardar.disabled = true;  // Desactiva el botón
+});
 
 });
 </script>
