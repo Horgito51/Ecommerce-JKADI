@@ -70,7 +70,7 @@
                             Iniciar Sesión
                         </button>
 
-                        <a href="{{ route('register.form') }}" class="btn btn-primary">
+                        <a href="{{ route('register.step1') }}" class="btn btn-primary">
                             Registrarse
                         </a>
                     </div>

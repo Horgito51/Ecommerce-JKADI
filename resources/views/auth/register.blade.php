@@ -9,13 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <style>
-        @media (max-width: 576px) {
-            .card-body { padding: 1rem !important; }
-            .form-text { font-size: .8rem; }
-        }
-    </style>
 </head>
 
 <body style="background-color:#031832;">
@@ -29,19 +22,29 @@
                  style="max-width:320px; width:70vw;">
         </a>
 
-        <!-- CARD REGISTER -->
         <div class="card mx-auto shadow w-100" style="max-width: 900px;">
             <div class="card-body p-3 p-md-4">
 
-                <h5 class="text-center mb-4">Crear cuenta</h5>
+                <h5 class="text-center mb-3">Crear cuenta</h5>
 
                 <form action="{{ route('register.store') }}" method="POST" novalidate>
                     @csrf
-                    {{-- redirect para volver a checkout --}}
-                    <input type="hidden" name="redirect" value="{{ old('redirect', $redirect ?? route('catalogo.index')) }}">
 
-                    {{-- ALERTA para la verificación y autocompleto --}}
-                    <div id="verifyAlert" class="alert d-none" role="alert"></div>
+                    {{-- redirect --}}
+                    <input type="hidden" name="redirect"
+                           value="{{ old('redirect', $redirect ?? route('catalogo.index')) }}">
+
+                    @php
+                        $docPrefill  = old('cli_ruc_ced', $cli_ruc_ced ?? '');
+                        $tipoPrefill = old('tipo_documento', $tipo_documento ?? 'RUC');
+                        $vieneDelWizard = !empty($cli_ruc_ced);
+                    @endphp
+
+                    {{-- Hidden wizard (seguridad backend) --}}
+                    @if($vieneDelWizard)
+                        <input type="hidden" name="cli_ruc_ced_wizard" value="{{ $docPrefill }}">
+                        <input type="hidden" name="tipo_documento_wizard" value="{{ $tipoPrefill }}">
+                    @endif
 
                     <div class="row g-3 text-start">
 
@@ -49,85 +52,80 @@
                         <div class="col-12 col-md-8">
                             <label class="form-label">Nombre *</label>
                             <input type="text"
-                                   class="form-control @error('cli_nombre') is-invalid @enderror"
                                    name="cli_nombre"
+                                   class="form-control @error('cli_nombre') is-invalid @enderror"
                                    value="{{ old('cli_nombre') }}"
                                    required>
                             @error('cli_nombre')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         {{-- TIPO DOCUMENTO --}}
                         <div class="col-12 col-md-4">
                             <label class="form-label">Tipo de documento *</label>
-                            <div class="d-flex gap-3 mt-2 flex-wrap">
+                            <div class="d-flex gap-3 mt-2">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="tipo_documento" value="RUC"
-                                           id="docRuc" {{ old('tipo_documento', 'RUC') == 'RUC' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="docRuc">RUC</label>
+                                    <input class="form-check-input"
+                                           type="radio"
+                                           name="tipo_documento"
+                                           value="RUC"
+                                           {{ $tipoPrefill === 'RUC' ? 'checked' : '' }}
+                                           {{ $vieneDelWizard ? 'disabled' : '' }}>
+                                    <label class="form-check-label">RUC</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="tipo_documento" value="CEDULA"
-                                           id="docCed" {{ old('tipo_documento') == 'CEDULA' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="docCed">Cédula</label>
+                                    <input class="form-check-input"
+                                           type="radio"
+                                           name="tipo_documento"
+                                           value="CEDULA"
+                                           {{ $tipoPrefill === 'CEDULA' ? 'checked' : '' }}
+                                           {{ $vieneDelWizard ? 'disabled' : '' }}>
+                                    <label class="form-check-label">Cédula</label>
                                 </div>
                             </div>
+
+                            {{-- reenviar tipo si está disabled --}}
+                            @if($vieneDelWizard)
+                                <input type="hidden" name="tipo_documento" value="{{ $tipoPrefill }}">
+                            @endif
+
                             @error('tipo_documento')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
+                                <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        {{-- CEDULA/RUC --}}
+                        {{-- DOCUMENTO --}}
                         <div class="col-12 col-md-6">
                             <label class="form-label">Cédula / RUC *</label>
-
-                            {{-- input y botón --}}
-                            <div class="input-group">
-                                <input type="text"
-                                    name="cli_ruc_ced"
-                                    id="cli_ruc_ced"
-                                    inputmode="numeric"
-                                    pattern="[0-9]*"
-                                    oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-                                    class="form-control @error('cli_ruc_ced') is-invalid @enderror"
-                                    value="{{ old('cli_ruc_ced') }}"
-                                    required>
-
-                                <button class="btn btn-outline-secondary" type="button" id="btnVerificar">
-                                    Verificar
-                                </button>
-                            </div>
-
+                            <input type="text"
+                                   name="cli_ruc_ced"
+                                   class="form-control @error('cli_ruc_ced') is-invalid @enderror"
+                                   value="{{ $docPrefill }}"
+                                   {{ $vieneDelWizard ? 'readonly' : '' }}
+                                   required>
                             @error('cli_ruc_ced')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-
-                            <div class="form-text" id="docHelp">RUC: 13 dígitos / Cédula: 10 dígitos</div>
                         </div>
 
-                        {{-- TELEFONO --}}
+                        {{-- TELÉFONO --}}
                         <div class="col-12 col-md-6">
                             <label class="form-label">Teléfono *</label>
                             <input type="text"
-                                    name="cli_telefono"
-                                    inputmode="numeric"
-                                    pattern="[0-9]*"
-                                    oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-                                    class="form-control @error('cli_telefono') is-invalid @enderror"
-                                    value="{{ old('cli_telefono') }}"
-                                    required>
+                                   name="cli_telefono"
+                                   class="form-control @error('cli_telefono') is-invalid @enderror"
+                                   value="{{ old('cli_telefono') }}"
+                                   required>
                             @error('cli_telefono')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         {{-- CIUDAD --}}
                         <div class="col-12 col-md-6">
                             <label class="form-label">Ciudad *</label>
-
-                            <select id="ciudad_select"
-                                    name="ciudad_id"
+                            <select name="ciudad_id"
                                     class="form-select @error('ciudad_id') is-invalid @enderror"
                                     required>
                                 <option value="">Seleccione una ciudad</option>
@@ -138,12 +136,8 @@
                                     </option>
                                 @endforeach
                             </select>
-
-                            {{-- input espejo para bloquear --}}
-                            <input type="hidden" id="ciudad_hidden" name="ciudad_id_hidden">
-
                             @error('ciudad_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -156,11 +150,11 @@
                                    value="{{ old('cli_email') }}"
                                    required>
                             @error('cli_email')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        {{-- DIRECCION --}}
+                        {{-- DIRECCIÓN --}}
                         <div class="col-12">
                             <label class="form-label">Dirección *</label>
                             <input type="text"
@@ -169,7 +163,7 @@
                                    value="{{ old('cli_direccion') }}"
                                    required>
                             @error('cli_direccion')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -179,10 +173,9 @@
                             <input type="password"
                                    name="password"
                                    class="form-control @error('password') is-invalid @enderror"
-                                   placeholder="Mínimo 8 caracteres"
                                    required>
                             @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -197,12 +190,10 @@
 
                     </div>
 
-                    {{-- BOTONES --}}
-                    <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mt-4">
+                    <div class="d-flex justify-content-center gap-2 mt-4">
                         <button type="submit" class="btn btn-light">
                             Registrarme y continuar
                         </button>
-
                         <a href="{{ route('login.form') }}" class="btn btn-primary">
                             Ya tengo cuenta
                         </a>
@@ -214,7 +205,5 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('js/register.js') }}"></script>
-
 </body>
 </html>
