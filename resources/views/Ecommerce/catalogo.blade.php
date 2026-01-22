@@ -57,7 +57,7 @@
                                     {{-- Botón de compra --}}
                                     <span class="btn w-100 text-white fw-semibold py-2 rounded-pill"
                                         style="background-color: #031832; transition: all 0.3s ease;">
-                                        Comprar ahora
+                                        Ver detalles
                                     </span>
                                 </div>
 
@@ -76,68 +76,67 @@
 
         </div>
         <p class="text-muted small text-center mt-2">
-    Página {{ $productos->currentPage() }} de {{ $productos->lastPage() }} ·
-    {{ $productos->total() }} productos
-</p>
+            Página {{ $productos->currentPage() }} de {{ $productos->lastPage() }} ·
+            {{ $productos->total() }} productos
+        </p>
+        
     </div>
 
     <style>
-<style>
         /* CONTENEDOR */
-.pagination {
-    justify-content: center;
-    gap: 6px;
-}
+        .pagination {
+            justify-content: center;
+            gap: 6px;
+        }
 
-.pagination + p,
-p.text-sm.text-gray-700 {
-    display: none;
-}
+        .pagination + p,
+        p.text-sm.text-gray-700 {
+            display: none;
+        }
 
-/* BOTONES */
-.page-link {
-    color: #0d6efd;
-    background-color: transparent;
-    border: 1px solid #dee2e6;
-    padding: 8px 14px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    font-weight: 500;
-}
+        /* BOTONES */
+        .page-link {
+            color: #0d6efd;
+            background-color: transparent;
+            border: 1px solid #dee2e6;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
 
-/* OCULTAR TEXTO "Showing x to y of z results" DE LARAVEL */
-nav[aria-label="Pagination Navigation"] p,
-.pagination-wrapper p,
-.text-sm.text-gray-700,
-.flex.justify-between p {
-    display: none !important;
-}
+        /* OCULTAR TEXTO "Showing x to y of z results" DE LARAVEL */
+        nav[aria-label="Pagination Navigation"] p,
+        .pagination-wrapper p,
+        .text-sm.text-gray-700,
+        .flex.justify-between p {
+            display: none !important;
+        }
 
 
-/* HOVER */
-.page-link:hover {
-    background-color: #e9ecef;
-    color: #0a58ca;
-}
+        /* HOVER */
+        .page-link:hover {
+            background-color: #e9ecef;
+            color: #0a58ca;
+        }
 
-p.text-sm.text-gray-700 {
-    display: none;
-}
+        p.text-sm.text-gray-700 {
+            display: none;
+        }
 
-ex
-/* ACTIVO */
-.page-item.active .page-link {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-    color: #fff;
-}
+        /* ACTIVO */
+        .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: #fff;
+        }
 
-/* DESHABILITADO */
-.page-item.disabled .page-link {
-    color: #6c757d;
-    background-color: #f8f9fa;
-    cursor: not-allowed;
-}
+        /* DESHABILITADO */
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
     </style>
 
 

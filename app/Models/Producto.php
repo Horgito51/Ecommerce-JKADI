@@ -109,8 +109,8 @@ class Producto extends Model
             ->where('estado_prod', '=', 'ACT')
             ->when($search !== '', function ($q) use ($search) {
                 $q->where(function ($w) use ($search) {
-                    $w->where('id_producto', 'like', "%{$search}%")
-                    ->orWhere('pro_descripcion', 'like', "%{$search}%");
+                    $w->where('id_producto', 'ILIKE', "%{$search}%")
+                    ->orWhere('pro_descripcion', 'ILIKE', "%{$search}%");
                 });
             })
             ->when($categoria, function ($q) use ($categoria) {

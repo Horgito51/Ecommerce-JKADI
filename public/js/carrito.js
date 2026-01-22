@@ -90,21 +90,60 @@ async function api(url, { method='GET', body=null } = {}) {
     };
     if (body) headers['Content-Type'] = 'application/json';
 
-    const res = await fetch(url, {
-        method,
-        headers,
-        body: body ? JSON.stringify(body) : null,
-        credentials: 'same-origin',
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // Timeout de 15s
 
-    const data = await res.json().catch(() => ({}));
+    try {
+        const res = await fetch(url, {
+            method,
+            headers,
+            body: body ? JSON.stringify(body) : null,
+            credentials: 'same-origin',
+            signal: controller.signal,
+        });
 
-    if (!res.ok) {
-        if (data && data.message) showAlert(data.message, 'danger');
-        throw data;
+        clearTimeout(timeoutId);
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+            const errorMessage = mapErrorMessage(res.status, data);
+            if (errorMessage) showAlert(errorMessage, 'danger');
+            throw data;
+        }
+
+        return data;
+    } catch (error) {
+        clearTimeout(timeoutId);
+        if (error.name === 'AbortError') {
+            showAlert('Tiempo de conexión agotado. Intenta nuevamente.', 'danger');
+            throw new Error('Timeout');
+        }
+        throw error;
     }
+}
 
-    return data;
+// Mapear errores HTTP a mensajes legibles
+function mapErrorMessage(statusCode, errorData) {
+    const message = errorData?.message || '';
+    
+    switch (statusCode) {
+        case 400:
+            return `Solicitud inválida: ${message || 'Datos incorrectos'}`;
+        case 401:
+            return 'Debes iniciar sesión para continuar';
+        case 403:
+            return 'No tienes permiso para esta acción';
+        case 404:
+            return 'Producto no encontrado';
+        case 422:
+            return `${message || 'Error de validación'}`;
+        case 500:
+            return 'Error del servidor. Intenta más tarde.';
+        case 503:
+            return 'Servidor no disponible. Intenta en unos minutos.';
+        default:
+            return message || `Error ${statusCode}: Intenta nuevamente`;
+    }
 }
 
 function applyData(data) {
@@ -254,14 +293,28 @@ async function clearCart() {
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('btnClear').addEventListener('click', clearCart);
+    // Botón confirmar vaciar carrito (modal)
+    document.getElementById('confirmClearBtn')?.addEventListener('click', clearCart);
 
     document.getElementById('btnCheckout').addEventListener('click', (e) => {
         if (!state.items.length) {
             e.preventDefault();
-            // No mostrar alerta aquí, ya se muestra en el carrito vacío
+            showAlert('Tu carrito está vacío.', 'warning');
         }
     });
 
-    loadCart().catch(() => showAlert('No se pudo cargar el carrito.', 'danger'));
+    // Cargar carrito con timeout visible
+    const loadCartWithFeedback = async () => {
+        try {
+            await loadCart();
+        } catch (error) {
+            // Mostrar estado de error si persiste
+            const tbody = document.getElementById('tbody');
+            if (tbody && tbody.innerHTML.includes('Cargando...')) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-danger">Error al cargar el carrito. <a href="javascript:location.reload()">Recargar</a></td></tr>`;
+            }
+        }
+    };
+
+    loadCartWithFeedback();
 });

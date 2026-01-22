@@ -8,7 +8,12 @@
     <div class="col-12 col-lg-7">
       <div class="card shadow-sm">
         <div class="card-body">
-          <h4 class="mb-3">Checkout</h4>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="mb-0">Checkout</h4>
+            <a href="{{ route('carrito.index') }}" class="btn btn-sm btn-outline-secondary">
+              ← Editar carrito
+            </a>
+          </div>
 
           <h6 class="mt-3 mb-2">Datos del cliente</h6>
 
@@ -19,8 +24,9 @@
             </div>
 
             <div class="col-12 col-md-6">
-              <label class="form-label">Cédula/RUC</label>
+              <label class="form-label">Cédula o RUC</label>
               <input class="form-control" value="{{ $cliente->cli_ruc_ced ?? '' }}" disabled>
+              <small class="text-muted">Documento de identificación</small>
             </div>
 
             <div class="col-12 col-md-6">
@@ -125,7 +131,12 @@
 
       <div class="modal-header">
         <h5 class="modal-title">Pago con tarjeta</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <div class="ms-auto d-flex gap-2">
+          <a href="{{ route('carrito.index') }}" class="btn btn-sm btn-outline-secondary" title="Editar carrito">
+            ← Editar carrito
+          </a>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
       </div>
 
       <div class="modal-body">
@@ -138,29 +149,29 @@
 
           <div class="mb-3">
             <label class="form-label">Nombre en la tarjeta</label>
-            <input type="text" class="form-control" id="cardName" name="card_name" placeholder="Ej: Danny Yánez" required>
-            <div class="invalid-feedback">Ingrese el nombre del titular.</div>
+            <input type="text" class="form-control" id="cardName" name="card_name" placeholder="Ej: Danny Yánez" maxlength="80" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" required>
+            <div class="invalid-feedback">Ingrese un nombre válido (solo letras).</div>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Número de tarjeta</label>
             <input type="text" class="form-control" id="cardNumber" name="card_number"
-                   inputmode="numeric" placeholder="1234 5678 9012 3456" maxlength="19" required>
-            <div class="invalid-feedback">Número inválido (deben ser 16 dígitos).</div>
+                   inputmode="numeric" placeholder="1234 5678 9012 3456" maxlength="19" pattern="[0-9 ]{13,19}" required>
+            <div class="invalid-feedback">Número inválido (13-19 dígitos).</div>
           </div>
 
           <div class="row g-3">
             <div class="col-6">
               <label class="form-label">Expira (MM/YY)</label>
-              <input type="text" class="form-control" id="cardExp" name="card_exp" placeholder="MM/YY" maxlength="5" required>
-              <div class="invalid-feedback">Fecha inválida o vencida.</div>
+              <input type="text" class="form-control" id="cardExp" name="card_exp" placeholder="MM/YY" maxlength="5" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" required>
+              <div class="invalid-feedback">Formato: MM/YY (ej: 12/26)</div>
             </div>
 
             <div class="col-6">
               <label class="form-label">CVV</label>
               <input type="password" class="form-control" id="cardCvv" name="card_cvv"
-                     inputmode="numeric" placeholder="123" maxlength="3" required>
-              <div class="invalid-feedback">CVV inválido (3 dígitos).</div>
+                     inputmode="numeric" placeholder="123" maxlength="4" pattern="[0-9]{3,4}" required>
+              <div class="invalid-feedback">CVV inválido (3-4 dígitos).</div>
             </div>
           </div>
 
@@ -176,7 +187,10 @@
           </div>
 
           <button type="submit" class="btn btn-dark w-100 mt-3" id="btnConfirmPay">
-            Confirmar pago
+            <span id="btnPayText">Confirmar pago</span>
+            <span id="btnPaySpinner" style="display:none; margin-left: 8px;">
+              <i class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></i>
+            </span>
           </button>
         </form>
       </div>

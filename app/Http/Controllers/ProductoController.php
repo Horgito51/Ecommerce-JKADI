@@ -40,7 +40,7 @@ class ProductoController extends Controller
         $request->file('img')
         );
 
-        return redirect()->route('productos.index')->with('Exitoso','Producto creado exitosamente');
+        return redirect()->route('productos.index')->with('success','Producto creado correctamente.');
     }
 
 
@@ -72,7 +72,7 @@ class ProductoController extends Controller
 
         Producto::updateProducto($id, $request->all(), $request->file('img'));
 
-        return redirect()->route('productos.index')->with('Exitoso','Producto actualizado exitosamente');
+        return redirect()->route('productos.index')->with('success','Producto actualizado correctamente.');
     }
 
     /**

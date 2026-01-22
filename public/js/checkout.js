@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnOpenPay = document.getElementById('btnOpenPay');
   const payForm = document.getElementById('payForm');
   const paySuccess = document.getElementById('paySuccess');
+  const btnConfirmPay = document.getElementById('btnConfirmPay');
+  const btnPayText = document.getElementById('btnPayText');
+  const btnPaySpinner = document.getElementById('btnPaySpinner');
 
   const cardName = document.getElementById('cardName');
   const cardNumber = document.getElementById('cardNumber');
@@ -17,11 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
     paySuccess?.classList.add('d-none');
     payForm?.reset();
     [cardName, cardNumber, cardExp, cardCvv].forEach(i => i?.classList.remove('is-invalid','is-valid'));
+    btnConfirmPay.disabled = false;
+    btnPayText.textContent = 'Confirmar pago';
+    btnPaySpinner.style.display = 'none';
     payModal.show();
   });
 
   cardNumber?.addEventListener('input', () => {
-    let v = cardNumber.value.replace(/\D/g, '').slice(0, 16);
+    let v = cardNumber.value.replace(/\D/g, '').slice(0, 19);
     cardNumber.value = v.replace(/(\d{4})(?=\d)/g, '$1 ');
   });
 
@@ -32,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   cardCvv?.addEventListener('input', () => {
-    cardCvv.value = cardCvv.value.replace(/\D/g, '').slice(0, 3);
+    cardCvv.value = cardCvv.value.replace(/\D/g, '').slice(0, 4);
   });
 
   function setValid(el, ok) {
@@ -49,14 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function validNumber() {
     const digits = (cardNumber?.value || '').replace(/\D/g, '');
-    const ok = digits.length === 16;
+    const ok = digits.length >= 13 && digits.length <= 19;
     setValid(cardNumber, ok);
     return ok;
   }
 
   function validCvv() {
     const digits = (cardCvv?.value || '').replace(/\D/g, '');
-    const ok = digits.length === 3;
+    const ok = digits.length >= 3 && digits.length <= 4;
     setValid(cardCvv, ok);
     return ok;
   }
@@ -80,13 +86,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   payForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
     const ok = validName() & validNumber() & validExp() & validCvv();
     if (!ok) {
-      e.preventDefault();
       paySuccess?.classList.add('d-none');
       return;
     }
-    paySuccess?.classList.remove('d-none');
+    
+    // Mostrar spinner y deshabilitar botón
+    btnConfirmPay.disabled = true;
+    btnPayText.textContent = 'Procesando pago...';
+    btnPaySpinner.style.display = 'inline-block';
+    paySuccess?.classList.add('d-none');
+    
+    // Enviar formulario después de 500ms para que se vea el spinner
+    setTimeout(() => {
+      payForm.submit();
+    }, 500);
   });
 
   cardName?.addEventListener('blur', validName);

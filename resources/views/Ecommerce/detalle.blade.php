@@ -100,6 +100,7 @@
                                    value="1"
                                    min="1"
                                    max="{{ $producto->pro_saldo_final }}"
+                                   step="1"
                                    {{ $producto->pro_saldo_final == 0 ? 'disabled' : '' }}>
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary"  type="button" id="btnMas" {{ $producto->pro_saldo_final == 0 ? 'disabled' : '' }}>
@@ -115,7 +116,10 @@
                                 class="btn btn-dark btn-lg btn-block rounded-pill py-3 font-weight-bold"
                                 id="btnAgregarCarrito"
                                 {{ $producto->pro_saldo_final == 0 ? 'disabled' : '' }}>
-                            Añadir
+                            <span id="btnText">Añadir</span>
+                            <span id="btnSpinner" style="display:none; margin-left: 8px;">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
                         </button>
                     </div>
 
@@ -191,6 +195,67 @@
 
 <!-- Script para los botones de cantidad -->
 <script>
+// Función para mostrar alertas sin bloqueantes
+function showDetailAlert(msg, type = 'warning') {
+    let container = document.getElementById('alertContainer');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'alertContainer';
+        container.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 400px;';
+        document.body.appendChild(container);
+    }
+
+    let bgColor, textColor;
+    switch(type) {
+        case 'success':
+            bgColor = '#d4edda';
+            textColor = '#155724';
+            break;
+        case 'danger':
+            bgColor = '#f8d7da';
+            textColor = '#721c24';
+            break;
+        default:
+            bgColor = '#fff3cd';
+            textColor = '#856404';
+    }
+
+    const alert = document.createElement('div');
+    alert.style.cssText = `
+        background-color: ${bgColor};
+        color: ${textColor};
+        padding: 15px 20px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        animation: slideDown 0.3s ease-out;
+    `;
+    alert.textContent = msg;
+    container.appendChild(alert);
+
+    setTimeout(() => {
+        alert.style.animation = 'slideUp 0.3s ease-out';
+        setTimeout(() => {
+            if (alert.parentNode) alert.remove();
+        }, 300);
+    }, 3000);
+}
+
+// Agregar animaciones CSS
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideUp {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(-20px); }
+    }
+`;
+document.head.appendChild(style);
+
 document.addEventListener('DOMContentLoaded', function() {
     const inputCantidad = document.getElementById('cantidad');
     const btnMenos = document.getElementById('btnMenos');
@@ -229,10 +294,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Botón agregar al carrito (placeholder)
     if (btnAgregarCarrito) {
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+
         btnAgregarCarrito.addEventListener('click', async function() {
             const cantidad = parseInt(inputCantidad.value, 10) || 1;
 
-            // deshabilitar para evitar doble click
+            // Mostrar spinner y cambiar texto
+            btnText.textContent = 'Agregando...';
+            btnSpinner.style.display = 'inline';
             btnAgregarCarrito.disabled = true;
 
             try {
@@ -256,18 +326,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (!res.ok) {
                     // backend devuelve 422 con message (ej: stock insuficiente)
-                    alert(data.message || 'No se pudo agregar al carrito.');
+                    showDetailAlert(data.message || 'No se pudo agregar al carrito.', 'danger');
                     return;
                 }
-                // Opcional: si quieres ir al carrito directo:
-                // window.location.href = "{{ route('carrito.index') }}";
 
+                // Mostrar éxito temporalmente
+                btnText.textContent = '✓ Agregado';
+                btnSpinner.style.display = 'none';
+                btnAgregarCarrito.style.opacity = '0.7';
+                
                 window.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
                 if (window.CartDrawer) window.CartDrawer.open();
+                
+                // Restaurar estado después de 2 segundos
+                setTimeout(() => {
+                    btnText.textContent = 'Añadir';
+                    btnAgregarCarrito.style.opacity = '1';
+                    btnAgregarCarrito.disabled = false;
+                }, 2000);
 
             } catch (e) {
-                alert('Error de red al agregar al carrito.');
-            } finally {
+                showDetailAlert('Error de red al agregar al carrito.', 'danger');
+                // Restaurar estado en caso de error
+                btnText.textContent = 'Añadir';
+                btnSpinner.style.display = 'none';
                 btnAgregarCarrito.disabled = false;
             }
         });

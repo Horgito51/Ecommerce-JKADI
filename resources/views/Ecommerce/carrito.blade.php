@@ -15,7 +15,29 @@
 
         <div class="jk-actions">
             <a href="{{ route('catalogo.index') }}" class="jk-btn">Seguir comprando</a>
-            <button class="jk-btn jk-btn-danger" id="btnClear">Vaciar carrito</button>
+            <button class="jk-btn jk-btn-danger" id="btnClear" data-bs-toggle="modal" data-bs-target="#confirmClearModal">
+                Vaciar carrito
+            </button>
+        </div>
+    </div>
+    
+    <!-- Modal de confirmación para vaciar carrito -->
+    <div class="modal fade" id="confirmClearModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">⚠️ Vaciar carrito</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-2">¿Estás seguro de que deseas eliminar todos los productos del carrito?</p>
+                    <p class="small text-muted mb-0">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmClearBtn">Sí, vaciar carrito</button>
+                </div>
+            </div>
         </div>
     </div>
     

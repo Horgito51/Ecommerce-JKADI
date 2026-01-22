@@ -10,7 +10,7 @@
     <!-- CSS propio desde public -->
 
 
-    <title>Document</title>
+    <title>J-KADI Shop - Productos de Calidad</title>
 </head>
 
 {{--CARRITO SIDEBAR--}}

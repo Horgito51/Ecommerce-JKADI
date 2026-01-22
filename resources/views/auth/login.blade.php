@@ -40,7 +40,7 @@
                         <label class="form-label">Correo electrónico</label>
                         <input type="email" name="email"
                             class="form-control @error('email') is-invalid @enderror"
-                            placeholder="correo@ejemplo.com"
+                            placeholder="tu@email.com"
                             value="{{ old('email') }}">
                         @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -52,7 +52,7 @@
                         <label class="form-label">Contraseña</label>
                         <input type="password" name="password"
                                class="form-control @error('password') is-invalid @enderror"
-                               placeholder="Ingrese su contraseña">
+                               placeholder="Ingresa tu contraseña">
                         @error('password')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -66,8 +66,11 @@
 
                     <!-- BOTONES -->
                     <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mb-3">
-                        <button type="submit" class="btn btn-light">
-                            Iniciar Sesión
+                        <button type="submit" class="btn btn-light" id="loginBtn">
+                            <span id="loginBtnText">Iniciar Sesión</span>
+                            <span id="loginBtnSpinner" style="display:none; margin-left: 8px;">
+                                <i class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></i>
+                            </span>
                         </button>
 
                         <a href="{{ route('register.step1') }}" class="btn btn-primary">
@@ -89,5 +92,24 @@
 
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loginBtn = document.getElementById('loginBtn');
+    const loginBtnText = document.getElementById('loginBtnText');
+    const loginBtnSpinner = document.getElementById('loginBtnSpinner');
+    const form = document.querySelector('form');
+
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            // Mostrar indicador de carga
+            loginBtn.disabled = true;
+            loginBtnText.textContent = 'Verificando...';
+            loginBtnSpinner.style.display = 'inline-block';
+        });
+    }
+});
+</script>
+
 </body>
 </html>
