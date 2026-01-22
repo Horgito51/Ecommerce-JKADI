@@ -20,8 +20,8 @@ return new class extends Migration
             $table->char('pro_um_compra', 3)->nullable();
             $table->char('pro_um_venta', 3)->nullable();
 
-            $table->decimal('pro_valor_compra', 7, 2)->unsigned()->default(0.50);
-            $table->decimal('pro_precio_venta', 7, 2)->unsigned()->default(1.00);
+            $table->decimal('pro_valor_compra', 7, 2)->check('pro_valor_compra >= 0')   ;
+            $table->decimal('pro_precio_venta', 7, 2)->check('pro_precio_venta >= pro_valor_compra');
 
             $table->integer('pro_saldo_inicial')->nullable();
             $table->integer('pro_qty_ingresos')->unsigned()->default(0);
