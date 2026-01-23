@@ -10,23 +10,23 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CheckoutService
 {
-    public const IVA_RATE = 0.15;
-
     public function resumen(Carrito $carrito): array
     {
         $items = $carrito->items()->with('producto')->get();
 
-        $subtotal = $items->sum(fn($it) => (float)$it->precio_unitario * (int)$it->cantidad);
+        $subtotal = $items->sum(fn ($it) => (float) $it->precio_unitario * (int) $it->cantidad);
 
-        $ivaRate = (float) config('properties.iva', self::IVA_RATE);
-        $iva = round($subtotal * $ivaRate, 2);
-        $total = round($subtotal + $iva, 2);
+        $ivaRate = (float) config('properties.iva');
+        $iva     = round($subtotal * $ivaRate, 2);
+        $total   = round($subtotal + $iva, 2);
 
         return compact('items', 'subtotal', 'iva', 'total');
     }
 
-    public function pagarSimuladoCrearFacturaYConvertir(Carrito $carrito, string $descripcion = 'Venta e-commerce (pago simulado)'): string
-    {
+    public function pagarSimuladoCrearFacturaYConvertir(
+        Carrito $carrito,
+        string $descripcion = 'Venta e-commerce (pago simulado)'
+    ): string {
         if ($carrito->estado !== Carrito::ESTADO_ACTIVO) {
             throw new HttpResponseException(
                 response()->json(['message' => 'El carrito no está activo.'], 422)
@@ -35,6 +35,7 @@ class CheckoutService
 
         if ($carrito->expires_at && $carrito->expires_at->isPast()) {
             $carrito->update(['estado' => Carrito::ESTADO_ABANDONADO]);
+
             throw new HttpResponseException(
                 response()->json(['message' => 'Tu carrito expiró. Vuelve a agregar los productos.'], 422)
             );
@@ -57,19 +58,20 @@ class CheckoutService
 
         foreach ($items as $it) {
             $p = $it->producto;
-            $stock = (int)($p->pro_saldo_final ?? 0);
-            if ($stock <= 0 || (int)$it->cantidad > $stock) {
+            $stock = (int) ($p->pro_saldo_final ?? 0);
+
+            if ($stock <= 0 || (int) $it->cantidad > $stock) {
                 throw new HttpResponseException(
                     response()->json(['message' => "Stock insuficiente para {$p->pro_descripcion}."], 422)
                 );
             }
         }
 
-        $subtotal = $items->sum(fn($it) => (float)$it->precio_unitario * (int)$it->cantidad);
+        $subtotal = $items->sum(fn ($it) => (float) $it->precio_unitario * (int) $it->cantidad);
 
-        $ivaRate = (float) config('properties.iva', self::IVA_RATE);
-        $iva = round($subtotal * $ivaRate, 2);
-        $total = round($subtotal + $iva, 2);
+        $ivaRate = (float) config('properties.iva');
+        $iva     = round($subtotal * $ivaRate, 2);
+        $total   = round($subtotal + $iva, 2);
 
         $data = [
             'id_cliente'      => $cliente->id_cliente,
@@ -80,8 +82,8 @@ class CheckoutService
             'productos'       => $items->map(function ($it) {
                 return [
                     'id_producto'  => $it->id_producto,
-                    'pxf_cantidad' => (int)$it->cantidad,
-                    'pxf_precio'   => (float)$it->precio_unitario,
+                    'pxf_cantidad' => (int) $it->cantidad,
+                    'pxf_precio'   => (float) $it->precio_unitario,
                 ];
             })->values()->all(),
         ];
