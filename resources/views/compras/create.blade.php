@@ -257,15 +257,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     tbody.addEventListener('input', function (e) {
-        if (e.target.classList.contains('cantidad')) {
-            const fila = e.target.closest('tr');
-            const cantidad = parseFloat(e.target.value || 0);
-            const preciomier = parseFloat(fila.querySelector('.valor').value || 0);
+    if (e.target.classList.contains('cantidad')) {
+        const fila = e.target.closest('tr');
+        const cantidad = parseFloat(e.target.value || 0);
+        const precio = parseFloat(fila.querySelector('.valor').value || 0); // ← Corregido
 
-            fila.querySelector('.subtotal').value = (cantidad * precio).toFixed(3);
-            recalcularTotales();
-        }
-    });
+        fila.querySelector('.subtotal').value = (cantidad * precio).toFixed(3);
+        recalcularTotales();
+    }
+});
 
     function recalcularTotales() {
         let subtotal = 0;
