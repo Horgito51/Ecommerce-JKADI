@@ -59,8 +59,10 @@ class ProveedorController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $this->validateProveedor($request);
-        Proveedor::updateProveedor($id,[
+        $id_proveedor=trim($id);
+
+        $this->validateProveedor($request,$id_proveedor);
+        Proveedor::updateProveedor($id_proveedor,[
         'prv_nombre'     => $request->prv_nombre,
         'prv_ruc_ced'    => $request->prv_ruc_ced,
         'prv_telefono'   => $request->prv_telefono,
@@ -103,13 +105,15 @@ class ProveedorController extends Controller
         ];
 
          if ($request->tipo_documento === 'RUC') {
-            $rules['prv_ruc_ced'] = 'unique:proveedores,prv_ruc_ced|required|digits:13|regex:/^[0-9]+$/';
+            $rules['prv_ruc_ced'] = 'digits:13';
+            $rules['prv_ruc_ced'] .= '|required|unique:proveedores,prv_ruc_ced';
         } else {
-            $rules['prv_ruc_ced'] = 'unique:proveedores,prv_ruc_ced|required   |digits:10|regex:/^[0-9]+$/';
+            $rules['prv_ruc_ced'] = 'digits:10';
+            $rules['prv_ruc_ced'] .= '|required|unique:proveedores,prv_ruc_ced';
         }
         if ($id_proveedor != null) {
-            $rules['prv_ruc_ced'] .= '|unique:proveedores,prv_ruc_ced,' . $id_proveedor . ', id_proveedor';
-            //   $rules['cli_ruc_ced'] .= ',' . $id_cliente . ',id_cliente';
+            $rules['prv_ruc_ced'] .= ',' .  $id_proveedor. ',id_proveedor';
+
         }
 
 
