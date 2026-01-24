@@ -89,9 +89,15 @@
         </table>
     </div>
 
-<div class="d-flex justify-content-center">
-    {{ $productos->links('pagination::bootstrap-5') }}
-</div>
+    {{-- Paginación --}}
+
+    <div class="pagination-wrapper d-flex justify-content-center mt-5">
+        {{ $productos->links('pagination::bootstrap-5', ['class' => 'pagination pagination-sm']) }}
+    </div>
+    <p class="text-muted small text-center mt-2">
+        Página {{ $productos->currentPage() }} de {{ $productos->lastPage() }} ·
+        {{ $productos->total() }} productos
+    </p>
 
 </div>
 

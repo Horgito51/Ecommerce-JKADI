@@ -163,8 +163,8 @@ public static function updateFacturas(string $idFactura, array $data)
     public function scopeGetFacturaBy($query,$search){
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('fac_descripcion', 'like', "%{$search}%")
-                  ->orWhere('id_factura', 'like', "%{$search}%");
+                $q->where('fac_descripcion', 'ilike', "%{$search}%")
+                  ->orWhere('id_factura', 'ilike', "%{$search}%");
             });
         }
     }

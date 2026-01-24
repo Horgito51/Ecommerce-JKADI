@@ -115,9 +115,15 @@
     </table>
 </div>
 
-<div class="d-flex justify-content-center mt-3">
-    {{ $compras->appends(request()->query())->links('pagination::bootstrap-5') }}
-</div>
+    {{-- Paginación --}}
+
+    <div class="pagination-wrapper d-flex justify-content-center mt-5">
+        {{ $compras->links('pagination::bootstrap-5', ['class' => 'pagination pagination-sm']) }}
+    </div>
+    <p class="text-muted small text-center mt-2">
+        Página {{ $compras->currentPage() }} de {{ $compras->lastPage() }} ·
+        {{ $compras->total() }} compras
+    </p>
 
 
 <script>

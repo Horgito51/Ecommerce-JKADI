@@ -1,8 +1,4 @@
-@php
-    $searchRoute = route('proveedores.index');
-    $searchPlaceholder = 'Buscar por ID, nombre o RUC/Cédula';
-    $searchExtraParams = []; // si luego agregas filtros, aquí los mantienes
-@endphp
+
 
 @extends('layouts.contentAdmin')
 
@@ -85,13 +81,15 @@
     </table>
 </div>
 
-<div class="d-flex justify-content-center mt-3">
-    {{ $proveedores->appends(request()->query())->links('pagination::bootstrap-5') }}
+    {{-- Paginación --}}
 
-</div>
-
-
-
+    <div class="pagination-wrapper d-flex justify-content-center mt-5">
+        {{ $proveedores->links('pagination::bootstrap-5', ['class' => 'pagination pagination-sm']) }}
+    </div>
+    <p class="text-muted small text-center mt-2">
+        Página {{ $proveedores->currentPage() }} de {{ $proveedores->lastPage() }} ·
+        {{ $proveedores->total() }} proveedores
+    </p>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -120,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+
 
 
 

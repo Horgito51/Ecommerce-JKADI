@@ -79,6 +79,16 @@
     </table>
 </div>
 
+    {{-- Paginación --}}
+
+    <div class="pagination-wrapper d-flex justify-content-center mt-5">
+        {{ $facturas->links('pagination::bootstrap-5', ['class' => 'pagination pagination-sm']) }}
+    </div>
+    <p class="text-muted small text-center mt-2">
+        Página {{ $facturas->currentPage() }} de {{ $facturas->lastPage() }} ·
+        {{ $facturas->total() }} facturas
+    </p>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 

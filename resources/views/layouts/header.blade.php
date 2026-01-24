@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="row align-items-center py-2 py-md-3">
 
       <!-- Logo -->
-      <div class="col-4 col-md-2 order-1">
+      <div class="col-6 col-md-2 order-1">
         <a href="{{ route('portada.index') }}">
           <img src="{{ asset('img/Logo.png') }}"
                alt="J-KADI Sports"
@@ -60,15 +60,22 @@ document.addEventListener('DOMContentLoaded', () => {
         </a>
       </div>
 
+      <!-- Menú Inicio -->
+      <div class="col-6 col-md-1 order-2 text-center">
+        <a href="{{ route('portada.index') }}" class="text-white text-decoration-none fw-normal">
+          Inicio
+        </a>
+      </div>
+
       <!-- Menú Productos -->
-      <div class="col-4 col-md-1 order-2 text-center text-md-start">
+      <div class="col-6 col-md-1 order-3 text-center">
         <a href="{{ route('catalogo.index') }}" class="text-white text-decoration-none fw-normal">
           Productos
         </a>
       </div>
 
       <!-- Buscador -->
-      <div class="col-12 col-md-6 order-4 order-md-3 mt-3 mt-md-0">
+      <div class="col-12 col-md-6 order-4 mt-3 mt-md-0">
         <form class="d-flex" role="search" method="GET" action="{{ route('catalogo.index') }}">
           <input class="form-control me-2 rounded-pill"
             type="search"
@@ -87,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
 
       <!-- Carrito -->
-      <div class="col-2 col-md-1 order-3 order-md-4 text-center">
+      <div class="col-3 col-md-1 order-5 text-center">
         <a href="{{ route('carrito.index') }}" class="text-decoration-none">
           <div class="d-flex flex-column align-items-center position-relative">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
@@ -119,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <!-- Iniciar sesión -->
       <!-- Usuario -->
-      <div class="col-2 col-md-2 order-5 text-center">
+      <div class="col-3 col-md-1 order-6 text-center">
 
         @auth
           <div class="dropdown d-inline-block">

@@ -209,4 +209,11 @@ class Producto extends Model
             ->get();
     }
 
+    public static function getProductoById($id_producto)
+    {
+        return self::where('id_producto', $id_producto)
+            ->where('estado_prod', 'ACT')
+            ->first();
+    }
+
 }

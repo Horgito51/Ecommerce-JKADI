@@ -58,6 +58,16 @@
         </table>
 
     </div>
+    
+    {{-- Paginación --}}
+
+    <div class="pagination-wrapper d-flex justify-content-center mt-5">
+        {{ $clientes->links('pagination::bootstrap-5', ['class' => 'pagination pagination-sm']) }}
+    </div>
+    <p class="text-muted small text-center mt-2">
+        Página {{ $clientes->currentPage() }} de {{ $clientes->lastPage() }} ·
+        {{ $clientes->total() }} clientes
+    </p>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {

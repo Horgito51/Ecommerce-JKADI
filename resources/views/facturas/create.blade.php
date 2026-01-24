@@ -96,7 +96,8 @@
                                             <option value="">Seleccione</option>
                                             @foreach ($productos as $p)
                                                 <option value="{{ $p->id_producto }}"
-                                                    {{ $prod['id_producto'] == $p->id_producto ? 'selected' : '' }}>
+                                                        data-precio="{{ $p->pro_precio_venta }}"
+                                                        data-stock="{{ $p->pro_saldo_final }}">
                                                     {{ $p->pro_descripcion }}
                                                 </option>
                                             @endforeach
@@ -210,7 +211,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     <option value="">Seleccione</option>
                     @foreach ($productos as $p)
                         <option value="{{ $p->id_producto }}"
-                                data-precio="{{ $p->pro_precio_venta }}">
+                                data-precio="{{ $p->pro_precio_venta }}"
+                                data-stock="{{ $p->pro_saldo_final }}">
                             {{ $p->pro_descripcion }}
                         </option>
                     @endforeach
@@ -314,14 +316,29 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target.classList.contains('cantidad')) {
 
             const fila = e.target.closest('tr');
-
             const cantidad = parseFloat(e.target.value) || 0;
+
+            const selectProducto = fila.querySelector('.producto');
+            const stock = parseFloat(
+                selectProducto?.selectedOptions[0]?.dataset.stock || 0
+            );
+
+            if (cantidad > stock) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Stock insuficiente",
+                    text: `Stock disponible: ${stock}`,
+                    confirmButtonColor: '#d33'
+                });
+                e.target.value = stock;
+            }
+
             const precio = parseFloat(
                 fila.querySelector('.valor').value
             ) || 0;
 
             fila.querySelector('.subtotal').value =
-                (cantidad * precio).toFixed(3);
+                (e.target.value * precio).toFixed(3);
 
             recalcularTotales();
         }

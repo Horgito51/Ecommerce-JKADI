@@ -59,9 +59,24 @@ class FacturaController extends Controller
         $request->validate($rules, $messages);
     }
 
+    private function validarStock(array $productos){
+        foreach ($productos as $item){
+            $producto=Producto::getProductoById($item['id_producto']);
+
+            if(!$producto){
+                abort(422, 'Producto no encontrado');
+            }
+
+            if($item['pxf_cantidad'] > $producto->pro_saldo_final){
+                return "Stock insuficiente para el producto {$producto->pro_descripcion}. Disponible: {$producto->pro_saldo_final}";
+            }
+        }
+        return null;
+    }
+
     public function index(Request $request)
     {
-        $facturas = Factura::getFacturaBy($request->search)->get();
+        $facturas = Factura::getFacturaBy($request->search)->paginate(10);
         return view('facturas.index', compact('facturas'));
     }
 
@@ -81,6 +96,15 @@ class FacturaController extends Controller
     public function store(Request $request)
     {
         $this->validateFactura($request);
+        $errorStock = $this->validarStock($request->productos);
+
+
+        if ($errorStock) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', $errorStock);
+        }
         Factura::createFactura([
             'id_cliente' => $request->id_cliente,
             'fac_descripcion' => $request->fac_descripcion,
@@ -97,13 +121,6 @@ class FacturaController extends Controller
             ->with('success', 'Factura creada exitosamente');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Factura $factura)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -122,6 +139,16 @@ class FacturaController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validateFactura($request);
+
+        $errorStock = $this->validarStock($request->productos);
+
+
+        if ($errorStock) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', $errorStock);
+        }
 
         Factura::updateFacturas($id, [
             'id_cliente' => $request->id_cliente,

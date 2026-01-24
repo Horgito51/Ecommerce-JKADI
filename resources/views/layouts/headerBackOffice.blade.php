@@ -5,32 +5,36 @@
       <!-- Logo -->
       <div class="col-6 col-md-2">
     @if(auth()->check() && (auth()->user()->hasRole('admin')))
-       <a href="{{ route('admin.index') }}">
+       <a href="{{ route('admin.index') }}" class="text-decoration-none d-flex align-items-center gap-4">
          <img src="{{ asset('img/Logo.png') }}"
              alt="J-KADI Sports"
              class="img-fluid"
              style="max-width: 140px;">
+            <span class="text-white fs-6">Inicio</span>
        </a>
        @elseif(auth()->check() && (auth()->user()->hasRole('gerente_compras')))
-       <a href="{{ route('compras.index') }}">
+       <a href="{{ route('compras.index') }}" class ="text-decoration-none d-flex align-items-center gap-4">
          <img src="{{ asset('img/Logo.png') }}"
              alt="J-KADI Sports"
              class="img-fluid"
              style="max-width: 140px;">
+             <span class="text-white fs-6">Inicio</span>
        </a>
        @elseif(auth()->check() && (auth()->user()->hasRole('ventas')))
-       <a href="{{ route('ventas.index') }}">
+       <a href="{{ route('ventas.index') }}" class ="text-decoration-none d-flex align-items-center gap-4">
          <img src="{{ asset('img/Logo.png') }}"
              alt="J-KADI Sports"
              class="img-fluid"
              style="max-width: 140px;">
+             <span class="text-white fs-6">Inicio</span>
        </a>
        @elseif(auth()->check() && (auth()->user()->hasRole('gerente_bodega')))
-       <a href="{{ route('bodega.index') }}">
+       <a href="{{ route('bodega.index') }}" class ="text-decoration-none d-flex align-items-center gap-4">
          <img src="{{ asset('img/Logo.png') }}"
              alt="J-KADI Sports"
              class="img-fluid"
              style="max-width: 140px;">
+             <span class="text-white fs-6">Inicio</span>
        </a>
        @endif
       </div>

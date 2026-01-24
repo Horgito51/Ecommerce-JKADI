@@ -85,6 +85,7 @@
                                                 @foreach ($productos as $p)
                                                     <option value="{{ $p->id_producto }}"
                                                         data-precio="{{ $p->pro_precio_venta }}"
+                                                        data-stock="{{ $p->pro_saldo_final }}"
                                                         {{ $prod['id_producto'] == $p->id_producto ? 'selected' : '' }}>
                                                         {{ $p->pro_descripcion }}
                                                     </option>
@@ -126,6 +127,7 @@
                                                 @foreach ($productos as $p)
                                                     <option value="{{ $p->id_producto }}"
                                                         data-precio="{{ $p->pro_precio_venta }}"
+                                                        data-stock="{{ $p->pro_saldo_final }}"
                                                         {{ $prod->id_producto == $p->id_producto ? 'selected' : '' }}>
                                                         {{ $p->pro_descripcion }}
                                                     </option>
@@ -220,7 +222,9 @@
                 <select name="productos[${index}][id_producto]" class="form-control producto" required>
                     <option value="">Seleccione</option>
                     @foreach ($productos as $p)
-                        <option value="{{ $p->id_producto }}" data-precio="{{ $p->pro_precio_venta }}">
+                        <option value="{{ $p->id_producto }}" 
+                            data-precio="{{ $p->pro_precio_venta }}">
+                            data-stock="{{ $p->pro_saldo_final }}">
                             {{ $p->pro_descripcion }}
                         </option>
                     @endforeach
@@ -266,9 +270,25 @@
                 if (e.target.classList.contains('cantidad')) {
                     const fila = e.target.closest('tr');
                     const cantidad = parseFloat(e.target.value) || 0;
-                    const precio = parseFloat(fila.querySelector('.valor').value) || 0;
+                    
+                    // Validar stock
+                    const selectProducto = fila.querySelector('.producto');
+                    const stock = parseFloat(
+                        selectProducto?.selectedOptions[0]?.dataset.stock || 0
+                    );
 
-                    fila.querySelector('.subtotal').value = (cantidad * precio).toFixed(3);
+                    if (cantidad > stock) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Stock Insuficiente",
+                            text: `Stock disponible: ${stock}`,
+                            confirmButtonColor: '#d33'
+                        });
+                        e.target.value = stock;
+                    }
+                    
+                    const precio = parseFloat(fila.querySelector('.valor').value) || 0;
+                    fila.querySelector('.subtotal').value = (e.target.value * precio).toFixed(3);
                     recalcularTotales();
                 }
             });
