@@ -118,7 +118,7 @@
                                     </tr>
                                 @endforeach
                             @else
-                                @foreach ($factura->productos as $i => $prod)
+                                @foreach ($productosFactura as $i => $prod)
                                     <tr>
                                         <td>
                                             <select name="productos[{{ $i }}][id_producto]"

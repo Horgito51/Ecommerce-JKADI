@@ -130,7 +130,8 @@ class FacturaController extends Controller
         $factura = Factura::getFacturaById($id);
         $clientes = Clientes::getClientes();
         $productos = Producto::getAllProductosFacturas();
-        return view('facturas.edit', compact('factura', 'clientes', 'productos'));
+        $productosFactura=$factura->productos;
+        return view('facturas.edit', compact('factura', 'clientes', 'productos','productosFactura'));
     }
 
     /**
