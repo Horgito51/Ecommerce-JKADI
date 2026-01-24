@@ -327,6 +327,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!res.ok) {
                     // backend devuelve 422 con message (ej: stock insuficiente)
                     showDetailAlert(data.message || 'No se pudo agregar al carrito.', 'danger');
+
+                    // Restaurar texto pero mantener deshabilitado
+                    btnText.textContent = 'Añadir';
+                    btnSpinner.style.display = 'none';
                     return;
                 }
 
@@ -334,10 +338,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 btnText.textContent = '✓ Agregado';
                 btnSpinner.style.display = 'none';
                 btnAgregarCarrito.style.opacity = '0.7';
-                
+
                 window.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
                 if (window.CartDrawer) window.CartDrawer.open();
-                
+
                 // Restaurar estado después de 2 segundos
                 setTimeout(() => {
                     btnText.textContent = 'Añadir';
