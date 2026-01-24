@@ -124,14 +124,27 @@
                                             <select name="productos[{{ $i }}][id_producto]"
                                                 class="form-control producto" required {{ $bloqueado ? 'disabled' : '' }}>
                                                 <option value="">Seleccione</option>
-                                                @foreach ($productos as $p)
-                                                    <option value="{{ $p->id_producto }}"
-                                                        data-precio="{{ $p->pro_precio_venta }}"
-                                                        data-stock="{{ $p->pro_saldo_final }}"
-                                                        {{ $prod->id_producto == $p->id_producto ? 'selected' : '' }}>
-                                                        {{ $p->pro_descripcion }}
-                                                    </option>
-                                                @endforeach
+                                                
+                                                {{-- El producto de la factura SIEMPRE se muestra --}}
+                                                <option value="{{ $prod->id_producto }}"
+                                                    data-precio="{{ $prod->pivot->pxf_precio }}"
+                                                    data-stock="{{ $prod->pro_saldo_final }}"
+                                                    selected>
+                                                    {{ $prod->pro_descripcion }}       
+                                                </option>
+                                                
+                                                {{-- Los demás productos disponibles --}}
+                                                @if(!$bloqueado)
+                                                    @foreach ($productos as $p)
+                                                        @if($p->id_producto != $prod->id_producto)
+                                                            <option value="{{ $p->id_producto }}"
+                                                                data-precio="{{ $p->pro_precio_venta }}"
+                                                                data-stock="{{ $p->pro_saldo_final }}">
+                                                                {{ $p->pro_descripcion }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
                                             </select>
                                         </td>
 
