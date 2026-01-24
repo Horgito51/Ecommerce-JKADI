@@ -86,7 +86,7 @@ class FacturaController extends Controller
     public function create()
     {
         $clientes = Clientes::getClientes();
-        $productos = Producto::getAllProductos();
+        $productos = Producto::getAllProductosFacturas();
         return view('facturas.create', compact('clientes', 'productos'));
     }
 
@@ -129,7 +129,7 @@ class FacturaController extends Controller
     {
         $factura = Factura::getFacturaById($id);
         $clientes = Clientes::getClientes();
-        $productos = Producto::getAllProductos();
+        $productos = Producto::getAllProductosFacturas();
         return view('facturas.edit', compact('factura', 'clientes', 'productos'));
     }
 

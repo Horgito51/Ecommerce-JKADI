@@ -79,15 +79,50 @@ class Producto extends Model
 
     //MD concepto
 
-    public static function getAllProductos()
+    public static function getAllProductosFacturas()
     {
         return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final','pro_valor_compra','pro_precio_venta')->where('pro_saldo_final','>',0)->where('estado_prod',"=","ACT")->get();
     }
+
+    public static function getAllProductosCompras()
+    {
+        return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final','pro_valor_compra','pro_precio_venta')->where('estado_prod',"=","ACT")->get();
+    }
+
 
 
     public static function getProductos(){
 
         return self::where('estado_prod','=','ACT')->where('pro_saldo_final','>',0)->paginate(9);
+    }
+
+    public static function getProductoEcommerceBy($search = '', $categoria = null)
+    {
+        return self::select(
+                'id_producto',
+                'id_tipo',
+                'pro_descripcion',
+                'pro_um_venta',
+                'pro_um_compra',
+                'estado_prod',
+                'img',
+                'pro_saldo_inicial',
+                'pro_valor_compra',
+                'pro_precio_venta',
+                'pro_saldo_final',
+            )
+            ->where('estado_prod', '=', 'ACT')->where('pro_saldo_final','>',0)
+            ->when($search !== '', function ($q) use ($search) {
+                $q->where(function ($w) use ($search) {
+                    $w->where('id_producto', 'ILIKE', "%{$search}%")
+                    ->orWhere('pro_descripcion', 'ILIKE', "%{$search}%");
+                });
+            })
+            ->when($categoria, function ($q) use ($categoria) {
+                $q->where('id_tipo', $categoria);
+            })
+            ->orderBy('id_producto', 'desc')
+            ->paginate(12);
     }
 
 
@@ -106,7 +141,7 @@ class Producto extends Model
                 'pro_precio_venta',
                 'pro_saldo_final',
             )
-            ->where('estado_prod', '=', 'ACT')->where('pro_saldo_final','>',0)
+            ->where('estado_prod', '=', 'ACT')
             ->when($search !== '', function ($q) use ($search) {
                 $q->where(function ($w) use ($search) {
                     $w->where('id_producto', 'ILIKE', "%{$search}%")

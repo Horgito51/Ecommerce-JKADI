@@ -27,7 +27,7 @@ class CompraController extends Controller
     public function create()
     {
         $proveedores = Proveedor::getProveedores();
-        $productos = Producto::getAllProductos();
+        $productos = Producto::getAllProductosCompras();
         return view('compras.create', compact('proveedores', 'productos'));
     }
     public function store(Request $request)
@@ -58,7 +58,7 @@ class CompraController extends Controller
     {
         $compra = Compra::getComprasById($id);
         $proveedores = Proveedor::getProveedores();
-        $productos = Producto::getAllProductos();
+        $productos = Producto::getAllProductosCompras();
         return view('compras.edit', compact('compra', 'proveedores', 'productos'));
     }
 
