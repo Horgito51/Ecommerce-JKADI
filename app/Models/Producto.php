@@ -81,12 +81,14 @@ class Producto extends Model
 
     public static function getAllProductosFacturas()
     {
-        return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final','pro_valor_compra','pro_precio_venta')->where('pro_saldo_final','>',0)->where('estado_prod',"=","ACT")->get();
+        return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final','pro_valor_compra','pro_precio_venta')->where('pro_saldo_final','>',0)->where('estado_prod',"=","ACT")
+        ->orderby('pro_descripcion', 'desc')->get();
     }
 
     public static function getAllProductosCompras()
     {
-        return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final','pro_valor_compra','pro_precio_venta')->where('estado_prod',"=","ACT")->get();
+        return self::select('id_producto','pro_descripcion','pro_um_compra','pro_um_venta','pro_saldo_final','pro_valor_compra','pro_precio_venta')->where('estado_prod',"=","ACT")
+        ->orderby('pro_descripcion', 'desc')->get();
     }
 
 
