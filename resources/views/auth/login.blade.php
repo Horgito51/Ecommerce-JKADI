@@ -35,44 +35,59 @@
 
                 <form method="POST" action="{{ route('login.post') }}" novalidate>
                     @csrf
-                    <input type="hidden" name="redirect"value="{{ old('redirect', request('redirect') ?? route('catalogo.index')) }}">
-                    <!-- Correo -->
+
+                    {{-- redirect --}}
+                    <input type="hidden"
+                           name="redirect"
+                           value="{{ old('redirect', request('redirect') ?? route('catalogo.index')) }}">
+
+                    {{-- EMAIL --}}
                     <div class="mb-3 text-start">
                         <label class="form-label">Correo electrónico</label>
-                        <input type="email" name="email"
-                            class="form-control @error('email') is-invalid @enderror"
-                            placeholder="tu@email.com"
-                            value="{{ old('email') }}">
+                        <input type="email"
+                               name="email"
+                               class="form-control @error('email') is-invalid @enderror"
+                               placeholder="tu@email.com"
+                               value="{{ old('email') }}">
                         @error('email')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- CONTRASEÑA -->
+                    {{-- PASSWORD --}}
                     <div class="mb-3 text-start">
                         <label class="form-label">Contraseña</label>
 
                         <div class="input-group">
-                            <input type="password" name="password" id="password"
-                                class="form-control @error('password') is-invalid @enderror"
-                                placeholder="Ingresa tu contraseña">
+                            <input type="password"
+                                   name="password"
+                                   id="password"
+                                   class="form-control @error('password') is-invalid @enderror"
+                                   placeholder="Ingresa tu contraseña">
 
                             <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                 <i class="bi bi-eye" id="toggleIcon"></i>
                             </button>
-
-                            @error('password')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
                         </div>
+
+                        @error('password')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
 
-                    <!-- BOTONES -->
+                    {{-- ERROR GENERAL --}}
+                    @if ($errors->any())
+                        <div class="alert alert-danger text-center mb-3">
+                            {{ $errors->first('login') ?? $errors->first() }}
+                        </div>
+                    @endif
+
+                    {{-- BOTONES --}}
                     <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mb-3">
                         <button type="submit" class="btn btn-light" id="loginBtn">
                             <span id="loginBtnText">Iniciar Sesión</span>
                             <span id="loginBtnSpinner" style="display:none; margin-left: 8px;">
-                                <i class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></i>
+                                <i class="spinner-border spinner-border-sm" role="status"></i>
                             </span>
                         </button>
 
@@ -81,7 +96,7 @@
                         </a>
                     </div>
 
-                    <!-- OLVIDÓ CONTRASEÑA -->
+                    {{-- OLVIDÓ CONTRASEÑA --}}
                     <div class="text-center">
                         <a href="#" class="small text-decoration-none text-dark">
                             ¿Olvidó su contraseña?
