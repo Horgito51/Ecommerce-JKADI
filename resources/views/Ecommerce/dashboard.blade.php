@@ -2,6 +2,35 @@
 
 @section('content')
 
+@if (session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Pago realizado',
+            text: @json(session('success')),
+            showConfirmButton: true,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    });
+</script>
+@endif
+
+@if (session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: @json(session('error')),
+            showConfirmButton: true,
+        });
+    });
+</script>
+@endif
+
+
 <!-- HERO -->
 <section class="container-fluid my-5" style="background-color:#F5F9FC">
     <div class="row align-items-center">

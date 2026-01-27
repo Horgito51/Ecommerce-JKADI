@@ -7,6 +7,7 @@
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         @media (max-width: 576px) {
@@ -50,19 +51,21 @@
                     <!-- CONTRASEÑA -->
                     <div class="mb-3 text-start">
                         <label class="form-label">Contraseña</label>
-                        <input type="password" name="password"
-                               class="form-control @error('password') is-invalid @enderror"
-                               placeholder="Ingresa tu contraseña">
-                        @error('password')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
 
-                    @if ($errors->has('login'))
-                        <div class="alert alert-danger text-center">
-                            {{ $errors->first('login') }}
+                        <div class="input-group">
+                            <input type="password" name="password" id="password"
+                                class="form-control @error('password') is-invalid @enderror"
+                                placeholder="Ingresa tu contraseña">
+
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="bi bi-eye" id="toggleIcon"></i>
+                            </button>
+
+                            @error('password')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
-                    @endif
+                    </div>
 
                     <!-- BOTONES -->
                     <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mb-3">
@@ -93,23 +96,7 @@
     </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const loginBtn = document.getElementById('loginBtn');
-    const loginBtnText = document.getElementById('loginBtnText');
-    const loginBtnSpinner = document.getElementById('loginBtnSpinner');
-    const form = document.querySelector('form');
-
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            // Mostrar indicador de carga
-            loginBtn.disabled = true;
-            loginBtnText.textContent = 'Verificando...';
-            loginBtnSpinner.style.display = 'inline-block';
-        });
-    }
-});
-</script>
+<script src="{{ asset('js/login.js') }}"></script>
 
 </body>
 </html>

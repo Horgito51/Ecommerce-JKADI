@@ -7,6 +7,8 @@
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -170,22 +172,39 @@
                         {{-- PASSWORD --}}
                         <div class="col-12 col-md-6">
                             <label class="form-label">Contraseña *</label>
-                            <input type="password"
-                                   name="password"
-                                   class="form-control @error('password') is-invalid @enderror"
-                                   required>
+
+                            <div class="input-group">
+                                <input type="password"
+                                    name="password"
+                                    id="password"
+                                    class="form-control @error('password') is-invalid @enderror"
+                                    required>
+
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="bi bi-eye" id="toggleIconPassword"></i>
+                                </button>
+                            </div>
+
                             @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 
                         {{-- CONFIRM PASSWORD --}}
                         <div class="col-12 col-md-6">
                             <label class="form-label">Confirmar contraseña *</label>
-                            <input type="password"
-                                   name="password_confirmation"
-                                   class="form-control"
-                                   required>
+
+                            <div class="input-group">
+                                <input type="password"
+                                    name="password_confirmation"
+                                    id="password_confirmation"
+                                    class="form-control"
+                                    required>
+
+                                <button class="btn btn-outline-secondary" type="button" id="togglePasswordConfirm">
+                                    <i class="bi bi-eye" id="toggleIconConfirm"></i>
+                                </button>
+                            </div>
                         </div>
 
                     </div>
@@ -205,5 +224,7 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('js/register.js') }}"></script>
+
 </body>
 </html>
