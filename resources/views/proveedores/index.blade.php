@@ -1,5 +1,3 @@
-
-
 @extends('layouts.contentAdmin')
 
 @section('content')
@@ -14,20 +12,19 @@
     </a>
 </div>
 
-<div class="table-responsive-sm">
-    <table class="table table-bordered align-middle">
+<div class="table-responsive border rounded shadow-sm">
+    <table class="table table-bordered table-hover align-middle text-nowrap mb-0">
+
         <thead style="background-color:#031832;color:white">
         <tr class="text-center">
             <th>ID</th>
             <th>Nombre</th>
-
-            <th class="col-detalle">RUC/Cédula</th>
-            <th class="col-detalle">Teléfono</th>
-            <th class="col-detalle">Email</th>
-            <th class="col-detalle">Ciudad</th>
-            <th class="col-detalle">Celular</th>
-            <th class="col-detalle">Dirección</th>
-
+            <th>RUC/Cédula</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Ciudad</th>
+            <th>Celular</th>
+            <th>Dirección</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -35,25 +32,43 @@
         <tbody style="color:#031832;border-color:#031832">
         @foreach ($proveedores as $proveedor)
             <tr class="text-center {{ $loop->odd ? 'fila-zebra' : '' }}">
+
                 <td>{{ $proveedor->id_proveedor }}</td>
 
                 <td class="text-start">
                     {{ $proveedor->prv_nombre }}
                 </td>
 
-                <td class="col-detalle">{{ $proveedor->prv_ruc_ced }}</td>
-                <td class="col-detalle">{{ $proveedor->prv_telefono ?? 'N/A' }}</td>
-                <td class="col-detalle">{{ $proveedor->prv_mail }}</td>
-                <td class="col-detalle">{{ $proveedor->ciudades->ciu_descripcion ?? '-' }}</td>
-                <td class="col-detalle">{{ $proveedor->prv_celular }}</td>
-                <td class="col-detalle">{{ $proveedor->prv_direccion }}</td>
+                <td class="col-detalle" title="{{ $proveedor->prv_ruc_ced }}">
+                    {{ $proveedor->prv_ruc_ced }}
+                </td>
+
+                <td class="col-detalle" title="{{ $proveedor->prv_telefono }}">
+                    {{ $proveedor->prv_telefono ?? 'N/A' }}
+                </td>
+
+                <td class="col-detalle" title="{{ $proveedor->prv_mail }}">
+                    {{ $proveedor->prv_mail }}
+                </td>
 
                 <td>
+                    {{ $proveedor->ciudades->ciu_descripcion ?? '-' }}
+                </td>
+
+                <td class="col-detalle" title="{{ $proveedor->prv_celular }}">
+                    {{ $proveedor->prv_celular }}
+                </td>
+
+                <td class="col-detalle" title="{{ $proveedor->prv_direccion }}">
+                    {{ $proveedor->prv_direccion }}
+                </td>
+
+                <td class="td-acciones">
                     <div class="d-flex flex-column flex-md-row gap-1 justify-content-center acciones-botones">
 
                         <a href="{{ route('proveedores.edit', $proveedor->id_proveedor) }}"
                            class="btn btn-sm"
-                           style="background-color:#031832;color:white; margin:2px;
+                           style="background-color:#031832;color:white;
                                   padding:4px 10px;
                                   font-size:0.8rem;
                                   min-width:65px;">
@@ -61,12 +76,16 @@
                         </a>
 
                         <form action="{{ route('proveedores.destroy', $proveedor->id_proveedor) }}"
-                              method="POST" class="m-0 form-eliminar-proveedor">
+                              method="POST"
+                              class="m-0 form-eliminar-proveedor">
                             @csrf
                             @method('DELETE')
+
                             <button type="submit"
-                                    class="btn btn-sm "
-                                    style="padding:4px 10px; background-color:#8C0606;color:white; margin:2px;
+                                    class="btn btn-sm"
+                                    style="padding:4px 10px;
+                                           background-color:#8C0606;
+                                           color:white;
                                            font-size:0.8rem;
                                            min-width:65px;">
                                 Eliminar
@@ -78,18 +97,19 @@
             </tr>
         @endforeach
         </tbody>
+
     </table>
 </div>
 
-    {{-- Paginación --}}
+{{-- Paginación --}}
+<div class="pagination-wrapper d-flex justify-content-center mt-4">
+    {{ $proveedores->links('pagination::bootstrap-5', ['class' => 'pagination pagination-sm']) }}
+</div>
 
-    <div class="pagination-wrapper d-flex justify-content-center mt-5">
-        {{ $proveedores->links('pagination::bootstrap-5', ['class' => 'pagination pagination-sm']) }}
-    </div>
-    <p class="text-muted small text-center mt-2">
-        Página {{ $proveedores->currentPage() }} de {{ $proveedores->lastPage() }} ·
-        {{ $proveedores->total() }} proveedores
-    </p>
+<p class="text-muted small text-center mt-2">
+    Página {{ $proveedores->currentPage() }} de {{ $proveedores->lastPage() }} ·
+    {{ $proveedores->total() }} proveedores
+</p>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -98,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
+
             Swal.fire({
                 title: '¿Eliminar proveedor?',
                 text: 'Esta acción no se puede deshacer',
@@ -116,10 +137,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     });
+
 });
 </script>
-
-
-
 
 @endsection
