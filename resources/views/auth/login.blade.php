@@ -7,6 +7,7 @@
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         @media (max-width: 576px) {
@@ -34,42 +35,59 @@
 
                 <form method="POST" action="{{ route('login.post') }}" novalidate>
                     @csrf
-                    <input type="hidden" name="redirect"value="{{ old('redirect', request('redirect') ?? route('catalogo.index')) }}">
-                    <!-- Correo -->
+
+                    {{-- redirect --}}
+                    <input type="hidden"
+                           name="redirect"
+                           value="{{ old('redirect', request('redirect') ?? route('catalogo.index')) }}">
+
+                    {{-- EMAIL --}}
                     <div class="mb-3 text-start">
                         <label class="form-label">Correo electrónico</label>
-                        <input type="email" name="email"
-                            class="form-control @error('email') is-invalid @enderror"
-                            placeholder="tu@email.com"
-                            value="{{ old('email') }}">
+                        <input type="email"
+                               name="email"
+                               class="form-control @error('email') is-invalid @enderror"
+                               placeholder="tu@email.com"
+                               value="{{ old('email') }}">
                         @error('email')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- CONTRASEÑA -->
+                    {{-- PASSWORD --}}
                     <div class="mb-3 text-start">
                         <label class="form-label">Contraseña</label>
-                        <input type="password" name="password"
-                               class="form-control @error('password') is-invalid @enderror"
-                               placeholder="Ingresa tu contraseña">
+
+                        <div class="input-group">
+                            <input type="password"
+                                   name="password"
+                                   id="password"
+                                   class="form-control @error('password') is-invalid @enderror"
+                                   placeholder="Ingresa tu contraseña">
+
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="bi bi-eye" id="toggleIcon"></i>
+                            </button>
+                        </div>
+
                         @error('password')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    @if ($errors->has('login'))
-                        <div class="alert alert-danger text-center">
-                            {{ $errors->first('login') }}
+                    {{-- ERROR GENERAL --}}
+                    @if ($errors->any())
+                        <div class="alert alert-danger text-center mb-3">
+                            {{ $errors->first('login') ?? $errors->first() }}
                         </div>
                     @endif
 
-                    <!-- BOTONES -->
+                    {{-- BOTONES --}}
                     <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mb-3">
                         <button type="submit" class="btn btn-light" id="loginBtn">
                             <span id="loginBtnText">Iniciar Sesión</span>
                             <span id="loginBtnSpinner" style="display:none; margin-left: 8px;">
-                                <i class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></i>
+                                <i class="spinner-border spinner-border-sm" role="status"></i>
                             </span>
                         </button>
 
@@ -78,7 +96,7 @@
                         </a>
                     </div>
 
-                    <!-- OLVIDÓ CONTRASEÑA -->
+                    {{-- OLVIDÓ CONTRASEÑA --}}
                     <div class="text-center">
                         <a href="#" class="small text-decoration-none text-dark">
                             ¿Olvidó su contraseña?
@@ -93,23 +111,7 @@
     </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const loginBtn = document.getElementById('loginBtn');
-    const loginBtnText = document.getElementById('loginBtnText');
-    const loginBtnSpinner = document.getElementById('loginBtnSpinner');
-    const form = document.querySelector('form');
-
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            // Mostrar indicador de carga
-            loginBtn.disabled = true;
-            loginBtnText.textContent = 'Verificando...';
-            loginBtnSpinner.style.display = 'inline-block';
-        });
-    }
-});
-</script>
+<script src="{{ asset('js/login.js') }}"></script>
 
 </body>
 </html>

@@ -651,3 +651,73 @@ body {
   border-radius:10px;
   text-align:center;
 }
+
+
+/* ===============================
+   TABLAS ADMIN (Proveedores)
+   =============================== */
+
+/* Contenedor con scroll horizontal real */
+.table-responsive {
+    overflow-x: auto !important;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Evita que el texto se rompa en columnas */
+.table.text-nowrap,
+.table .text-nowrap {
+    white-space: nowrap;
+}
+
+/* Columnas largas: email, dirección, etc */
+.col-detalle {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Acciones siempre alineadas y compactas */
+.td-acciones,
+.acciones-botones {
+    white-space: nowrap;
+}
+
+/* Zebra en filas */
+.fila-zebra {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Tabla más limpia visualmente */
+.table th,
+.table td {
+    vertical-align: middle;
+}
+
+/* Hover suave */
+.table-hover tbody tr:hover {
+    background-color: rgba(3, 24, 50, 0.04);
+}
+
+/* Compactar tabla en móvil */
+@media (max-width: 576px) {
+    .table th,
+    .table td {
+        font-size: 0.85rem;
+        padding: 6px 8px;
+    }
+
+    /* Separación real entre botones */
+    td .acciones-botones > a,
+    td .acciones-botones > button,
+    td .acciones-botones > form {
+        margin-bottom: 8px !important;
+    }
+
+    td .acciones-botones > a:last-child,
+    td .acciones-botones > button:last-child,
+    td .acciones-botones > form:last-child {
+        margin-bottom: 0 !important;
+    }
+}

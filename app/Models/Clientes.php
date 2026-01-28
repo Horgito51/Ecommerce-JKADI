@@ -94,10 +94,10 @@ class Clientes extends Model
         ->where('estado_cli', '=', 'ACT')
         ->when($search !== '', function ($q) use ($search) {
             $q->where(function ($w) use ($search) {
-                $w->where('id_cliente', 'like', "%{$search}%")
-                  ->orWhere('cli_nombre', 'like', "%{$search}%")
-                  ->orWhere('cli_ruc_ced', 'like', "%{$search}%")
-                  ->orWhere('cli_email', 'like', "%{$search}%");
+                $w->where('id_cliente', 'ilike', "%{$search}%")
+                  ->orWhere('cli_nombre', 'ilike', "%{$search}%")
+                  ->orWhere('cli_ruc_ced', 'ilike', "%{$search}%")
+                  ->orWhere('cli_email', 'ilike', "%{$search}%");
             });
         })
         ->orderBy('id_cliente', 'desc')
