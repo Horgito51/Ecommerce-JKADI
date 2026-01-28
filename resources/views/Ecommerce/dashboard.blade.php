@@ -32,43 +32,43 @@
 
 
 <!-- HERO -->
-<section class="container-fluid my-5" style="background-color:#F5F9FC">
+<section class="container-fluid my-5 px-3 px-md-4" style="background-color:#F5F9FC">
     <div class="row align-items-center">
         <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
-            <div class="text-center text-lg-start">
-                <h1 class="display-3 display-md-2 display-lg-1 fw-bold mb-2" style="color:#031832">
+            <div class="text-center text-lg-start px-2">
+                <h1 class="fw-bold mb-3" style="color:#031832; font-size: clamp(2rem, 8vw, 3.5rem); line-height: 1.2;">
                     Tu supermercado de confianza
                 </h1>
 
-                <p class="lead fs-4 fs-md-3 mb-4" style="color:#031832">
+                <p class="mb-4" style="color:#031832; font-size: clamp(1rem, 3vw, 1.25rem);">
                     Encuentra todo lo que necesitas en un solo lugar, a buen precio y con excelente calidad.
                 </p>
 
                 <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start mb-4">
                     <a class="btn btn-lg px-4 py-2"
                        href="{{ route('catalogo.index') }}"
-                       style="background-color:#031832; color:white; border-radius:5px;margin:10px">
+                       style="background-color:#031832; color:white; margin:5px; border-radius:5px;">
                         Comprar Ahora
                     </a>
                     <a href="{{ route('register.step1') }}"
-                    class="btn btn-lg px-4 py-2"
-                    style="background-color:#031832; color:white; border-radius:5px;margin:10px">
+                       class="btn btn-lg px-4 py-2"
+                       style="background-color:#031832; color:white; margin:5px; border-radius:5px;">
                         Registrarse
                     </a>
                 </div>
 
                 <div class="row text-center mt-4 g-3">
                     <div class="col-4">
-                        <h2 class="fw-bold" style="color:#031832">500+</h2>
-                        <p style="color:#031832">Productos</p>
+                        <h2 class="fw-bold" style="color:#031832; font-size: clamp(1.5rem, 5vw, 2rem);">500+</h2>
+                        <p style="color:#031832; font-size: clamp(0.875rem, 2vw, 1rem);">Productos</p>
                     </div>
                     <div class="col-4">
-                        <h2 class="fw-bold" style="color:#031832">10,000+</h2>
-                        <p style="color:#031832">Clientes</p>
+                        <h2 class="fw-bold" style="color:#031832; font-size: clamp(1.5rem, 5vw, 2rem);">10,000+</h2>
+                        <p style="color:#031832; font-size: clamp(0.875rem, 2vw, 1rem);">Clientes</p>
                     </div>
                     <div class="col-4">
-                        <h2 class="fw-bold" style="color:#031832">24/7</h2>
-                        <p style="color:#031832">Soporte</p>
+                        <h2 class="fw-bold" style="color:#031832; font-size: clamp(1.5rem, 5vw, 2rem);">24/7</h2>
+                        <p style="color:#031832; font-size: clamp(0.875rem, 2vw, 1rem);">Soporte</p>
                     </div>
                 </div>
             </div>
